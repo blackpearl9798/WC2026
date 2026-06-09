@@ -7,8 +7,8 @@ interface AuthProps {
 export const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [department, setDepartment] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -19,8 +19,8 @@ export const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
 
     const url = isRegister ? '/api/auth/register' : '/api/auth/login';
     const body = isRegister 
-      ? { username, email, department }
-      : { username };
+      ? { username, fullName, password }
+      : { username, password };
 
     try {
       const response = await fetch(url, {
@@ -62,7 +62,7 @@ export const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label" htmlFor="username">
-              {isRegister ? 'Tên đăng nhập (Viết liền, không dấu)' : 'Tên đăng nhập hoặc Email'}
+              Tên đăng nhập
             </label>
             <input
               id="username"
@@ -70,44 +70,42 @@ export const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
               className="form-input"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder={isRegister ? 'Ví dụ: nguyenvanan' : 'Nhập tên hoặc email'}
+              placeholder="Nhập tên đăng nhập (ví dụ: an.nguyen)"
               required
             />
           </div>
 
           {isRegister && (
-            <>
-              <div className="form-group">
-                <label className="form-label" htmlFor="email">
-                  Email công ty
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  className="form-input"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="vi-du@company.com"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label" htmlFor="department">
-                  Phòng ban
-                </label>
-                <input
-                  id="department"
-                  type="text"
-                  className="form-input"
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  placeholder="Ví dụ: IT, Marketing, HR..."
-                  required
-                />
-              </div>
-            </>
+            <div className="form-group">
+              <label className="form-label" htmlFor="fullName">
+                Họ và tên
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                className="form-input"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Ví dụ: Nguyễn Văn An"
+                required
+              />
+            </div>
           )}
+
+          <div className="form-group">
+            <label className="form-label" htmlFor="password">
+              Mật khẩu
+            </label>
+            <input
+              id="password"
+              type="password"
+              className="form-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Nhập mật khẩu"
+              required
+            />
+          </div>
 
           <button type="submit" className="auth-btn" disabled={loading}>
             {loading ? 'Đang xử lý...' : isRegister ? 'Đăng Ký Tham Gia' : 'Đăng Nhập'}

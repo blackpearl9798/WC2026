@@ -45,26 +45,26 @@ function requireAdmin(req, res, next) {
 
 // 1. Đăng ký tài khoản mới
 app.post('/api/auth/register', (req, res) => {
-  const { username, email, department } = req.body;
+  const { username, fullName, password } = req.body;
 
-  if (!username || !email || !department) {
-    return res.status(400).json({ error: 'Vui lòng cung cấp đầy đủ thông tin: Tên, Email và Phòng ban' });
+  if (!username || !fullName || !password) {
+    return res.status(400).json({ error: 'Vui lòng cung cấp đầy đủ thông tin: Tên đăng nhập, Họ và tên, và Mật khẩu' });
   }
 
   const db = readDB();
 
   // Kiểm tra trùng lặp
-  const exists = db.users.find(u => u.username.toLowerCase() === username.toLowerCase() || u.email.toLowerCase() === email.toLowerCase());
+  const exists = db.users.find(u => u.username.toLowerCase() === username.toLowerCase());
   if (exists) {
-    return res.status(400).json({ error: 'Tên đăng nhập hoặc Email đã được sử dụng' });
+    return res.status(400).json({ error: 'Tên đăng nhập đã được sử dụng' });
   }
 
   const token = `token-${Math.random().toString(36).substr(2, 9)}-${Date.now().toString(36)}`;
   const newUser = {
     id: `user_${Date.now()}`,
     username,
-    email,
-    department,
+    fullName,
+    password,
     isAdmin: false,
     token
   };
@@ -74,27 +74,31 @@ app.post('/api/auth/register', (req, res) => {
 
   res.status(201).json({
     message: 'Đăng ký thành công',
-    user: { id: newUser.id, username: newUser.username, email: newUser.email, department: newUser.department, isAdmin: newUser.isAdmin },
+    user: { id: newUser.id, username: newUser.username, fullName: newUser.fullName, isAdmin: newUser.isAdmin },
     token
   });
 });
 
-// 2. Đăng nhập nhanh
+// 2. Đăng nhập
 app.post('/api/auth/login', (req, res) => {
-  const { username } = req.body;
+  const { username, password } = req.body;
 
-  if (!username) {
-    return res.status(400).json({ error: 'Vui lòng nhập Tên đăng nhập hoặc Email' });
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Vui lòng nhập Tên đăng nhập và Mật khẩu' });
   }
 
   const db = readDB();
   const user = db.users.find(u => 
-    u.username.toLowerCase() === username.toLowerCase() || 
-    u.email.toLowerCase() === username.toLowerCase()
+    u.username.toLowerCase() === username.toLowerCase()
   );
 
   if (!user) {
     return res.status(404).json({ error: 'Tài khoản không tồn tại. Vui lòng đăng ký trước!' });
+  }
+
+  // Kiểm tra mật khẩu
+  if (user.password !== password) {
+    return res.status(400).json({ error: 'Mật khẩu không chính xác' });
   }
 
   // Cập nhật token mới khi đăng nhập
@@ -104,7 +108,7 @@ app.post('/api/auth/login', (req, res) => {
 
   res.json({
     message: 'Đăng nhập thành công',
-    user: { id: user.id, username: user.username, email: user.email, department: user.department, isAdmin: user.isAdmin },
+    user: { id: user.id, username: user.username, fullName: user.fullName, isAdmin: user.isAdmin },
     token
   });
 });
@@ -115,8 +119,7 @@ app.get('/api/auth/me', authenticate, (req, res) => {
     user: {
       id: req.user.id,
       username: req.user.username,
-      email: req.user.email,
-      department: req.user.department,
+      fullName: req.user.fullName,
       isAdmin: req.user.isAdmin
     }
   });
@@ -250,7 +253,7 @@ app.get('/api/leaderboard', (req, res) => {
     return {
       userId: user.id,
       username: user.username,
-      department: user.department,
+      fullName: user.fullName || user.username,
       isAdmin: user.isAdmin,
       totalPoints,
       correctPredictions,
@@ -267,7 +270,7 @@ app.get('/api/leaderboard', (req, res) => {
     if (a.incorrectPredictions !== b.incorrectPredictions) {
       return a.incorrectPredictions - b.incorrectPredictions; // Ít trận sai hơn xếp trên
     }
-    return a.username.localeCompare(b.username);
+    return a.fullName.localeCompare(b.fullName);
   });
 
   res.json(leaderboard);
@@ -297,8 +300,8 @@ app.post('/api/chat', authenticate, (req, res) => {
   const newMsg = {
     id: `msg_${Date.now()}`,
     userId: req.user.id,
-    username: req.user.username,
-    department: req.user.department,
+    username: req.user.fullName || req.user.username,
+    department: req.user.department || '',
     message: message.trim(),
     timestamp: new Date().toISOString()
   };
@@ -454,8 +457,7 @@ app.get('/api/admin/users', authenticate, requireAdmin, (req, res) => {
   const userList = db.users.map(u => ({
     id: u.id,
     username: u.username,
-    email: u.email,
-    department: u.department,
+    fullName: u.fullName || u.username,
     isAdmin: u.isAdmin
   }));
   res.json(userList);

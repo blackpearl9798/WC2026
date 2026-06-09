@@ -103,8 +103,8 @@ export function readDB() {
           {
             id: 'admin_user',
             username: 'admin',
-            email: 'admin@company.com',
-            department: 'IT',
+            fullName: 'Quản trị viên',
+            password: '696969',
             isAdmin: true,
             token: 'admin-token-12345'
           }
@@ -116,7 +116,26 @@ export function readDB() {
       return initialData;
     }
     const data = fs.readFileSync(DB_FILE, 'utf8');
-    return JSON.parse(data);
+    const db = JSON.parse(data);
+
+    // Tự động nâng cấp tài khoản admin nếu thiếu password/fullName
+    const admin = db.users.find(u => u.username === 'admin');
+    if (admin) {
+      let upgraded = false;
+      if (!admin.password) {
+        admin.password = '696969';
+        upgraded = true;
+      }
+      if (!admin.fullName) {
+        admin.fullName = 'Quản trị viên';
+        upgraded = true;
+      }
+      if (upgraded) {
+        writeDB(db);
+      }
+    }
+
+    return db;
   } catch (error) {
     console.error('Error reading database file:', error);
     return { users: [], matches: [], predictions: [] };

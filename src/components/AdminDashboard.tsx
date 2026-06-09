@@ -373,10 +373,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                 <div key={user.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', background: 'rgba(255,255,255,0.02)', borderRadius: '6px' }}>
                   <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>
-                      {user.username} {user.isAdmin && <span style={{ color: 'var(--color-secondary)' }}>(Admin)</span>}
+                      {user.fullName || user.username} {user.isAdmin && <span style={{ color: 'var(--color-secondary)' }}>(Admin)</span>}
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                      {user.department} | {user.email}
+                      Tên đăng nhập: {user.username}
                     </div>
                   </div>
                   {!user.isAdmin && (

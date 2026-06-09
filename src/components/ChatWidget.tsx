@@ -120,7 +120,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ token, currentUser }) =>
                   <div key={msg.id} className={`chat-message-item ${isMe ? 'me' : ''}`}>
                     <div className="chat-message-info">
                       <span className="chat-message-user">{isMe ? 'Bạn' : msg.username}</span>
-                      <span className="chat-message-dept">({msg.department})</span>
+                      {msg.department && <span className="chat-message-dept">({msg.department})</span>}
                     </div>
                     <div className="chat-message-text">{msg.message}</div>
                     <span className="chat-message-time">{formatTime(msg.timestamp)}</span>

@@ -112,10 +112,7 @@ function App() {
         <div className="user-status">
           <div className="user-badge">
             <span>Chào,</span>
-            <span className="user-name">{user.username}</span>
-            <span style={{ fontSize: '0.75rem', background: 'rgba(255,255,255,0.08)', padding: '2px 6px', borderRadius: '4px', color: 'var(--color-text-muted)' }}>
-              {user.department}
-            </span>
+            <span className="user-name">{user.fullName || user.username}</span>
             {user.isAdmin && (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', fontSize: '0.7rem', background: 'rgba(251, 191, 36, 0.15)', color: 'var(--color-secondary)', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>
                 <ShieldAlert size={10} /> Admin

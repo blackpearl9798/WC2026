@@ -31,8 +31,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
   }, [onRefreshTrigger]);
 
   const filteredPlayers = players.filter(player => 
-    player.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    player.department.toLowerCase().includes(searchTerm.toLowerCase())
+    (player.fullName || player.username).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Top 3 players for the Podium
@@ -71,10 +70,11 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                 <div className="podium-card second">
                   <span className="podium-rank">2</span>
                   <div className="podium-avatar">
-                    {getAvatarInitials(topThree[1].username)}
+                    {getAvatarInitials(topThree[1].fullName || topThree[1].username)}
                   </div>
-                  <div className="podium-name" title={topThree[1].username}>{topThree[1].username}</div>
-                  <div className="podium-dept">{topThree[1].department}</div>
+                  <div className="podium-name" title={topThree[1].fullName || topThree[1].username}>
+                    {topThree[1].fullName || topThree[1].username}
+                  </div>
                   <div className="podium-pts">{topThree[1].totalPoints}</div>
                   <div className="podium-pts-lbl">Điểm</div>
                 </div>
@@ -85,10 +85,11 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                 <div className="podium-card first">
                   <span className="podium-rank">👑</span>
                   <div className="podium-avatar">
-                    {getAvatarInitials(topThree[0].username)}
+                    {getAvatarInitials(topThree[0].fullName || topThree[0].username)}
                   </div>
-                  <div className="podium-name" title={topThree[0].username}>{topThree[0].username}</div>
-                  <div className="podium-dept">{topThree[0].department}</div>
+                  <div className="podium-name" title={topThree[0].fullName || topThree[0].username}>
+                    {topThree[0].fullName || topThree[0].username}
+                  </div>
                   <div className="podium-pts">{topThree[0].totalPoints}</div>
                   <div className="podium-pts-lbl">Điểm</div>
                 </div>
@@ -99,10 +100,11 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                 <div className="podium-card third">
                   <span className="podium-rank">3</span>
                   <div className="podium-avatar">
-                    {getAvatarInitials(topThree[2].username)}
+                    {getAvatarInitials(topThree[2].fullName || topThree[2].username)}
                   </div>
-                  <div className="podium-name" title={topThree[2].username}>{topThree[2].username}</div>
-                  <div className="podium-dept">{topThree[2].department}</div>
+                  <div className="podium-name" title={topThree[2].fullName || topThree[2].username}>
+                    {topThree[2].fullName || topThree[2].username}
+                  </div>
                   <div className="podium-pts">{topThree[2].totalPoints}</div>
                   <div className="podium-pts-lbl">Điểm</div>
                 </div>
@@ -117,7 +119,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
               <input
                 type="text"
                 className="search-input"
-                placeholder="Tìm kiếm nhân viên hoặc phòng ban..."
+                placeholder="Tìm kiếm nhân viên..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -130,12 +132,11 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
               <thead>
                 <tr>
                   <th style={{ width: '80px' }}>Hạng</th>
-                  <th>Nhân Viên</th>
-                  <th>Phòng Ban</th>
-                  <th style={{ textAlign: 'center', width: '90px' }}>Điểm</th>
-                  <th style={{ textAlign: 'center', width: '130px' }} title="Số trận dự đoán thắng Handicap chính xác">Số Trận Đúng</th>
-                  <th style={{ textAlign: 'center', width: '130px' }} title="Số trận dự đoán Handicap không chính xác">Số Trận Sai</th>
-                  <th style={{ textAlign: 'center', width: '110px' }} title="Tổng số trận đã dự đoán">Tổng Đoán</th>
+                  <th>Họ và Tên</th>
+                  <th style={{ textAlign: 'center', width: '100px' }}>Điểm</th>
+                  <th style={{ textAlign: 'center', width: '150px' }} title="Số trận dự đoán thắng Handicap chính xác">Số Trận Đúng</th>
+                  <th style={{ textAlign: 'center', width: '150px' }} title="Số trận dự đoán Handicap không chính xác">Số Trận Sai</th>
+                  <th style={{ textAlign: 'center', width: '130px' }} title="Tổng số trận đã dự đoán">Tổng Đoán</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,13 +151,12 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                         </td>
                         <td className="player-name-cell">
                           <div className="player-avatar-small">
-                            {getAvatarInitials(player.username)}
+                            {getAvatarInitials(player.fullName || player.username)}
                           </div>
                           <span>
-                            {player.username} {player.isAdmin && <span style={{ color: 'var(--color-secondary)', fontSize: '0.75rem', fontWeight: 600 }}>(Admin)</span>}
+                            {player.fullName || player.username} {player.isAdmin && <span style={{ color: 'var(--color-secondary)', fontSize: '0.75rem', fontWeight: 600 }}>(Admin)</span>}
                           </span>
                         </td>
-                        <td>{player.department}</td>
                         <td className="pts-cell" style={{ textAlign: 'center' }}>{player.totalPoints}</td>
                         <td style={{ textAlign: 'center', fontWeight: '700', color: 'var(--color-primary)' }}>{player.correctPredictions}</td>
                         <td style={{ textAlign: 'center', fontWeight: '700', color: 'var(--color-danger)' }}>{player.incorrectPredictions}</td>
@@ -166,7 +166,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                   })
                 ) : (
                   <tr>
-                    <td colSpan={8} style={{ textAlign: 'center', padding: '24px', color: 'var(--color-text-muted)' }}>
+                    <td colSpan={6} style={{ textAlign: 'center', padding: '24px', color: 'var(--color-text-muted)' }}>
                       Không tìm thấy nhân viên phù hợp.
                     </td>
                   </tr>
