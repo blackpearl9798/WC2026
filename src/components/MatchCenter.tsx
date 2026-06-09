@@ -146,7 +146,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
         {hasSavedPrediction && (
           <div style={{ textAlign: 'center', marginTop: '12px' }}>
             <span className="hero-saved-tag">
-              Đã chọn: {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
+              Đã chọn: {myPred.predictedHandicapWinner === 'home' ? `${match.homeFlag} ${match.homeTeam}` : `${match.awayFlag} ${match.awayTeam}`}
             </span>
           </div>
         )}
@@ -241,18 +241,19 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
   };
 
   const getHandicapButtonLabel = (match: any, side: 'home' | 'away') => {
-    const { handicap, homeTeam, awayTeam } = match;
+    const { handicap, homeTeam, awayTeam, homeFlag, awayFlag } = match;
     const isHome = side === 'home';
     const teamName = isHome ? homeTeam : awayTeam;
+    const teamFlag = isHome ? homeFlag : awayFlag;
 
     if (handicap.team === null || handicap.value === 0) {
-      return `${teamName} (0)`;
+      return `${teamFlag} ${teamName} (0)`;
     }
 
     if (handicap.team === side) {
-      return `${teamName} (-${handicap.value})`;
+      return `${teamFlag} ${teamName} (-${handicap.value})`;
     } else {
-      return `${teamName} (+${handicap.value})`;
+      return `${teamFlag} ${teamName} (+${handicap.value})`;
     }
   };
 
@@ -399,7 +400,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                         {hasSavedPrediction && (
                           <div style={{ textAlign: 'center', marginBottom: '12px' }}>
                             <span className="hero-saved-tag" style={{ animation: 'none' }}>
-                              Đã chọn: {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
+                              Đã chọn: {myPred.predictedHandicapWinner === 'home' ? `${match.homeFlag} ${match.homeTeam}` : `${match.awayFlag} ${match.awayTeam}`}
                             </span>
                           </div>
                         )}
@@ -421,7 +422,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                             <div className="info-row">
                               <span className="info-label">Kèo Handicap đã chọn:</span>
                               <span className="info-val" style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>
-                                {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
+                                {myPred.predictedHandicapWinner === 'home' ? `${match.homeFlag} ${match.homeTeam}` : `${match.awayFlag} ${match.awayTeam}`}
                               </span>
                             </div>
                             
@@ -466,7 +467,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                                   {op.username} <span className="other-pred-dept">({op.department})</span>
                                 </span>
                                 <span className="other-pred-detail">
-                                  {op.predictedHandicapWinner === 'home' ? 'Chọn Sân Nhà' : 'Chọn Sân Khách'}
+                                  Chọn {op.predictedHandicapWinner === 'home' ? `${match.homeFlag} ${match.homeTeam}` : `${match.awayFlag} ${match.awayTeam}`}
                                   {isFinished && <span className="other-pred-pts"> (+{op.pointsTotal}đ)</span>}
                                 </span>
                               </div>

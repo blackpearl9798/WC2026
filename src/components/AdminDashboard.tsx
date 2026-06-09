@@ -26,6 +26,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
     handicapValue: '0.5'
   });
 
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingMatch, setEditingMatch] = useState<{
+    id: string;
+    homeTeam: string;
+    awayTeam: string;
+    homeFlag: string;
+    awayFlag: string;
+    matchTime: string;
+    handicapTeam: 'home' | 'away' | 'none';
+    handicapValue: string;
+  } | null>(null);
+
   // Edit states
   const [editingMatchId, setEditingMatchId] = useState<string | null>(null);
   const [editScore, setEditScore] = useState<{ [matchId: string]: { homeScore: string; awayScore: string; status: 'pending' | 'live' | 'finished' } }>({});
@@ -201,6 +213,73 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
     }));
   };
 
+  const startEditMatch = (match: any) => {
+    const dateObj = new Date(match.matchTime);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const hours = String(dateObj.getHours()).padStart(2, '0');
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+    const localDateTimeStr = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+    setEditingMatch({
+      id: match.id,
+      homeTeam: match.homeTeam,
+      awayTeam: match.awayTeam,
+      homeFlag: match.homeFlag || '🏳️',
+      awayFlag: match.awayFlag || '🏳️',
+      matchTime: localDateTimeStr,
+      handicapTeam: match.handicap.team === null ? 'none' : match.handicap.team,
+      handicapValue: match.handicap.value ? match.handicap.value.toString() : '0.5'
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditMatchSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingMatch) return;
+
+    setError('');
+    setSuccess('');
+    setSubmitting(true);
+
+    try {
+      const handicap = {
+        team: editingMatch.handicapTeam === 'none' ? null : editingMatch.handicapTeam,
+        value: editingMatch.handicapTeam === 'none' ? 0 : parseFloat(editingMatch.handicapValue)
+      };
+
+      const response = await fetch(`/api/admin/matches/${editingMatch.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          homeTeam: editingMatch.homeTeam,
+          awayTeam: editingMatch.awayTeam,
+          homeFlag: editingMatch.homeFlag,
+          awayFlag: editingMatch.awayFlag,
+          matchTime: editingMatch.matchTime,
+          handicap
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Lỗi cập nhật trận đấu');
+
+      setSuccess('Cập nhật trận đấu thành công!');
+      setShowEditModal(false);
+      setEditingMatch(null);
+      fetchData();
+      onRefresh();
+    } catch (err: any) {
+      setError(err.message || 'Lỗi kết nối.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleEditScoreChange = (matchId: string, side: 'home' | 'away', value: string) => {
     if (value !== '' && !/^\d+$/.test(value)) return;
     setEditScore(prev => ({
@@ -342,7 +421,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                               </>
                             ) : (
                               <>
-                                <button type="button" className="btn-secondary" style={{ padding: '4px 8px' }} onClick={() => startEditScore(match)}>
+                                <button
+                                  type="button"
+                                  className="btn-secondary"
+                                  style={{ padding: '4px 8px' }}
+                                  onClick={() => {
+                                    if (match.status === 'pending') {
+                                      startEditMatch(match);
+                                    } else {
+                                      startEditScore(match);
+                                    }
+                                  }}
+                                  title="Chỉnh sửa trận đấu"
+                                >
                                   <Edit3 size={14} />
                                 </button>
                                 {match.status === 'pending' && (
@@ -471,8 +562,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                     value={newMatch.handicapTeam}
                     onChange={(e) => setNewMatch(prev => ({ ...prev, handicapTeam: e.target.value as any }))}
                   >
-                    <option value="home">Sân nhà chấp</option>
-                    <option value="away">Sân khách chấp</option>
+                    <option value="home">{newMatch.homeFlag} {newMatch.homeTeam || 'Sân nhà'} chấp</option>
+                    <option value="away">{newMatch.awayFlag} {newMatch.awayTeam || 'Sân khách'} chấp</option>
                     <option value="none">Đồng banh (Không chấp)</option>
                   </select>
                 </div>
@@ -503,6 +594,119 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                 </button>
                 <button type="submit" className="save-prediction-btn" style={{ width: 'auto' }} disabled={submitting}>
                   {submitting ? 'Đang tạo...' : 'Tạo Trận Đấu'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {/* Edit Match Modal */}
+      {showEditModal && editingMatch && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3 className="modal-title">Chỉnh Sửa Trận Đấu</h3>
+            <form onSubmit={handleEditMatchSubmit}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="form-group">
+                  <label className="form-label">Đội chủ nhà</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={editingMatch.homeTeam}
+                    onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, homeTeam: e.target.value }) : null)}
+                    placeholder="Ví dụ: Argentina"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Lá cờ nhà (Emoji)</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={editingMatch.homeFlag}
+                    onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, homeFlag: e.target.value }) : null)}
+                    placeholder="🇦🇷"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="form-group">
+                  <label className="form-label">Đội khách</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={editingMatch.awayTeam}
+                    onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, awayTeam: e.target.value }) : null)}
+                    placeholder="Ví dụ: Bồ Đào Nha"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Lá cờ khách (Emoji)</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={editingMatch.awayFlag}
+                    onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, awayFlag: e.target.value }) : null)}
+                    placeholder="🇵🇹"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Thời gian trận đấu</label>
+                <input
+                  type="datetime-local"
+                  className="form-input"
+                  value={editingMatch.matchTime}
+                  onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, matchTime: e.target.value }) : null)}
+                  required
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '10px' }}>
+                <div className="form-group">
+                  <label className="form-label">Đội chấp kèo</label>
+                  <select
+                    className="form-input"
+                    value={editingMatch.handicapTeam}
+                    onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, handicapTeam: e.target.value as any }) : null)}
+                  >
+                    <option value="home">{editingMatch.homeFlag} {editingMatch.homeTeam || 'Sân nhà'} chấp</option>
+                    <option value="away">{editingMatch.awayFlag} {editingMatch.awayTeam || 'Sân khách'} chấp</option>
+                    <option value="none">Đồng banh (Không chấp)</option>
+                  </select>
+                </div>
+                {editingMatch.handicapTeam !== 'none' && (
+                  <div className="form-group">
+                    <label className="form-label">Tỷ lệ chấp</label>
+                    <select
+                      className="form-input"
+                      value={editingMatch.handicapValue}
+                      onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, handicapValue: e.target.value }) : null)}
+                    >
+                      <option value="0.25">0.25 (Đồng nửa)</option>
+                      <option value="0.5">0.5 (Nửa trái)</option>
+                      <option value="0.75">0.75 (Nửa một)</option>
+                      <option value="1.0">1.0 (Một hòa)</option>
+                      <option value="1.25">1.25 (Một thua nửa)</option>
+                      <option value="1.5">1.5 (Trái rưỡi)</option>
+                      <option value="1.75">1.75 (Trái rưỡi hai)</option>
+                      <option value="2.0">2.0 (Hai hòa)</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              <div className="modal-footer">
+                <button type="button" className="btn-secondary" onClick={() => { setShowEditModal(false); setEditingMatch(null); }}>
+                  Hủy bỏ
+                </button>
+                <button type="submit" className="save-prediction-btn" style={{ width: 'auto' }} disabled={submitting}>
+                  {submitting ? 'Đang lưu...' : 'Lưu Thay Đổi'}
                 </button>
               </div>
             </form>
