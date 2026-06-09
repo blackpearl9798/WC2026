@@ -149,14 +149,15 @@ export function readDB() {
       }
     }
 
-    // Tự động di cư dữ liệu trận đấu nếu thiếu hoặc không có thông tin bảng đấu (group)
+    // Tự động di cư dữ liệu trận đấu nếu thiếu, thiếu bảng đấu (group) hoặc thiếu tỷ lệ handicap
     const defaultDB = path.join(__dirname, 'db.json');
     let needsMigration = false;
     if (!db.matches || db.matches.length < 72) {
       needsMigration = true;
     } else {
       const hasMissingGroup = db.matches.some(m => !m.group);
-      if (hasMissingGroup) {
+      const zeroHandicapCount = db.matches.filter(m => !m.handicap || (m.handicap.team === null && m.handicap.value === 0)).length;
+      if (hasMissingGroup || zeroHandicapCount > 10) {
         needsMigration = true;
       }
     }

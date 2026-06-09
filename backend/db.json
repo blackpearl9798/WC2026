@@ -30,7 +30,7 @@
       "group": "A",
       "handicap": {
         "team": "home",
-        "value": 0.25
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -46,7 +46,7 @@
       "group": "A",
       "handicap": {
         "team": "home",
-        "value": 0.5
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -62,7 +62,7 @@
       "group": "B",
       "handicap": {
         "team": "home",
-        "value": 0.75
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -77,8 +77,8 @@
       "matchTime": "2026-06-13T01:00:00.000Z",
       "group": "D",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -93,8 +93,8 @@
       "matchTime": "2026-06-14T02:00:00.000Z",
       "group": "C",
       "handicap": {
-        "team": "home",
-        "value": 0.5
+        "team": "away",
+        "value": 1
       },
       "status": "pending",
       "homeScore": null,
@@ -109,7 +109,7 @@
       "matchTime": "2026-06-14T01:00:00.000Z",
       "group": "D",
       "handicap": {
-        "team": "home",
+        "team": "away",
         "value": 0.25
       },
       "status": "pending",
@@ -126,7 +126,7 @@
       "group": "C",
       "handicap": {
         "team": "home",
-        "value": 0.25
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -141,8 +141,8 @@
       "matchTime": "2026-06-13T19:00:00.000Z",
       "group": "B",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -157,8 +157,8 @@
       "matchTime": "2026-06-14T23:00:00.000Z",
       "group": "E",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -173,8 +173,8 @@
       "matchTime": "2026-06-14T16:00:00.000Z",
       "group": "E",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.75
       },
       "status": "pending",
       "homeScore": null,
@@ -189,8 +189,8 @@
       "matchTime": "2026-06-14T22:00:00.000Z",
       "group": "F",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -205,8 +205,8 @@
       "matchTime": "2026-06-15T02:00:00.000Z",
       "group": "F",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -221,8 +221,8 @@
       "matchTime": "2026-06-16T01:00:00.000Z",
       "group": "G",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.5
       },
       "status": "pending",
       "homeScore": null,
@@ -237,8 +237,8 @@
       "matchTime": "2026-06-15T19:00:00.000Z",
       "group": "H",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.75
       },
       "status": "pending",
       "homeScore": null,
@@ -253,8 +253,8 @@
       "matchTime": "2026-06-15T17:00:00.000Z",
       "group": "G",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1
       },
       "status": "pending",
       "homeScore": null,
@@ -269,8 +269,8 @@
       "matchTime": "2026-06-15T23:00:00.000Z",
       "group": "H",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -285,8 +285,8 @@
       "matchTime": "2026-06-16T19:00:00.000Z",
       "group": "I",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -301,8 +301,8 @@
       "matchTime": "2026-06-16T23:00:00.000Z",
       "group": "I",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -317,8 +317,8 @@
       "matchTime": "2026-06-17T00:00:00.000Z",
       "group": "J",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.75
       },
       "status": "pending",
       "homeScore": null,
@@ -333,8 +333,8 @@
       "matchTime": "2026-06-17T04:00:00.000Z",
       "group": "J",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1
       },
       "status": "pending",
       "homeScore": null,
@@ -349,8 +349,8 @@
       "matchTime": "2026-06-17T16:00:00.000Z",
       "group": "K",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.75
       },
       "status": "pending",
       "homeScore": null,
@@ -365,8 +365,8 @@
       "matchTime": "2026-06-17T22:00:00.000Z",
       "group": "L",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -381,8 +381,8 @@
       "matchTime": "2026-06-18T02:00:00.000Z",
       "group": "K",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1
       },
       "status": "pending",
       "homeScore": null,
@@ -397,8 +397,8 @@
       "matchTime": "2026-06-17T23:00:00.000Z",
       "group": "L",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -413,8 +413,8 @@
       "matchTime": "2026-06-19T01:00:00.000Z",
       "group": "A",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -429,8 +429,8 @@
       "matchTime": "2026-06-18T19:00:00.000Z",
       "group": "B",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -445,8 +445,8 @@
       "matchTime": "2026-06-18T19:00:00.000Z",
       "group": "B",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -461,8 +461,8 @@
       "matchTime": "2026-06-18T19:00:00.000Z",
       "group": "A",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -477,8 +477,8 @@
       "matchTime": "2026-06-20T01:00:00.000Z",
       "group": "C",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 2
       },
       "status": "pending",
       "homeScore": null,
@@ -493,8 +493,8 @@
       "matchTime": "2026-06-19T23:00:00.000Z",
       "group": "C",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -509,8 +509,8 @@
       "matchTime": "2026-06-19T17:00:00.000Z",
       "group": "D",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -525,8 +525,8 @@
       "matchTime": "2026-06-20T03:00:00.000Z",
       "group": "D",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -541,8 +541,8 @@
       "matchTime": "2026-06-20T20:00:00.000Z",
       "group": "E",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1
       },
       "status": "pending",
       "homeScore": null,
@@ -557,8 +557,8 @@
       "matchTime": "2026-06-20T23:00:00.000Z",
       "group": "E",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -573,8 +573,8 @@
       "matchTime": "2026-06-20T16:00:00.000Z",
       "group": "F",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -589,8 +589,8 @@
       "matchTime": "2026-06-21T04:00:00.000Z",
       "group": "F",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -605,8 +605,8 @@
       "matchTime": "2026-06-21T19:00:00.000Z",
       "group": "G",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -621,8 +621,8 @@
       "matchTime": "2026-06-21T22:00:00.000Z",
       "group": "G",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -637,8 +637,8 @@
       "matchTime": "2026-06-21T19:00:00.000Z",
       "group": "H",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.75
       },
       "status": "pending",
       "homeScore": null,
@@ -653,8 +653,8 @@
       "matchTime": "2026-06-21T23:00:00.000Z",
       "group": "H",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.5
       },
       "status": "pending",
       "homeScore": null,
@@ -669,8 +669,8 @@
       "matchTime": "2026-06-22T21:00:00.000Z",
       "group": "I",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 2
       },
       "status": "pending",
       "homeScore": null,
@@ -685,8 +685,8 @@
       "matchTime": "2026-06-23T00:00:00.000Z",
       "group": "I",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -701,8 +701,8 @@
       "matchTime": "2026-06-22T19:00:00.000Z",
       "group": "J",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -717,8 +717,8 @@
       "matchTime": "2026-06-23T03:00:00.000Z",
       "group": "J",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -733,8 +733,8 @@
       "matchTime": "2026-06-23T16:00:00.000Z",
       "group": "K",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.5
       },
       "status": "pending",
       "homeScore": null,
@@ -749,8 +749,8 @@
       "matchTime": "2026-06-23T23:00:00.000Z",
       "group": "L",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1.75
       },
       "status": "pending",
       "homeScore": null,
@@ -765,8 +765,8 @@
       "matchTime": "2026-06-24T02:00:00.000Z",
       "group": "K",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -781,8 +781,8 @@
       "matchTime": "2026-06-23T21:00:00.000Z",
       "group": "L",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.75
       },
       "status": "pending",
       "homeScore": null,
@@ -797,8 +797,8 @@
       "matchTime": "2026-06-24T23:00:00.000Z",
       "group": "C",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1.5
       },
       "status": "pending",
       "homeScore": null,
@@ -813,8 +813,8 @@
       "matchTime": "2026-06-25T01:00:00.000Z",
       "group": "C",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.75
       },
       "status": "pending",
       "homeScore": null,
@@ -829,8 +829,8 @@
       "matchTime": "2026-06-25T01:00:00.000Z",
       "group": "A",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1
       },
       "status": "pending",
       "homeScore": null,
@@ -845,8 +845,8 @@
       "matchTime": "2026-06-25T01:00:00.000Z",
       "group": "A",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -861,8 +861,8 @@
       "matchTime": "2026-06-24T17:00:00.000Z",
       "group": "B",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -877,8 +877,8 @@
       "matchTime": "2026-06-24T16:00:00.000Z",
       "group": "B",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -893,8 +893,8 @@
       "matchTime": "2026-06-25T20:00:00.000Z",
       "group": "E",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1
       },
       "status": "pending",
       "homeScore": null,
@@ -909,8 +909,8 @@
       "matchTime": "2026-06-25T20:00:00.000Z",
       "group": "E",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.75
       },
       "status": "pending",
       "homeScore": null,
@@ -941,8 +941,8 @@
       "matchTime": "2026-06-26T02:00:00.000Z",
       "group": "D",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -957,8 +957,8 @@
       "matchTime": "2026-06-26T01:00:00.000Z",
       "group": "F",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -973,8 +973,8 @@
       "matchTime": "2026-06-25T22:00:00.000Z",
       "group": "F",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -989,8 +989,8 @@
       "matchTime": "2026-06-26T19:00:00.000Z",
       "group": "I",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1
       },
       "status": "pending",
       "homeScore": null,
@@ -1005,8 +1005,8 @@
       "matchTime": "2026-06-26T20:00:00.000Z",
       "group": "I",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 1.5
       },
       "status": "pending",
       "homeScore": null,
@@ -1021,8 +1021,8 @@
       "matchTime": "2026-06-27T01:00:00.000Z",
       "group": "G",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -1037,8 +1037,8 @@
       "matchTime": "2026-06-27T00:00:00.000Z",
       "group": "G",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 2
       },
       "status": "pending",
       "homeScore": null,
@@ -1053,8 +1053,8 @@
       "matchTime": "2026-06-26T23:00:00.000Z",
       "group": "H",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
@@ -1069,8 +1069,8 @@
       "matchTime": "2026-06-27T00:00:00.000Z",
       "group": "H",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -1085,8 +1085,8 @@
       "matchTime": "2026-06-27T21:00:00.000Z",
       "group": "L",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 2
       },
       "status": "pending",
       "homeScore": null,
@@ -1101,8 +1101,8 @@
       "matchTime": "2026-06-27T21:00:00.000Z",
       "group": "L",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "home",
+        "value": 1.25
       },
       "status": "pending",
       "homeScore": null,
@@ -1117,8 +1117,8 @@
       "matchTime": "2026-06-28T01:00:00.000Z",
       "group": "J",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -1133,8 +1133,8 @@
       "matchTime": "2026-06-28T04:00:00.000Z",
       "group": "J",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 2
       },
       "status": "pending",
       "homeScore": null,
@@ -1149,8 +1149,8 @@
       "matchTime": "2026-06-28T00:30:00.000Z",
       "group": "K",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.5
       },
       "status": "pending",
       "homeScore": null,
@@ -1165,8 +1165,8 @@
       "matchTime": "2026-06-28T02:30:00.000Z",
       "group": "K",
       "handicap": {
-        "team": null,
-        "value": 0
+        "team": "away",
+        "value": 0.25
       },
       "status": "pending",
       "homeScore": null,
