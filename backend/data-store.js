@@ -4,7 +4,10 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DB_FILE = path.join(__dirname, 'db.json');
+
+// Cho phép tùy chỉnh thư mục lưu database qua biến môi trường (phục vụ Persistent Disk trên Cloud)
+const DB_DIR = process.env.DB_DIR || __dirname;
+const DB_FILE = path.join(DB_DIR, 'db.json');
 
 // Initial matches list for WC 2026
 const INITIAL_MATCHES = [
@@ -97,6 +100,11 @@ const INITIAL_MATCHES = [
 // Load database from file
 export function readDB() {
   try {
+    // Đảm bảo thư mục lưu trữ database tồn tại
+    if (!fs.existsSync(DB_DIR)) {
+      fs.mkdirSync(DB_DIR, { recursive: true });
+    }
+
     if (!fs.existsSync(DB_FILE)) {
       const initialData = {
         users: [

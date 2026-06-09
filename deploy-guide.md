@@ -94,12 +94,14 @@ Nếu công ty không có hạ tầng server riêng, bạn có thể đẩy mã 
    * *(Lưu ý: Lệnh `npm install --include=dev` là bắt buộc để cài đặt TypeScript và Vite ngay cả khi bạn đặt `NODE_ENV=production`, giúp tránh lỗi "vite: command not found" khi build).*
 4. **Mount ổ đĩa lưu trữ database (Bắt buộc)**:
    * Do Render tự động xóa sạch dữ liệu đệm mỗi khi deploy hoặc restart, bạn **phải mount ổ đĩa cứng persistent** để không bị mất tài khoản và điểm số của người chơi.
-   * Vào mục **Advanced** -> **Disk**.
-   * Nhấp chọn tạo mới Disk:
-     - **Name**: `db-volume`
-     - **Mount Path**:
-       * Nếu chọn **Runtime là Docker** (Khuyên dùng): Điền `/app/backend`
-       * Nếu chọn **Runtime là Node**: Điền `/opt/render/project/src/backend`
-     - **Size**: `1 GiB` (Thoải mái cho hàng chục nghìn lượt dự đoán và tin nhắn).
-   * *Ổ đĩa này sẽ được gắn cố định vào thư mục chứa database, bảo vệ file `db.json` an toàn qua các lần cập nhật mã nguồn.*
+   * Để tránh làm mất (ghi đè) mã nguồn code backend, **không mount** trực tiếp vào `/app/backend`. Thay vào đó, ta sẽ mount vào thư mục riêng biệt `/app/data`.
+   * **Các bước cấu hình**:
+     * Vào mục **Advanced** -> **Environment Variables**, thêm biến môi trường sau:
+       - **Key**: `DB_DIR`
+       - **Value**: `/app/data`
+     * Vào mục **Advanced** -> **Disk**, chọn tạo mới Disk:
+       - **Name**: `db-volume`
+       - **Mount Path**: `/app/data`
+       - **Size**: `1 GiB` (Thoải mái cho hàng chục nghìn lượt dự đoán và tin nhắn).
+   * *Ổ đĩa này sẽ được gắn cố định vào thư mục `/app/data/`, bảo vệ file `db.json` an toàn qua các lần cập nhật mã nguồn mà không ảnh hưởng tới code ứng dụng.*
 
