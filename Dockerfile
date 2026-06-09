@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Cài đặt toàn bộ dependencies (bao gồm cả devDependencies để phục vụ việc build React)
-RUN npm install
+RUN npm install --include=dev
 
 # Sao chép toàn bộ mã nguồn của dự án vào container
 COPY . .
