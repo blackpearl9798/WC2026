@@ -149,6 +149,32 @@ export function readDB() {
       }
     }
 
+    // Tự động di cư dữ liệu trận đấu nếu thiếu hoặc không có thông tin bảng đấu (group)
+    const defaultDB = path.join(__dirname, 'db.json');
+    let needsMigration = false;
+    if (!db.matches || db.matches.length < 72) {
+      needsMigration = true;
+    } else {
+      const hasMissingGroup = db.matches.some(m => !m.group);
+      if (hasMissingGroup) {
+        needsMigration = true;
+      }
+    }
+
+    if (needsMigration && fs.existsSync(defaultDB) && defaultDB !== DB_FILE) {
+      console.log(`[Migration] Active DB matches need update. Migrating matches from ${defaultDB} to ${DB_FILE}`);
+      try {
+        const defaultData = JSON.parse(fs.readFileSync(defaultDB, 'utf8'));
+        if (defaultData && defaultData.matches && defaultData.matches.length >= 72) {
+          db.matches = defaultData.matches;
+          writeDB(db);
+          console.log(`[Migration] Successfully migrated ${defaultData.matches.length} matches to active database.`);
+        }
+      } catch (err) {
+        console.error('[Migration] Failed to migrate matches:', err);
+      }
+    }
+
     return db;
   } catch (error) {
     console.error('Error reading database file:', error);

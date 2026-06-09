@@ -137,11 +137,11 @@ async function syncMatchesFromAPI() {
   }
 }
 
-// Đồng bộ lần đầu khi server khởi chạy
-syncMatchesFromAPI();
+// Đồng bộ lần đầu khi server khởi chạy (Đã tắt theo yêu cầu)
+// syncMatchesFromAPI();
 
-// Chu kỳ đồng bộ: Lặp lại mỗi 5 phút một lần
-setInterval(syncMatchesFromAPI, 5 * 60 * 1000);
+// Chu kỳ đồng bộ: Lặp lại mỗi 5 phút một lần (Đã tắt theo yêu cầu)
+// setInterval(syncMatchesFromAPI, 5 * 60 * 1000);
 
 // Authentication Middleware
 function authenticate(req, res, next) {

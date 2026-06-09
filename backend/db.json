@@ -33,8 +33,8 @@
         "value": 0.25
       },
       "status": "pending",
-      "homeScore": 0,
-      "awayScore": 0
+      "homeScore": null,
+      "awayScore": null
     },
     {
       "id": "match_2",
