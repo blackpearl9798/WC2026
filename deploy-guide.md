@@ -85,11 +85,13 @@ Nếu công ty không có hạ tầng server riêng, bạn có thể đẩy mã 
 1. Đăng nhập Render, tạo một **Web Service** mới và kết nối với kho chứa GitHub của bạn.
 2. Cấu hình các thông số build:
    * **Environment**: `Node`
-   * **Build Command**: `npm install && npm run build`
+   * **Build Command**: `npm install --include=dev && npm run build`
    * **Start Command**: `node backend/server.js`
 3. Cấu hình biến môi trường (Environment Variables):
    * Thêm biến `PORT` với giá trị `5000` (hoặc để Render tự động cấp phát).
    * Thêm biến `NODE_ENV` với giá trị `production`.
+   * Thêm biến `NODE_VERSION` với giá trị `20` (Bắt buộc để chạy được Vite 8).
+   * *(Lưu ý: Lệnh `npm install --include=dev` là bắt buộc để cài đặt TypeScript và Vite ngay cả khi bạn đặt `NODE_ENV=production`, giúp tránh lỗi "vite: command not found" khi build).*
 4. **Mount ổ đĩa lưu trữ database (Bắt buộc)**:
    * Do Render tự động xóa sạch dữ liệu đệm mỗi khi deploy hoặc restart, bạn **phải mount ổ đĩa cứng persistent** để không bị mất tài khoản và điểm số của người chơi.
    * Vào mục **Advanced** -> **Disk**.
