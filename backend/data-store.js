@@ -106,22 +106,28 @@ export function readDB() {
     }
 
     if (!fs.existsSync(DB_FILE)) {
-      const initialData = {
-        users: [
-          {
-            id: 'admin_user',
-            username: 'admin',
-            fullName: 'Quản trị viên',
-            password: '696969',
-            isAdmin: true,
-            token: 'admin-token-12345'
-          }
-        ],
-        matches: INITIAL_MATCHES,
-        predictions: []
-      };
-      writeDB(initialData);
-      return initialData;
+      // Nếu file DB trên ổ đĩa mount chưa tồn tại, sao chép file mặc định đi kèm code để giữ 72 trận đấu
+      const defaultDB = path.join(__dirname, 'db.json');
+      if (fs.existsSync(defaultDB) && defaultDB !== DB_FILE) {
+        console.log(`Copying default database from ${defaultDB} to ${DB_FILE}`);
+        fs.copyFileSync(defaultDB, DB_FILE);
+      } else {
+        const initialData = {
+          users: [
+            {
+              id: 'admin_user',
+              username: 'admin',
+              fullName: 'Quản trị viên',
+              password: '696969',
+              isAdmin: true,
+              token: 'admin-token-12345'
+            }
+          ],
+          matches: INITIAL_MATCHES,
+          predictions: []
+        };
+        writeDB(initialData);
+      }
     }
     const data = fs.readFileSync(DB_FILE, 'utf8');
     const db = JSON.parse(data);

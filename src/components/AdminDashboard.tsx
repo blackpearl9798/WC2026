@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit3, Save, X, Settings, Users } from 'lucide-react';
+import { FlagIcon } from './FlagIcon';
 
 interface AdminDashboardProps {
   token: string;
@@ -356,11 +357,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                       <tr key={match.id}>
                         <td>
                           <div className="match-teams-display">
-                            <span>{match.homeFlag}</span>
+                            <FlagIcon flag={match.homeFlag} />
                             <span>{match.homeTeam}</span>
                             <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>vs</span>
                             <span>{match.awayTeam}</span>
-                            <span>{match.awayFlag}</span>
+                            <FlagIcon flag={match.awayFlag} style={{ marginLeft: '6px', marginRight: '0' }} />
                           </div>
                         </td>
                         <td>

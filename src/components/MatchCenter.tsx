@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Trophy, Lock, Unlock, Users, ChevronDown, ChevronUp, Clock } from 'lucide-react';
+import { FlagIcon } from './FlagIcon';
 
 interface MatchCenterProps {
   matches: any[];
@@ -71,7 +72,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
 
       <div className="hero-teams-row">
         <div className="hero-team-display">
-          <span className="hero-team-flag">{match.homeFlag}</span>
+          <FlagIcon flag={match.homeFlag} style={{ width: '36px', height: '24px', marginRight: '0' }} />
           <span className="hero-team-name">{match.homeTeam}</span>
         </div>
 
@@ -80,7 +81,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
         </div>
 
         <div className="hero-team-display">
-          <span className="hero-team-flag">{match.awayFlag}</span>
+          <FlagIcon flag={match.awayFlag} style={{ width: '36px', height: '24px', marginRight: '0' }} />
           <span className="hero-team-name">{match.awayTeam}</span>
         </div>
       </div>
@@ -131,7 +132,10 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
             onClick={() => handleHandicapChange(match.id, 'home')}
           >
             <span style={{ fontSize: '0.75rem', opacity: 0.6 }}>Sân nhà</span>
-            <span style={{ fontWeight: 700 }}>{getHandicapButtonLabel(match, 'home')}</span>
+            <span style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+              <FlagIcon flag={match.homeFlag} />
+              {getHandicapButtonLabel(match, 'home')}
+            </span>
           </button>
           <button
             type="button"
@@ -139,14 +143,17 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
             onClick={() => handleHandicapChange(match.id, 'away')}
           >
             <span style={{ fontSize: '0.75rem', opacity: 0.6 }}>Sân khách</span>
-            <span style={{ fontWeight: 700 }}>{getHandicapButtonLabel(match, 'away')}</span>
+            <span style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+              <FlagIcon flag={match.awayFlag} />
+              {getHandicapButtonLabel(match, 'away')}
+            </span>
           </button>
         </div>
 
         {hasSavedPrediction && (
           <div style={{ textAlign: 'center', marginTop: '12px' }}>
-            <span className="hero-saved-tag">
-              Đã chọn: {myPred.predictedHandicapWinner === 'home' ? `${match.homeFlag} ${match.homeTeam}` : `${match.awayFlag} ${match.awayTeam}`}
+            <span className="hero-saved-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+              Đã chọn: <FlagIcon flag={myPred.predictedHandicapWinner === 'home' ? match.homeFlag : match.awayFlag} /> {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
             </span>
           </div>
         )}
@@ -241,19 +248,18 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
   };
 
   const getHandicapButtonLabel = (match: any, side: 'home' | 'away') => {
-    const { handicap, homeTeam, awayTeam, homeFlag, awayFlag } = match;
+    const { handicap, homeTeam, awayTeam } = match;
     const isHome = side === 'home';
     const teamName = isHome ? homeTeam : awayTeam;
-    const teamFlag = isHome ? homeFlag : awayFlag;
 
     if (handicap.team === null || handicap.value === 0) {
-      return `${teamFlag} ${teamName} (0)`;
+      return `${teamName} (0)`;
     }
 
     if (handicap.team === side) {
-      return `${teamFlag} ${teamName} (-${handicap.value})`;
+      return `${teamName} (-${handicap.value})`;
     } else {
-      return `${teamFlag} ${teamName} (+${handicap.value})`;
+      return `${teamName} (+${handicap.value})`;
     }
   };
 
@@ -337,7 +343,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                   {/* Score and Flag Area */}
                   <div className="match-teams-score">
                     <div className="team-display">
-                      <span className="team-flag">{match.homeFlag}</span>
+                      <FlagIcon flag={match.homeFlag} style={{ width: '28px', height: '18px', marginRight: '0' }} />
                       <span className="team-name" title={match.homeTeam}>{match.homeTeam}</span>
                     </div>
 
@@ -350,7 +356,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                     </div>
 
                     <div className="team-display">
-                      <span className="team-flag">{match.awayFlag}</span>
+                      <FlagIcon flag={match.awayFlag} style={{ width: '28px', height: '18px', marginRight: '0' }} />
                       <span className="team-name" title={match.awayTeam}>{match.awayTeam}</span>
                     </div>
                   </div>
@@ -386,21 +392,27 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                             className={`handicap-opt-btn ${curWinner === 'home' ? 'active' : ''}`}
                             onClick={() => handleHandicapChange(match.id, 'home')}
                           >
-                            <span>{getHandicapButtonLabel(match, 'home')}</span>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                              <FlagIcon flag={match.homeFlag} />
+                              {getHandicapButtonLabel(match, 'home')}
+                            </span>
                           </button>
                           <button
                             type="button"
                             className={`handicap-opt-btn ${curWinner === 'away' ? 'active' : ''}`}
                             onClick={() => handleHandicapChange(match.id, 'away')}
                           >
-                            <span>{getHandicapButtonLabel(match, 'away')}</span>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                              <FlagIcon flag={match.awayFlag} />
+                              {getHandicapButtonLabel(match, 'away')}
+                            </span>
                           </button>
                         </div>
 
                         {hasSavedPrediction && (
                           <div style={{ textAlign: 'center', marginBottom: '12px' }}>
-                            <span className="hero-saved-tag" style={{ animation: 'none' }}>
-                              Đã chọn: {myPred.predictedHandicapWinner === 'home' ? `${match.homeFlag} ${match.homeTeam}` : `${match.awayFlag} ${match.awayTeam}`}
+                            <span className="hero-saved-tag" style={{ animation: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                              Đã chọn: <FlagIcon flag={myPred.predictedHandicapWinner === 'home' ? match.homeFlag : match.awayFlag} /> {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
                             </span>
                           </div>
                         )}
@@ -421,8 +433,9 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                           <>
                             <div className="info-row">
                               <span className="info-label">Kèo Handicap đã chọn:</span>
-                              <span className="info-val" style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>
-                                {myPred.predictedHandicapWinner === 'home' ? `${match.homeFlag} ${match.homeTeam}` : `${match.awayFlag} ${match.awayTeam}`}
+                              <span className="info-val" style={{ color: 'var(--color-secondary)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                                <FlagIcon flag={myPred.predictedHandicapWinner === 'home' ? match.homeFlag : match.awayFlag} />
+                                {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
                               </span>
                             </div>
                             
@@ -466,8 +479,8 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                                 <span className="other-pred-user">
                                   {op.username} <span className="other-pred-dept">({op.department})</span>
                                 </span>
-                                <span className="other-pred-detail">
-                                  Chọn {op.predictedHandicapWinner === 'home' ? `${match.homeFlag} ${match.homeTeam}` : `${match.awayFlag} ${match.awayTeam}`}
+                                <span className="other-pred-detail" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                  Chọn <FlagIcon flag={op.predictedHandicapWinner === 'home' ? match.homeFlag : match.awayFlag} /> {op.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
                                   {isFinished && <span className="other-pred-pts"> (+{op.pointsTotal}đ)</span>}
                                 </span>
                               </div>

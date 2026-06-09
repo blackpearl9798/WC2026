@@ -1,6 +1,7 @@
 import React from 'react';
 import groupsImage from '../assets/wc2026-groups.png';
 import { LayoutGrid } from 'lucide-react';
+import { FlagIcon } from './FlagIcon';
 
 interface StandingsViewProps {
   matches: any[];
@@ -139,7 +140,7 @@ export const StandingsView: React.FC<StandingsViewProps> = ({ matches }) => {
                             {idx + 1}
                           </td>
                           <td style={{ padding: '8px 0', fontWeight: '500' }}>
-                            <span style={{ marginRight: '6px', fontSize: '1rem' }}>{team.flag}</span>
+                            <FlagIcon flag={team.flag} />
                             <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'inline-block', maxWidth: '100px', verticalAlign: 'middle' }} title={team.name}>
                               {team.name}
                             </span>
