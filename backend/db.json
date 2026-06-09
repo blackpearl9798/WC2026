@@ -1,0 +1,1177 @@
+{
+  "users": [
+    {
+      "id": "admin_user",
+      "username": "admin",
+      "email": "admin@company.com",
+      "department": "IT",
+      "isAdmin": true,
+      "token": "token-nk0av17ct-mq6rr30r"
+    }
+  ],
+  "matches": [
+    {
+      "id": "match_1",
+      "homeTeam": "Mexico",
+      "awayTeam": "Nam Phi",
+      "homeFlag": "🇲🇽",
+      "awayFlag": "🇿🇦",
+      "matchTime": "2026-06-11T19:00:00.000Z",
+      "group": "A",
+      "handicap": {
+        "team": "home",
+        "value": 0.25
+      },
+      "status": "pending",
+      "homeScore": 0,
+      "awayScore": 0
+    },
+    {
+      "id": "match_2",
+      "homeTeam": "Hàn Quốc",
+      "awayTeam": "CH Séc",
+      "homeFlag": "🇰🇷",
+      "awayFlag": "🇨🇿",
+      "matchTime": "2026-06-12T02:00:00.000Z",
+      "group": "A",
+      "handicap": {
+        "team": "home",
+        "value": 0.5
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_3",
+      "homeTeam": "Canada",
+      "awayTeam": "Bosnia & Her.",
+      "homeFlag": "🇨🇦",
+      "awayFlag": "🇧🇦",
+      "matchTime": "2026-06-12T19:00:00.000Z",
+      "group": "B",
+      "handicap": {
+        "team": "home",
+        "value": 0.75
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_4",
+      "homeTeam": "Mỹ",
+      "awayTeam": "Paraguay",
+      "homeFlag": "🇺🇸",
+      "awayFlag": "🇵🇾",
+      "matchTime": "2026-06-13T01:00:00.000Z",
+      "group": "D",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_5",
+      "homeTeam": "Haiti",
+      "awayTeam": "Scotland",
+      "homeFlag": "🇭🇹",
+      "awayFlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "matchTime": "2026-06-14T02:00:00.000Z",
+      "group": "C",
+      "handicap": {
+        "team": "home",
+        "value": 0.5
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_6",
+      "homeTeam": "Úc",
+      "awayTeam": "Thổ Nhĩ Kỳ",
+      "homeFlag": "🇦🇺",
+      "awayFlag": "🇹🇷",
+      "matchTime": "2026-06-14T01:00:00.000Z",
+      "group": "D",
+      "handicap": {
+        "team": "home",
+        "value": 0.25
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_7",
+      "homeTeam": "Brazil",
+      "awayTeam": "Ma-rốc",
+      "homeFlag": "🇧🇷",
+      "awayFlag": "🇲🇦",
+      "matchTime": "2026-06-13T22:00:00.000Z",
+      "group": "C",
+      "handicap": {
+        "team": "home",
+        "value": 0.25
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_8",
+      "homeTeam": "Qatar",
+      "awayTeam": "Thụy Sĩ",
+      "homeFlag": "🇶🇦",
+      "awayFlag": "🇨🇭",
+      "matchTime": "2026-06-13T19:00:00.000Z",
+      "group": "B",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_9",
+      "homeTeam": "Bờ Biển Ngà",
+      "awayTeam": "Ecuador",
+      "homeFlag": "🇨🇮",
+      "awayFlag": "🇪🇨",
+      "matchTime": "2026-06-14T23:00:00.000Z",
+      "group": "E",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_10",
+      "homeTeam": "Đức",
+      "awayTeam": "Curaçao",
+      "homeFlag": "🇩🇪",
+      "awayFlag": "🇨🇼",
+      "matchTime": "2026-06-14T16:00:00.000Z",
+      "group": "E",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_11",
+      "homeTeam": "Hà Lan",
+      "awayTeam": "Nhật Bản",
+      "homeFlag": "🇳🇱",
+      "awayFlag": "🇯🇵",
+      "matchTime": "2026-06-14T22:00:00.000Z",
+      "group": "F",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_12",
+      "homeTeam": "Thụy Điển",
+      "awayTeam": "Tunisia",
+      "homeFlag": "🇸🇪",
+      "awayFlag": "🇹🇳",
+      "matchTime": "2026-06-15T02:00:00.000Z",
+      "group": "F",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_13",
+      "homeTeam": "Iran",
+      "awayTeam": "New Zealand",
+      "homeFlag": "🇮🇷",
+      "awayFlag": "🇳🇿",
+      "matchTime": "2026-06-16T01:00:00.000Z",
+      "group": "G",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_14",
+      "homeTeam": "Tây Ban Nha",
+      "awayTeam": "Cape Verde",
+      "homeFlag": "🇪🇸",
+      "awayFlag": "🇨🇻",
+      "matchTime": "2026-06-15T19:00:00.000Z",
+      "group": "H",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_15",
+      "homeTeam": "Bỉ",
+      "awayTeam": "Ai Cập",
+      "homeFlag": "🇧🇪",
+      "awayFlag": "🇪🇬",
+      "matchTime": "2026-06-15T17:00:00.000Z",
+      "group": "G",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_16",
+      "homeTeam": "Ả Rập Xê Út",
+      "awayTeam": "Uruguay",
+      "homeFlag": "🇸🇦",
+      "awayFlag": "🇺🇾",
+      "matchTime": "2026-06-15T23:00:00.000Z",
+      "group": "H",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_17",
+      "homeTeam": "Pháp",
+      "awayTeam": "Senegal",
+      "homeFlag": "🇫🇷",
+      "awayFlag": "🇸🇳",
+      "matchTime": "2026-06-16T19:00:00.000Z",
+      "group": "I",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_18",
+      "homeTeam": "Iraq",
+      "awayTeam": "Na Uy",
+      "homeFlag": "🇮🇶",
+      "awayFlag": "🇳🇴",
+      "matchTime": "2026-06-16T23:00:00.000Z",
+      "group": "I",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_19",
+      "homeTeam": "Argentina",
+      "awayTeam": "Algeria",
+      "homeFlag": "🇦🇷",
+      "awayFlag": "🇩🇿",
+      "matchTime": "2026-06-17T00:00:00.000Z",
+      "group": "J",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_20",
+      "homeTeam": "Áo",
+      "awayTeam": "Jordan",
+      "homeFlag": "🇦🇹",
+      "awayFlag": "🇯🇴",
+      "matchTime": "2026-06-17T04:00:00.000Z",
+      "group": "J",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_21",
+      "homeTeam": "Bồ Đào Nha",
+      "awayTeam": "CHDC Congo",
+      "homeFlag": "🇵🇹",
+      "awayFlag": "🇨🇩",
+      "matchTime": "2026-06-17T16:00:00.000Z",
+      "group": "K",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_22",
+      "homeTeam": "Anh",
+      "awayTeam": "Croatia",
+      "homeFlag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "awayFlag": "🇭🇷",
+      "matchTime": "2026-06-17T22:00:00.000Z",
+      "group": "L",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_23",
+      "homeTeam": "Uzbekistan",
+      "awayTeam": "Colombia",
+      "homeFlag": "🇺🇿",
+      "awayFlag": "🇨🇴",
+      "matchTime": "2026-06-18T02:00:00.000Z",
+      "group": "K",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_24",
+      "homeTeam": "Ghana",
+      "awayTeam": "Panama",
+      "homeFlag": "🇬🇭",
+      "awayFlag": "🇵🇦",
+      "matchTime": "2026-06-17T23:00:00.000Z",
+      "group": "L",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_25",
+      "homeTeam": "Mexico",
+      "awayTeam": "Hàn Quốc",
+      "homeFlag": "🇲🇽",
+      "awayFlag": "🇰🇷",
+      "matchTime": "2026-06-19T01:00:00.000Z",
+      "group": "A",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_26",
+      "homeTeam": "Thụy Sĩ",
+      "awayTeam": "Bosnia & Her.",
+      "homeFlag": "🇨🇭",
+      "awayFlag": "🇧🇦",
+      "matchTime": "2026-06-18T19:00:00.000Z",
+      "group": "B",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_27",
+      "homeTeam": "Canada",
+      "awayTeam": "Qatar",
+      "homeFlag": "🇨🇦",
+      "awayFlag": "🇶🇦",
+      "matchTime": "2026-06-18T19:00:00.000Z",
+      "group": "B",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_28",
+      "homeTeam": "CH Séc",
+      "awayTeam": "Nam Phi",
+      "homeFlag": "🇨🇿",
+      "awayFlag": "🇿🇦",
+      "matchTime": "2026-06-18T19:00:00.000Z",
+      "group": "A",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_29",
+      "homeTeam": "Brazil",
+      "awayTeam": "Haiti",
+      "homeFlag": "🇧🇷",
+      "awayFlag": "🇭🇹",
+      "matchTime": "2026-06-20T01:00:00.000Z",
+      "group": "C",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_30",
+      "homeTeam": "Scotland",
+      "awayTeam": "Ma-rốc",
+      "homeFlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "awayFlag": "🇲🇦",
+      "matchTime": "2026-06-19T23:00:00.000Z",
+      "group": "C",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_31",
+      "homeTeam": "Mỹ",
+      "awayTeam": "Úc",
+      "homeFlag": "🇺🇸",
+      "awayFlag": "🇦🇺",
+      "matchTime": "2026-06-19T17:00:00.000Z",
+      "group": "D",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_32",
+      "homeTeam": "Thổ Nhĩ Kỳ",
+      "awayTeam": "Paraguay",
+      "homeFlag": "🇹🇷",
+      "awayFlag": "🇵🇾",
+      "matchTime": "2026-06-20T03:00:00.000Z",
+      "group": "D",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_33",
+      "homeTeam": "Đức",
+      "awayTeam": "Bờ Biển Ngà",
+      "homeFlag": "🇩🇪",
+      "awayFlag": "🇨🇮",
+      "matchTime": "2026-06-20T20:00:00.000Z",
+      "group": "E",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_34",
+      "homeTeam": "Ecuador",
+      "awayTeam": "Curaçao",
+      "homeFlag": "🇪🇨",
+      "awayFlag": "🇨🇼",
+      "matchTime": "2026-06-20T23:00:00.000Z",
+      "group": "E",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_35",
+      "homeTeam": "Hà Lan",
+      "awayTeam": "Thụy Điển",
+      "homeFlag": "🇳🇱",
+      "awayFlag": "🇸🇪",
+      "matchTime": "2026-06-20T16:00:00.000Z",
+      "group": "F",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_36",
+      "homeTeam": "Tunisia",
+      "awayTeam": "Nhật Bản",
+      "homeFlag": "🇹🇳",
+      "awayFlag": "🇯🇵",
+      "matchTime": "2026-06-21T04:00:00.000Z",
+      "group": "F",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_37",
+      "homeTeam": "Bỉ",
+      "awayTeam": "Iran",
+      "homeFlag": "🇧🇪",
+      "awayFlag": "🇮🇷",
+      "matchTime": "2026-06-21T19:00:00.000Z",
+      "group": "G",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_38",
+      "homeTeam": "New Zealand",
+      "awayTeam": "Ai Cập",
+      "homeFlag": "🇳🇿",
+      "awayFlag": "🇪🇬",
+      "matchTime": "2026-06-21T22:00:00.000Z",
+      "group": "G",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_39",
+      "homeTeam": "Tây Ban Nha",
+      "awayTeam": "Ả Rập Xê Út",
+      "homeFlag": "🇪🇸",
+      "awayFlag": "🇸🇦",
+      "matchTime": "2026-06-21T19:00:00.000Z",
+      "group": "H",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_40",
+      "homeTeam": "Uruguay",
+      "awayTeam": "Cape Verde",
+      "homeFlag": "🇺🇾",
+      "awayFlag": "🇨🇻",
+      "matchTime": "2026-06-21T23:00:00.000Z",
+      "group": "H",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_41",
+      "homeTeam": "Pháp",
+      "awayTeam": "Iraq",
+      "homeFlag": "🇫🇷",
+      "awayFlag": "🇮🇶",
+      "matchTime": "2026-06-22T21:00:00.000Z",
+      "group": "I",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_42",
+      "homeTeam": "Na Uy",
+      "awayTeam": "Senegal",
+      "homeFlag": "🇳🇴",
+      "awayFlag": "🇸🇳",
+      "matchTime": "2026-06-23T00:00:00.000Z",
+      "group": "I",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_43",
+      "homeTeam": "Argentina",
+      "awayTeam": "Áo",
+      "homeFlag": "🇦🇷",
+      "awayFlag": "🇦🇹",
+      "matchTime": "2026-06-22T19:00:00.000Z",
+      "group": "J",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_44",
+      "homeTeam": "Jordan",
+      "awayTeam": "Algeria",
+      "homeFlag": "🇯🇴",
+      "awayFlag": "🇩🇿",
+      "matchTime": "2026-06-23T03:00:00.000Z",
+      "group": "J",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_45",
+      "homeTeam": "Bồ Đào Nha",
+      "awayTeam": "Uzbekistan",
+      "homeFlag": "🇵🇹",
+      "awayFlag": "🇺🇿",
+      "matchTime": "2026-06-23T16:00:00.000Z",
+      "group": "K",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_46",
+      "homeTeam": "Panama",
+      "awayTeam": "Croatia",
+      "homeFlag": "🇵🇦",
+      "awayFlag": "🇭🇷",
+      "matchTime": "2026-06-23T23:00:00.000Z",
+      "group": "L",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_47",
+      "homeTeam": "Colombia",
+      "awayTeam": "CHDC Congo",
+      "homeFlag": "🇨🇴",
+      "awayFlag": "🇨🇩",
+      "matchTime": "2026-06-24T02:00:00.000Z",
+      "group": "K",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_48",
+      "homeTeam": "Anh",
+      "awayTeam": "Ghana",
+      "homeFlag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "awayFlag": "🇬🇭",
+      "matchTime": "2026-06-23T21:00:00.000Z",
+      "group": "L",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_49",
+      "homeTeam": "Scotland",
+      "awayTeam": "Brazil",
+      "homeFlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "awayFlag": "🇧🇷",
+      "matchTime": "2026-06-24T23:00:00.000Z",
+      "group": "C",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_50",
+      "homeTeam": "Ma-rốc",
+      "awayTeam": "Haiti",
+      "homeFlag": "🇲🇦",
+      "awayFlag": "🇭🇹",
+      "matchTime": "2026-06-25T01:00:00.000Z",
+      "group": "C",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_51",
+      "homeTeam": "Nam Phi",
+      "awayTeam": "Hàn Quốc",
+      "homeFlag": "🇿🇦",
+      "awayFlag": "🇰🇷",
+      "matchTime": "2026-06-25T01:00:00.000Z",
+      "group": "A",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_52",
+      "homeTeam": "CH Séc",
+      "awayTeam": "Mexico",
+      "homeFlag": "🇨🇿",
+      "awayFlag": "🇲🇽",
+      "matchTime": "2026-06-25T01:00:00.000Z",
+      "group": "A",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_53",
+      "homeTeam": "Bosnia & Her.",
+      "awayTeam": "Qatar",
+      "homeFlag": "🇧🇦",
+      "awayFlag": "🇶🇦",
+      "matchTime": "2026-06-24T17:00:00.000Z",
+      "group": "B",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_54",
+      "homeTeam": "Thụy Sĩ",
+      "awayTeam": "Canada",
+      "homeFlag": "🇨🇭",
+      "awayFlag": "🇨🇦",
+      "matchTime": "2026-06-24T16:00:00.000Z",
+      "group": "B",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_55",
+      "homeTeam": "Curaçao",
+      "awayTeam": "Bờ Biển Ngà",
+      "homeFlag": "🇨🇼",
+      "awayFlag": "🇨🇮",
+      "matchTime": "2026-06-25T20:00:00.000Z",
+      "group": "E",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_56",
+      "homeTeam": "Ecuador",
+      "awayTeam": "Đức",
+      "homeFlag": "🇪🇨",
+      "awayFlag": "🇩🇪",
+      "matchTime": "2026-06-25T20:00:00.000Z",
+      "group": "E",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_57",
+      "homeTeam": "Paraguay",
+      "awayTeam": "Úc",
+      "homeFlag": "🇵🇾",
+      "awayFlag": "🇦🇺",
+      "matchTime": "2026-06-26T02:00:00.000Z",
+      "group": "D",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_58",
+      "homeTeam": "Thổ Nhĩ Kỳ",
+      "awayTeam": "Mỹ",
+      "homeFlag": "🇹🇷",
+      "awayFlag": "🇺🇸",
+      "matchTime": "2026-06-26T02:00:00.000Z",
+      "group": "D",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_59",
+      "homeTeam": "Nhật Bản",
+      "awayTeam": "Thụy Điển",
+      "homeFlag": "🇯🇵",
+      "awayFlag": "🇸🇪",
+      "matchTime": "2026-06-26T01:00:00.000Z",
+      "group": "F",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_60",
+      "homeTeam": "Tunisia",
+      "awayTeam": "Hà Lan",
+      "homeFlag": "🇹🇳",
+      "awayFlag": "🇳🇱",
+      "matchTime": "2026-06-25T22:00:00.000Z",
+      "group": "F",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_61",
+      "homeTeam": "Senegal",
+      "awayTeam": "Iraq",
+      "homeFlag": "🇸🇳",
+      "awayFlag": "🇮🇶",
+      "matchTime": "2026-06-26T19:00:00.000Z",
+      "group": "I",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_62",
+      "homeTeam": "Na Uy",
+      "awayTeam": "Pháp",
+      "homeFlag": "🇳🇴",
+      "awayFlag": "🇫🇷",
+      "matchTime": "2026-06-26T20:00:00.000Z",
+      "group": "I",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_63",
+      "homeTeam": "Ai Cập",
+      "awayTeam": "Iran",
+      "homeFlag": "🇪🇬",
+      "awayFlag": "🇮🇷",
+      "matchTime": "2026-06-27T01:00:00.000Z",
+      "group": "G",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_64",
+      "homeTeam": "New Zealand",
+      "awayTeam": "Bỉ",
+      "homeFlag": "🇳🇿",
+      "awayFlag": "🇧🇪",
+      "matchTime": "2026-06-27T00:00:00.000Z",
+      "group": "G",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_65",
+      "homeTeam": "Cape Verde",
+      "awayTeam": "Ả Rập Xê Út",
+      "homeFlag": "🇨🇻",
+      "awayFlag": "🇸🇦",
+      "matchTime": "2026-06-26T23:00:00.000Z",
+      "group": "H",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_66",
+      "homeTeam": "Uruguay",
+      "awayTeam": "Tây Ban Nha",
+      "homeFlag": "🇺🇾",
+      "awayFlag": "🇪🇸",
+      "matchTime": "2026-06-27T00:00:00.000Z",
+      "group": "H",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_67",
+      "homeTeam": "Panama",
+      "awayTeam": "Anh",
+      "homeFlag": "🇵🇦",
+      "awayFlag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "matchTime": "2026-06-27T21:00:00.000Z",
+      "group": "L",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_68",
+      "homeTeam": "Croatia",
+      "awayTeam": "Ghana",
+      "homeFlag": "🇭🇷",
+      "awayFlag": "🇬🇭",
+      "matchTime": "2026-06-27T21:00:00.000Z",
+      "group": "L",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_69",
+      "homeTeam": "Algeria",
+      "awayTeam": "Áo",
+      "homeFlag": "🇩🇿",
+      "awayFlag": "🇦🇹",
+      "matchTime": "2026-06-28T01:00:00.000Z",
+      "group": "J",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_70",
+      "homeTeam": "Jordan",
+      "awayTeam": "Argentina",
+      "homeFlag": "🇯🇴",
+      "awayFlag": "🇦🇷",
+      "matchTime": "2026-06-28T04:00:00.000Z",
+      "group": "J",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_71",
+      "homeTeam": "Colombia",
+      "awayTeam": "Bồ Đào Nha",
+      "homeFlag": "🇨🇴",
+      "awayFlag": "🇵🇹",
+      "matchTime": "2026-06-28T00:30:00.000Z",
+      "group": "K",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "match_72",
+      "homeTeam": "CHDC Congo",
+      "awayTeam": "Uzbekistan",
+      "homeFlag": "🇨🇩",
+      "awayFlag": "🇺🇿",
+      "matchTime": "2026-06-28T02:30:00.000Z",
+      "group": "K",
+      "handicap": {
+        "team": null,
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null
+    }
+  ],
+  "predictions": [],
+  "chat": [
+    {
+      "id": "msg_1780810335267",
+      "userId": "admin_user",
+      "username": "admin",
+      "department": "IT",
+      "message": "let's go",
+      "timestamp": "2026-06-07T05:32:15.267Z"
+    }
+  ]
+}
