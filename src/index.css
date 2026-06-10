@@ -1111,28 +1111,245 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Responsive fixes */
 @media (max-width: 600px) {
-  .podium-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-  }
-  .podium-card.first, .podium-card.second, .podium-card.third {
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-md);
-  }
-  .podium-card.first { order: 1; }
-  .podium-card.second { order: 2; }
-  .podium-card.third { order: 3; }
-  
+  /* Header & Logo */
   .app-header {
     flex-direction: column;
     gap: 16px;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+  .brand-section {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .brand-title {
+    font-size: 1.25rem;
+  }
+  .logo-badge {
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
   }
   .user-status {
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .user-badge {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Navigation Tabs */
+  .tabs-nav {
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    flex: 1 1 45%;
+  }
+
+  /* Featured Hero Card */
+  .featured-hero-card {
+    padding: 20px 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+  }
+  .hero-header-badge {
+    font-size: 0.7rem;
+    padding: 4px 12px;
+    margin-bottom: 16px;
+  }
+  .hero-team-name {
+    font-size: 1rem;
+  }
+  .hero-team-flag {
+    font-size: 2.6rem;
+  }
+  .hero-vs-label {
+    font-size: 1.2rem;
+  }
+  
+  /* Countdown Timer */
+  .countdown-container {
+    gap: 6px;
+    margin: 20px auto;
+  }
+  .countdown-segment {
+    min-width: 44px;
+  }
+  .countdown-digit {
+    font-size: 1.5rem;
+    padding: 4px 6px;
+    min-width: 40px;
+  }
+  .countdown-colon {
+    font-size: 1.3rem;
+    padding-bottom: 14px;
+  }
+  .countdown-label {
+    font-size: 0.55rem;
+    margin-top: 6px;
+  }
+  
+  .hero-match-info-bar {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+  }
+  .hero-prediction-box {
+    padding: 16px;
+  }
+  .hero-stats-row {
+    flex-direction: column;
+    gap: 8px !important;
+    padding: 8px 12px !important;
+    align-items: center;
+  }
+  .hero-stats-row > div {
+    width: 100%;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Standard Match Cards */
+  .team-name {
+    font-size: 0.85rem;
+  }
+  .team-flag {
+    font-size: 1.8rem;
+  }
+  .actual-score-display {
+    font-size: 1.5rem;
+  }
+  .versus-label {
+    font-size: 0.7rem;
+  }
+  .handicap-banner {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    margin-bottom: 12px;
+  }
+  .prediction-section {
+    padding: 10px;
+  }
+  .handicap-predict-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .handicap-opt-btn {
+    padding: 8px;
+    font-size: 0.75rem;
+    width: 100%;
+  }
+  .save-prediction-btn {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+  .match-stats-summary {
+    flex-direction: column;
+    gap: 6px !important;
+    padding: 8px 10px !important;
+  }
+  .match-stats-summary > div {
+    width: 100%;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Horizontal Podium on Mobile */
+  .podium-container {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding-top: 10px;
+  }
+  .podium-card {
+    padding: 10px 4px;
+  }
+  .podium-card.first {
+    width: 34%;
+    height: 140px;
+    order: 2;
+  }
+  .podium-card.second {
+    width: 31%;
+    height: 120px;
+    order: 1;
+  }
+  .podium-card.third {
+    width: 31%;
+    height: 105px;
+    order: 3;
+  }
+  .podium-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .podium-name {
+    font-size: 0.75rem;
+  }
+  .podium-dept {
+    font-size: 0.65rem;
+    margin-bottom: 8px;
+  }
+  .podium-pts {
+    font-size: 0.95rem;
+  }
+  .podium-pts-lbl {
+    font-size: 0.6rem;
+  }
+
+  /* Leaderboard Table */
+  .leaderboard-table th, .leaderboard-table td {
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+  .table-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Floating Chat Widget */
+  .floating-chat-bubble {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+  .floating-chat-window {
+    width: calc(100% - 32px);
+    right: 16px;
+    left: 16px;
+    height: 400px;
+    bottom: 76px;
+  }
+  
+  /* Admin Panel & Modals */
+  .admin-header-row {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .admin-match-table td, .admin-match-table th {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  .modal-content {
+    padding: 20px;
+    margin: 10px;
   }
 }
 
