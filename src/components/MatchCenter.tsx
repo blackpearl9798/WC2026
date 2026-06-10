@@ -2,6 +2,85 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Trophy, Lock, Unlock, Users, ChevronDown, ChevronUp, Clock } from 'lucide-react';
 import { FlagIcon } from './FlagIcon';
 
+const TEAM_RATINGS: { [key: string]: number } = {
+  'Algeria': 6.5, 'Argentina': 10.0, 'Úc': 6.5, 'Áo': 7.5, 'Bỉ': 8.5,
+  'Bosnia & Her.': 6.0, 'Brazil': 9.5, 'Canada': 6.5, 'Cape Verde': 5.5,
+  'Colombia': 8.0, 'Croatia': 8.5, 'Curaçao': 4.5, 'CH Séc': 7.0,
+  'CHDC Congo': 5.5, 'Ecuador': 7.0, 'Ai Cập': 6.5, 'Anh': 9.5,
+  'Pháp': 10.0, 'Đức': 8.5, 'Ghana': 6.0, 'Haiti': 4.5, 'Iran': 7.0,
+  'Iraq': 5.5, 'Bờ Biển Ngà': 6.5, 'Nhật Bản': 8.0, 'Jordan': 5.5,
+  'Mexico': 6.5, 'Ma-rốc': 8.0, 'Hà Lan': 9.0, 'New Zealand': 4.0,
+  'Na Uy': 7.0, 'Panama': 5.0, 'Paraguay': 6.5, 'Bồ Đào Nha': 9.0,
+  'Qatar': 5.0, 'Ả Rập Xê Út': 6.0, 'Scotland': 6.5, 'Senegal': 7.5,
+  'Nam Phi': 5.5, 'Hàn Quốc': 7.5, 'Tây Ban Nha': 9.5, 'Thụy Điển': 7.5,
+  'Thụy Sĩ': 7.5, 'Tunisia': 6.5, 'Thổ Nhĩ Kỳ': 7.0, 'Mỹ': 7.5,
+  'Uruguay': 8.5, 'Uzbekistan': 6.0
+};
+
+const seededRandom = (seed: string) => {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) {
+    h = Math.imul(31, h) + seed.charCodeAt(i) | 0;
+  }
+  return () => {
+    let t = h += 0x6D2B79F5;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+const getTeamForm = (teamName: string): ('W' | 'D' | 'L')[] => {
+  const rating = TEAM_RATINGS[teamName] || 6.0;
+  const rng = seededRandom(teamName + "form2026_v2");
+  const form: ('W' | 'D' | 'L')[] = [];
+  
+  for (let i = 0; i < 5; i++) {
+    const val = rng();
+    const winProb = 0.1 + (rating - 4) * 0.1; // 0.1 to 0.7
+    const drawProb = 0.35 - (rating - 7) * 0.03; // 0.2 to 0.4
+    
+    if (val < winProb) {
+      form.push('W');
+    } else if (val < winProb + drawProb) {
+      form.push('D');
+    } else {
+      form.push('L');
+    }
+  }
+  return form;
+};
+
+const getH2HStats = (home: string, away: string) => {
+  const homeRating = TEAM_RATINGS[home] || 6.0;
+  const awayRating = TEAM_RATINGS[away] || 6.0;
+  
+  const seed = [home, away].sort().join("-") + "h2h2026_v2";
+  const rng = seededRandom(seed);
+  
+  const totalMatches = 5;
+  let homeWins = 0;
+  let awayWins = 0;
+  let draws = 0;
+  
+  const diff = homeRating - awayRating;
+  const homeWinProb = 0.35 + diff * 0.08;
+  const drawProb = 0.3 - Math.abs(diff) * 0.03;
+  
+  for (let i = 0; i < totalMatches; i++) {
+    const val = rng();
+    if (val < homeWinProb) {
+      homeWins++;
+    } else if (val < homeWinProb + drawProb) {
+      draws++;
+    } else {
+      awayWins++;
+    }
+  }
+  
+  return { homeWins, awayWins, draws };
+};
+
 interface MatchCenterProps {
   matches: any[];
   token: string;
@@ -62,6 +141,10 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
   const curWinner = local ? local.winner : (myPred ? myPred.predictedHandicapWinner : 'home');
   const hasSavedPrediction = !!myPred;
 
+  const homeForm = getTeamForm(match.homeTeam);
+  const awayForm = getTeamForm(match.awayTeam);
+  const h2h = getH2HStats(match.homeTeam, match.awayTeam);
+
   return (
     <div className="featured-hero-card">
       <div className="hero-glow-overlay"></div>
@@ -83,6 +166,68 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
         <div className="hero-team-display">
           <FlagIcon flag={match.awayFlag} style={{ width: '36px', height: '24px', marginRight: '0' }} />
           <span className="hero-team-name">{match.awayTeam}</span>
+        </div>
+      </div>
+
+      {/* Seeded stats summary for Hero Card */}
+      <div className="hero-stats-row" style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '10px 16px',
+        background: 'rgba(0, 0, 0, 0.2)',
+        borderRadius: '8px',
+        marginTop: '16px',
+        marginBottom: '16px',
+        fontSize: '0.8rem',
+        border: '1px solid rgba(255, 255, 255, 0.05)',
+        gap: '12px',
+        flexWrap: 'wrap'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>Phong độ {match.homeTeam}:</span>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            {homeForm.map((res, i) => (
+              <span key={i} style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '18px',
+                height: '18px',
+                borderRadius: '50%',
+                fontSize: '0.7rem',
+                fontWeight: 'bold',
+                color: '#fff',
+                background: res === 'W' ? 'var(--color-primary, #10b981)' : res === 'D' ? 'var(--color-secondary, #f59e0b)' : 'var(--color-danger, #ef4444)',
+                boxShadow: '0 0 5px ' + (res === 'W' ? 'rgba(16, 185, 129, 0.3)' : res === 'D' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(239, 68, 68, 0.3)')
+              }}>{res}</span>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ textAlign: 'center', fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '6px', fontWeight: 600 }}>
+          Đối đầu: <span style={{ color: 'var(--color-secondary)', fontWeight: 800 }}>{h2h.homeWins} T - {h2h.draws} H - {h2h.awayWins} B</span>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            {awayForm.map((res, i) => (
+              <span key={i} style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '18px',
+                height: '18px',
+                borderRadius: '50%',
+                fontSize: '0.7rem',
+                fontWeight: 'bold',
+                color: '#fff',
+                background: res === 'W' ? 'var(--color-primary, #10b981)' : res === 'D' ? 'var(--color-secondary, #f59e0b)' : 'var(--color-danger, #ef4444)',
+                boxShadow: '0 0 5px ' + (res === 'W' ? 'rgba(16, 185, 129, 0.3)' : res === 'D' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(239, 68, 68, 0.3)')
+              }}>{res}</span>
+            ))}
+          </div>
+          <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>Phong độ {match.awayTeam}</span>
         </div>
       </div>
 
@@ -325,6 +470,10 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
             const hasSavedPrediction = !!myPred;
             const isFinished = match.status === 'finished';
 
+            const homeForm = getTeamForm(match.homeTeam);
+            const awayForm = getTeamForm(match.awayTeam);
+            const h2h = getH2HStats(match.homeTeam, match.awayTeam);
+
             return (
               <div key={match.id} className="glass-card match-card">
                 <div>
@@ -364,6 +513,66 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                   {/* Handicap Odds display */}
                   <div className="handicap-banner">
                     Tỷ lệ Handicap: <span className="handicap-highlight">{getHandicapText(match.handicap, match.homeTeam, match.awayTeam)}</span>
+                  </div>
+
+                  {/* Seeded stats summary for Match Card */}
+                  <div className="match-stats-summary" style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '6px 12px',
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    borderRadius: '8px',
+                    marginTop: '8px',
+                    marginBottom: '12px',
+                    fontSize: '0.75rem',
+                    border: '1px solid rgba(255, 255, 255, 0.03)',
+                    gap: '4px',
+                    flexWrap: 'wrap'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.65rem' }}>P.Độ:</span>
+                      <div style={{ display: 'flex', gap: '2px' }}>
+                        {homeForm.map((res, i) => (
+                          <span key={i} style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '14px',
+                            height: '14px',
+                            borderRadius: '50%',
+                            fontSize: '0.6rem',
+                            fontWeight: 'bold',
+                            color: '#fff',
+                            background: res === 'W' ? 'var(--color-primary, #10b981)' : res === 'D' ? 'var(--color-secondary, #f59e0b)' : 'var(--color-danger, #ef4444)'
+                          }}>{res}</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div style={{ textAlign: 'center', fontSize: '0.65rem', color: 'var(--color-text-muted)', background: 'rgba(255,255,255,0.02)', padding: '2px 6px', borderRadius: '4px' }}>
+                      H2H: <span style={{ fontWeight: 'bold', color: 'var(--color-secondary)' }}>{h2h.homeWins}T - {h2h.draws}H - {h2h.awayWins}B</span>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <div style={{ display: 'flex', gap: '2px' }}>
+                        {awayForm.map((res, i) => (
+                          <span key={i} style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '14px',
+                            height: '14px',
+                            borderRadius: '50%',
+                            fontSize: '0.6rem',
+                            fontWeight: 'bold',
+                            color: '#fff',
+                            background: res === 'W' ? 'var(--color-primary, #10b981)' : res === 'D' ? 'var(--color-secondary, #f59e0b)' : 'var(--color-danger, #ef4444)'
+                          }}>{res}</span>
+                        ))}
+                      </div>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.65rem' }}>P.Độ</span>
+                    </div>
                   </div>
 
                   {/* Prediction Form Section */}
