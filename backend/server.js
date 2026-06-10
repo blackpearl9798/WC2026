@@ -618,7 +618,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distPath = path.join(__dirname, '../dist');
 
-if (fs.existsSync(distPath)) {
+console.log(`[Static] Checking frontend dist path: ${distPath}`);
+const distExists = fs.existsSync(distPath);
+console.log(`[Static] Dist path exists: ${distExists}`);
+
+if (distExists) {
+  try {
+    const files = fs.readdirSync(distPath);
+    console.log(`[Static] Found ${files.length} items in dist folder:`, files);
+  } catch (err) {
+    console.error(`[Static] Error reading dist folder:`, err.message);
+  }
+
   app.use(express.static(distPath));
   
   // Trả về index.html cho các route của React (SPA) ngoại trừ /api
@@ -628,6 +639,14 @@ if (fs.existsSync(distPath)) {
     }
     res.sendFile(path.join(distPath, 'index.html'));
   });
+} else {
+  try {
+    const parentDir = path.join(__dirname, '..');
+    const files = fs.readdirSync(parentDir);
+    console.log(`[Static] Parent directory (${parentDir}) contents:`, files);
+  } catch (err) {
+    console.error(`[Static] Error reading parent folder:`, err.message);
+  }
 }
 
 // Khởi chạy server
