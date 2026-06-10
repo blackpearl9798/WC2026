@@ -134,9 +134,9 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                   <th style={{ width: '80px' }}>Hạng</th>
                   <th>Họ và Tên</th>
                   <th style={{ textAlign: 'center', width: '100px' }}>Điểm</th>
-                  <th style={{ textAlign: 'center', width: '150px' }} title="Số trận dự đoán thắng Handicap chính xác">Số Trận Đúng</th>
-                  <th style={{ textAlign: 'center', width: '150px' }} title="Số trận dự đoán Handicap không chính xác">Số Trận Sai</th>
-                  <th style={{ textAlign: 'center', width: '130px' }} title="Tổng số trận đã dự đoán">Tổng Đoán</th>
+                  <th className="hide-mobile" style={{ textAlign: 'center', width: '150px' }} title="Số trận dự đoán thắng Handicap chính xác">Số Trận Đúng</th>
+                  <th className="hide-mobile" style={{ textAlign: 'center', width: '150px' }} title="Số trận dự đoán Handicap không chính xác">Số Trận Sai</th>
+                  <th className="hide-mobile" style={{ textAlign: 'center', width: '130px' }} title="Tổng số trận đã dự đoán">Tổng Đoán</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,9 +158,9 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                           </span>
                         </td>
                         <td className="pts-cell" style={{ textAlign: 'center' }}>{player.totalPoints}</td>
-                        <td style={{ textAlign: 'center', fontWeight: '700', color: 'var(--color-primary)' }}>{player.correctPredictions}</td>
-                        <td style={{ textAlign: 'center', fontWeight: '700', color: 'var(--color-danger)' }}>{player.incorrectPredictions}</td>
-                        <td style={{ textAlign: 'center', color: 'var(--color-text-muted)' }}>{player.totalPredictions}</td>
+                        <td className="hide-mobile" style={{ textAlign: 'center', fontWeight: '700', color: 'var(--color-primary)' }}>{player.correctPredictions}</td>
+                        <td className="hide-mobile" style={{ textAlign: 'center', fontWeight: '700', color: 'var(--color-danger)' }}>{player.incorrectPredictions}</td>
+                        <td className="hide-mobile" style={{ textAlign: 'center', color: 'var(--color-text-muted)' }}>{player.totalPredictions}</td>
                       </tr>
                     );
                   })

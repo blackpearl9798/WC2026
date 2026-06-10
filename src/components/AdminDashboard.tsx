@@ -355,7 +355,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
 
                     return (
                       <tr key={match.id}>
-                        <td>
+                        <td data-label="Trận đấu">
                           <div className="match-teams-display">
                             <FlagIcon flag={match.homeFlag} />
                             <span>{match.homeTeam}</span>
@@ -364,19 +364,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                             <FlagIcon flag={match.awayFlag} style={{ marginLeft: '6px', marginRight: '0' }} />
                           </div>
                         </td>
-                        <td>
+                        <td data-label="Thời gian">
                           <span style={{ fontSize: '0.8rem' }}>
                             {new Date(match.matchTime).toLocaleString('vi-VN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </td>
-                        <td>
+                        <td data-label="Handicap">
                           <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
                             {match.handicap.team === null || match.handicap.value === 0 
                               ? 'Đồng banh (0)' 
                               : `${match.handicap.team === 'home' ? 'Nhà' : 'Khách'} chấp ${match.handicap.value}`}
                           </span>
                         </td>
-                        <td>
+                        <td data-label="Trạng thái">
                           {isEditing ? (
                             <div className="admin-score-update-form">
                               <input
@@ -409,7 +409,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                             </span>
                           )}
                         </td>
-                        <td style={{ textAlign: 'center' }}>
+                        <td data-label="Thao tác" style={{ textAlign: 'center' }}>
                           <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                             {isEditing ? (
                               <>
@@ -494,7 +494,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
           <div className="modal-content">
             <h3 className="modal-title">Thêm Trận Đấu Mới</h3>
             <form onSubmit={handleAddMatch}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
                   <label className="form-label">Đội chủ nhà</label>
                   <input
@@ -519,7 +519,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
                   <label className="form-label">Đội khách</label>
                   <input
@@ -555,7 +555,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '10px' }}>
+              <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '10px' }}>
                 <div className="form-group">
                   <label className="form-label">Đội chấp kèo</label>
                   <select
@@ -607,7 +607,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
           <div className="modal-content">
             <h3 className="modal-title">Chỉnh Sửa Trận Đấu</h3>
             <form onSubmit={handleEditMatchSubmit}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
                   <label className="form-label">Đội chủ nhà</label>
                   <input
@@ -632,7 +632,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
                   <label className="form-label">Đội khách</label>
                   <input
@@ -668,7 +668,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '10px' }}>
+              <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '10px' }}>
                 <div className="form-group">
                   <label className="form-label">Đội chấp kèo</label>
                   <select

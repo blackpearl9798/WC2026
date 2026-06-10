@@ -1351,6 +1351,73 @@ h1, h2, h3, h4, h5, h6 {
     padding: 20px;
     margin: 10px;
   }
+
+  /* Additional advanced responsiveness improvements */
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .auth-card {
+    padding: 24px !important;
+  }
+
+  .modal-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .admin-match-table {
+    border: none !important;
+  }
+
+  .admin-match-table thead {
+    display: none !important;
+  }
+
+  .admin-match-table tbody, .admin-match-table tr, .admin-match-table td {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .admin-match-table tr {
+    margin-bottom: 16px !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 12px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+
+  .admin-match-table td {
+    border: none !important;
+    border-bottom: 1px dashed rgba(16, 185, 129, 0.08) !important;
+    padding: 8px 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-align: right !important;
+  }
+
+  .admin-match-table td:last-child {
+    border-bottom: none !important;
+  }
+
+  .admin-match-table td::before {
+    content: attr(data-label) !important;
+    font-weight: 700 !important;
+    color: var(--color-primary) !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-right: 12px !important;
+    text-align: left !important;
+    flex-shrink: 0 !important;
+  }
+
+  .admin-match-table td > div {
+    justify-content: flex-end !important;
+    width: auto !important;
+  }
 }
 
 /* Floating Chat styles */

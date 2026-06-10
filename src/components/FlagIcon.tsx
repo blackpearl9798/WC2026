@@ -104,7 +104,7 @@ export const FlagIcon: React.FC<FlagIconProps> = ({ flag, alt = '', className = 
   const url = getFlagImageUrl(flag);
 
   if (!url) {
-    return <span className={className} style={style}>{flag}</span>;
+    return <span className={className} style={{ marginRight: '6px', ...style }}>{flag}</span>;
   }
 
   return (
@@ -120,6 +120,7 @@ export const FlagIcon: React.FC<FlagIconProps> = ({ flag, alt = '', className = 
         boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
         display: 'inline-block',
         verticalAlign: 'middle',
+        marginRight: '6px',
         ...style
       }}
       onError={(e) => {
