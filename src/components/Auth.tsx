@@ -138,6 +138,20 @@ export const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
           )}
         </div>
       </div>
+      <div style={{ marginTop: '24px', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center' }}>
+        Powered by Nam Tran -{' '}
+        <a 
+          href="https://github.com/blackpearl9798/WC2026" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600, transition: 'all 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
+        >
+          https://github.com/blackpearl9798/WC2026
+        </a>
+      </div>
     </div>
   );
 };
+
