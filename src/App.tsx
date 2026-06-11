@@ -219,8 +219,8 @@ function App() {
             alt="WC Logo" 
             className="logo-badge-img"
             style={{
-              width: '42px',
-              height: '42px',
+              width: '63px',
+              height: '63px',
               objectFit: 'contain',
               filter: 'drop-shadow(0 0 10px rgba(251, 191, 36, 0.4))',
               transition: 'transform 0.3s ease',
