@@ -219,8 +219,8 @@ function App() {
             alt="WC Logo" 
             className="logo-badge-img"
             style={{
-              width: '63px',
-              height: '63px',
+              width: '84px',
+              height: '84px',
               objectFit: 'contain',
               filter: 'drop-shadow(0 0 10px rgba(251, 191, 36, 0.4))',
               transition: 'transform 0.3s ease',
@@ -231,7 +231,7 @@ function App() {
           />
           <div>
             <h1 className="brand-title">Dự Đoán World Cup 2026</h1>
-            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Mùa giải nội bộ công ty</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>We are 26</p>
           </div>
         </div>
 

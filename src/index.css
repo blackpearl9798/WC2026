@@ -2179,8 +2179,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Logo image mobile scaling */
 @media (max-width: 600px) {
   .logo-badge-img {
-    width: 54px !important;
-    height: 54px !important;
+    width: 72px !important;
+    height: 72px !important;
   }
 }
 
