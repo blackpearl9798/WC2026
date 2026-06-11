@@ -681,7 +681,8 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  width: 100%;
+  text-align: center;
 }
 
 .podium-dept {
@@ -1286,17 +1287,17 @@ h1, h2, h3, h4, h5, h6 {
   }
   .podium-card.first {
     width: 34%;
-    height: 140px;
+    height: 150px;
     order: 2;
   }
   .podium-card.second {
     width: 31%;
-    height: 120px;
+    height: 135px;
     order: 1;
   }
   .podium-card.third {
     width: 31%;
-    height: 105px;
+    height: 120px;
     order: 3;
   }
   .podium-avatar {
