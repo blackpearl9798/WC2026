@@ -2081,4 +2081,15 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Auth poster styles */
+.auth-poster-wrapper {
+  display: block;
+  flex: 1;
+  max-width: 460px;
+}
 
+@media (max-width: 900px) {
+  .auth-poster-wrapper {
+    display: none;
+  }
+}

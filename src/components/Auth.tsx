@@ -44,9 +44,23 @@ export const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   };
 
   return (
-    <div className="auth-page-bg">
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '440px' }}>
-        <div className="auth-card" style={{ width: '100%', margin: 0 }}>
+    <div className="auth-page-bg" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', justifyContent: 'space-between', padding: '20px 16px' }}>
+      {/* Spacer to push content down slightly on desktop */}
+      <div className="hide-mobile" style={{ flex: '1 0 20px', minHeight: '20px' }} />
+
+      {/* Split/Flex container for card + poster */}
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        gap: '48px', 
+        width: '100%', 
+        maxWidth: '1000px', 
+        margin: '20px auto', 
+        flexWrap: 'wrap'
+      }}>
+        {/* Left Side: Auth Card */}
+        <div className="auth-card" style={{ width: '100%', maxWidth: '440px', margin: 0 }}>
           <div className="auth-header">
             <div className="auth-logo">🏆</div>
             <h1 className="auth-title">Dự Đoán WC 2026</h1>
@@ -140,19 +154,41 @@ export const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
           </div>
         </div>
 
-        <div style={{ marginTop: '24px', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center' }}>
-          Powered by Nam Tran -{' '}
-          <a 
-            href="https://github.com/blackpearl9798/WC2026" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600, transition: 'all 0.2s' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-secondary)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
-          >
-            https://github.com/blackpearl9798/WC2026
-          </a>
+        {/* Right Side: Poster (hidden on screens < 900px via css class) */}
+        <div className="auth-poster-wrapper">
+          <img 
+            src="/img/world-cup-1763630852-5001-1763631468.webp" 
+            alt="World Cup 2026 Poster" 
+            style={{
+              width: '100%',
+              maxWidth: '460px',
+              height: 'auto',
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+              boxShadow: '0 0 35px rgba(16, 185, 129, 0.25), var(--shadow-lg)',
+              objectFit: 'cover',
+              display: 'block'
+            }} 
+          />
         </div>
+      </div>
+
+      {/* Spacer to push footer to bottom */}
+      <div className="hide-mobile" style={{ flex: '1 0 20px', minHeight: '20px' }} />
+
+      {/* Footer credit - always centered at bottom */}
+      <div style={{ padding: '16px 0', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center', width: '100%' }}>
+        Powered by Nam Tran -{' '}
+        <a 
+          href="https://github.com/blackpearl9798/WC2026" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600, transition: 'all 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
+        >
+          https://github.com/blackpearl9798/WC2026
+        </a>
       </div>
     </div>
   );
