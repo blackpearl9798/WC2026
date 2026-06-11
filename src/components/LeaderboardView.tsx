@@ -362,13 +362,15 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                             originalRank === 1 ? '💀' : originalRank === 2 ? '🤡' : originalRank === 3 ? '👎' : `#${originalRank}`
                           )}
                         </td>
-                        <td className="player-name-cell">
-                          <div className="player-avatar-small" style={{ ...getAvatarStyle(player.avatarColor, rankingMode === 'nhot'), color: 'white' }}>
-                            {player.avatarIcon ? player.avatarIcon : getAvatarInitials(player.fullName || player.username)}
+                        <td>
+                          <div className="player-name-cell">
+                            <div className="player-avatar-small" style={{ ...getAvatarStyle(player.avatarColor, rankingMode === 'nhot'), color: 'white' }}>
+                              {player.avatarIcon ? player.avatarIcon : getAvatarInitials(player.fullName || player.username)}
+                            </div>
+                            <span>
+                              {player.fullName || player.username} {player.isAdmin && <span style={{ color: 'var(--color-secondary)', fontSize: '0.75rem', fontWeight: 600 }}>(Admin)</span>}
+                            </span>
                           </div>
-                          <span>
-                            {player.fullName || player.username} {player.isAdmin && <span style={{ color: 'var(--color-secondary)', fontSize: '0.75rem', fontWeight: 600 }}>(Admin)</span>}
-                          </span>
                         </td>
                         <td style={{ textAlign: 'center', fontWeight: 'bold', color: 'var(--color-primary)', background: rankingMode === 'du' ? 'rgba(16, 185, 129, 0.03)' : 'transparent' }}>{player.correctPredictions}</td>
                         <td style={{ textAlign: 'center', fontWeight: 'bold', color: 'var(--color-danger)', background: rankingMode === 'nhot' ? 'rgba(239, 68, 68, 0.03)' : 'transparent' }}>{nhotScore}</td>
