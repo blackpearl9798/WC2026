@@ -95,11 +95,26 @@ function App() {
 
   // Render Auth screen if not logged in
   if (!token || !user) {
-    return <Auth onAuthSuccess={handleAuthSuccess} />;
+    return (
+      <>
+        <div className="ticker-wrap">
+          <div className="ticker-content">
+            ⚠️ Disclaimer: Website được lập ra hoàn toàn cho mục đích giải trí, thử tài dự đoán bóng đá không mang tính chất thương mại. Chúng tôi không tổ chức cá cược và không sử dụng tiền thật dưới mọi hình thức
+          </div>
+        </div>
+        <Auth onAuthSuccess={handleAuthSuccess} />
+      </>
+    );
   }
 
   return (
-    <div className="app-container">
+    <>
+      <div className="ticker-wrap">
+        <div className="ticker-content">
+          ⚠️ Disclaimer: Website được lập ra hoàn toàn cho mục đích giải trí, thử tài dự đoán bóng đá không mang tính chất thương mại. Chúng tôi không tổ chức cá cược và không sử dụng tiền thật dưới mọi hình thức
+        </div>
+      </div>
+      <div className="app-container">
       {/* Header */}
       <header className="app-header">
         <div className="brand-section">
@@ -196,6 +211,7 @@ function App() {
       </main>
       <ChatWidget token={token} currentUser={user} />
     </div>
+    </>
   );
 }
 
