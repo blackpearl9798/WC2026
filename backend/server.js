@@ -370,14 +370,14 @@ app.get('/api/leaderboard', (req, res) => {
       const match = db.matches.find(m => m.id === p.matchId);
       if (match && match.status === 'finished') {
         if (p.pointsTotal === 1) {
-          correctPredictions++;
+          incorrectPredictions++; // Đoán sai nhận 1 điểm
         } else {
-          incorrectPredictions++;
+          correctPredictions++; // Đoán đúng nhận 0 điểm
         }
       }
     });
 
-    const totalPoints = correctPredictions; // 1 point per correct match
+    const totalPoints = incorrectPredictions; // Tổng điểm = số trận đoán sai (1 điểm/trận sai)
 
     return {
       userId: user.id,

@@ -176,6 +176,29 @@ export function readDB() {
       }
     }
 
+    // Tự động recalculate điểm số khi luật chơi thay đổi (đoán sai được 1đ, đoán đúng 0đ)
+    if (db.predictions && db.predictions.length > 0) {
+      let dbUpdated = false;
+      db.predictions = db.predictions.map(pred => {
+        const match = db.matches.find(m => m.id === pred.matchId);
+        if (match && match.status === 'finished') {
+          const recalculated = calculatePoints(pred, match.homeScore, match.awayScore, match.handicap);
+          if (pred.pointsTotal !== recalculated.pointsTotal || pred.pointsHandicap !== recalculated.pointsHandicap) {
+            dbUpdated = true;
+            return {
+              ...pred,
+              ...recalculated
+            };
+          }
+        }
+        return pred;
+      });
+      if (dbUpdated) {
+        console.log('🔄 [DB] Đã cập nhật lại toàn bộ điểm số của các dự đoán theo luật chơi mới (đoán sai 1đ, đoán đúng 0đ).');
+        writeDB(db);
+      }
+    }
+
     return db;
   } catch (error) {
     console.error('Error reading database file:', error);
@@ -230,24 +253,24 @@ export function calculatePoints(prediction, homeScore, awayScore, handicap) {
   // 1. Score Points (Removed, always 0)
   let pointsScore = 0;
 
-  // 2. Handicap Points (1 point if correct, 0 if incorrect/draw)
+  // 2. Handicap Points (0 point if correct, 1 if incorrect/draw)
   let pointsHandicap = 0;
   const predictedWinner = prediction.predictedHandicapWinner; // 'home' | 'away'
   const handicapResult = calculateHandicapResult(homeScore, awayScore, handicap);
 
+  let isCorrect = false;
   if (predictedWinner === 'home') {
     if (handicapResult === 'home' || handicapResult === 'home-half') {
-      pointsHandicap = 1;
-    } else {
-      pointsHandicap = 0;
+      isCorrect = true;
     }
   } else if (predictedWinner === 'away') {
     if (handicapResult === 'away' || handicapResult === 'away-half') {
-      pointsHandicap = 1;
-    } else {
-      pointsHandicap = 0;
+      isCorrect = true;
     }
   }
+
+  // Chọn sai (incorrect/draw) nhận 1 điểm, chọn đúng (correct) nhận 0 điểm
+  pointsHandicap = isCorrect ? 0 : 1;
 
   return {
     pointsScore,
