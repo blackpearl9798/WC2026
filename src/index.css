@@ -2037,3 +2037,41 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Responsive adjustments for smaller mobile devices (iPhone 12/13/14/15, SE, etc.) */
+@media (max-width: 430px) {
+  .featured-hero-card {
+    padding: 16px 12px;
+  }
+  .hero-team-name {
+    font-size: 0.9rem;
+  }
+  .hero-team-flag {
+    font-size: 2.2rem;
+  }
+  .hero-vs-label {
+    font-size: 1rem;
+  }
+  .countdown-container {
+    gap: 4px;
+    margin: 16px auto;
+  }
+  .countdown-segment {
+    min-width: 36px;
+  }
+  .countdown-digit {
+    font-size: 1.2rem;
+    padding: 3px 5px;
+    min-width: 30px;
+  }
+  .countdown-colon {
+    font-size: 1.1rem;
+    padding-bottom: 12px;
+  }
+  .countdown-label {
+    font-size: 0.5rem;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+}
+
+
