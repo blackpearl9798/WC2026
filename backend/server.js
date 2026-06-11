@@ -613,6 +613,156 @@ app.delete('/api/admin/users/:id', authenticate, requireAdmin, (req, res) => {
   res.json({ message: 'Xóa người dùng và các dự đoán liên quan thành công' });
 });
 
+// 13. Danh sách người dùng công khai (Dành cho tab Tổng hợp hiển thị tên)
+app.get('/api/users', authenticate, (req, res) => {
+  const db = readDB();
+  const userList = db.users.map(u => ({
+    id: u.id,
+    username: u.username,
+    fullName: u.fullName || u.username
+  }));
+  res.json(userList);
+});
+
+// 14. Danh sách tất cả các dự đoán (Bảo mật: Ẩn dự đoán của người khác ở trận chưa khóa)
+app.get('/api/predictions/all', authenticate, (req, res) => {
+  const db = readDB();
+  const isAdmin = req.user.isAdmin;
+  const currentUserId = req.user.id;
+  
+  const processedPredictions = db.predictions.map(p => {
+    const match = db.matches.find(m => m.id === p.matchId);
+    const isOwn = p.userId === currentUserId;
+    const locked = match ? isMatchLocked(match) : true;
+    
+    // Ẩn lựa chọn nếu: không phải admin AND không phải dự đoán của chính mình AND trận đấu chưa bị khóa
+    const shouldMask = !isAdmin && !isOwn && !locked;
+    
+    return {
+      id: p.id,
+      userId: p.userId,
+      matchId: p.matchId,
+      predictedHandicapWinner: shouldMask ? 'hidden' : p.predictedHandicapWinner,
+      pointsTotal: p.pointsTotal
+    };
+  });
+  
+  res.json(processedPredictions);
+});
+
+// 15. Xuất dữ liệu ra file CSV (Yêu cầu quyền Admin)
+app.get('/api/admin/export-csv', authenticate, requireAdmin, (req, res) => {
+  const { type } = req.query;
+  const db = readDB();
+  const csvRows = [];
+
+  if (type === 'leaderboard') {
+    // Tiêu đề
+    csvRows.push([
+      'Hạng',
+      'Họ và Tên',
+      'Tên đăng nhập',
+      'Điểm số',
+      'Số trận đúng',
+      'Số trận sai',
+      'Tổng số dự đoán'
+    ].map(val => `"${val.replace(/"/g, '""')}"`).join(','));
+
+    const leaderboard = db.users.map(user => {
+      const userPredictions = db.predictions.filter(p => p.userId === user.id);
+      let correct = 0;
+      let incorrect = 0;
+      userPredictions.forEach(p => {
+        const match = db.matches.find(m => m.id === p.matchId);
+        if (match && match.status === 'finished') {
+          if (p.pointsTotal === 1) correct++;
+          else incorrect++;
+        }
+      });
+      return {
+        fullName: user.fullName || user.username,
+        username: user.username,
+        points: correct,
+        correct,
+        incorrect,
+        total: userPredictions.length
+      };
+    });
+
+    leaderboard.sort((a, b) => {
+      if (b.points !== a.points) return b.points - a.points;
+      if (a.incorrect !== b.incorrect) return a.incorrect - b.incorrect;
+      return a.fullName.localeCompare(b.fullName);
+    });
+
+    leaderboard.forEach((player, idx) => {
+      csvRows.push([
+        idx + 1,
+        player.fullName,
+        player.username,
+        player.points,
+        player.correct,
+        player.incorrect,
+        player.total
+      ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
+    });
+
+    const csvContent = '\ufeff' + csvRows.join('\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="bang_xep_hang_wc2026.csv"');
+    return res.status(200).send(csvContent);
+  } else {
+    // Xuất chi tiết tất cả dự đoán (Mặc định)
+    csvRows.push([
+      'Họ và Tên',
+      'Tên đăng nhập',
+      'Trận đấu',
+      'Thời gian thi đấu',
+      'Tỷ lệ handicap',
+      'Lựa chọn dự đoán',
+      'Tỷ số thực tế',
+      'Trạng thái trận',
+      'Điểm đạt được'
+    ].map(val => `"${val.replace(/"/g, '""')}"`).join(','));
+
+    db.matches.forEach(match => {
+      const matchTimeStr = new Date(match.matchTime).toLocaleString('vi-VN');
+      const handicapText = match.handicap.team === null || match.handicap.value === 0 
+        ? 'Đồng banh (0)' 
+        : `${match.handicap.team === 'home' ? match.homeTeam : match.awayTeam} chấp ${match.handicap.value}`;
+      const scoreText = match.status === 'pending' ? 'Chưa đá' : `${match.homeScore} - ${match.awayScore}`;
+      const statusText = match.status === 'finished' ? 'Đã kết thúc' : match.status === 'live' ? 'Đang đá' : 'Chưa diễn ra';
+
+      db.users.forEach(user => {
+        const pred = db.predictions.find(p => p.userId === user.id && p.matchId === match.id);
+        const predictionText = pred 
+          ? (pred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam)
+          : 'Chưa dự đoán';
+        const pointsText = pred 
+          ? (match.status === 'finished' ? pred.pointsTotal : 0)
+          : 0;
+
+        csvRows.push([
+          user.fullName || user.username,
+          user.username,
+          `${match.homeTeam} vs ${match.awayTeam}`,
+          matchTimeStr,
+          handicapText,
+          predictionText,
+          scoreText,
+          statusText,
+          pointsText
+        ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
+      });
+    });
+
+    const csvContent = '\ufeff' + csvRows.join('\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="chi_tiet_du_doan_wc2026.csv"');
+    return res.status(200).send(csvContent);
+  }
+});
+
 // Phục vụ các file tĩnh của Frontend (khi chạy ở môi trường production sau khi build)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

@@ -5,12 +5,13 @@ import { LeaderboardView } from './components/LeaderboardView';
 import { AdminDashboard } from './components/AdminDashboard';
 import { ChatWidget } from './components/ChatWidget';
 import { StandingsView } from './components/StandingsView';
-import { Trophy, Award, Settings, LogOut, ShieldAlert, LayoutGrid } from 'lucide-react';
+import { AllPredictionsView } from './components/AllPredictionsView';
+import { Trophy, Award, Settings, LogOut, ShieldAlert, LayoutGrid, Users } from 'lucide-react';
 
 function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem('wc_token'));
   const [user, setUser] = useState<any | null>(null);
-  const [activeTab, setActiveTab] = useState<'matches' | 'leaderboard' | 'groups' | 'admin'>('matches');
+  const [activeTab, setActiveTab] = useState<'matches' | 'groups' | 'summary' | 'leaderboard' | 'admin'>('matches');
   const [matches, setMatches] = useState<any[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -146,6 +147,14 @@ function App() {
 
         <button
           type="button"
+          className={`tab-btn ${activeTab === 'summary' ? 'active' : ''}`}
+          onClick={() => setActiveTab('summary')}
+        >
+          <Users size={16} /> Tổng Hợp
+        </button>
+
+        <button
+          type="button"
           className={`tab-btn ${activeTab === 'leaderboard' ? 'active' : ''}`}
           onClick={() => setActiveTab('leaderboard')}
         >
@@ -171,6 +180,10 @@ function App() {
 
         {activeTab === 'groups' && (
           <StandingsView matches={matches} />
+        )}
+
+        {activeTab === 'summary' && (
+          <AllPredictionsView matches={matches} token={token} currentUser={user} />
         )}
 
         {activeTab === 'leaderboard' && (
