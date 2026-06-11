@@ -215,7 +215,7 @@ function App() {
       <header className="app-header">
         <div className="brand-section">
           <img 
-            src="/img/golden-trophy.avif" 
+            src="/img/toppng.com-fifa-world-cup-glowing-trophy-png-5120x3810.png" 
             alt="WC Logo" 
             className="logo-badge-img"
             style={{
