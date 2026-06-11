@@ -45,111 +45,114 @@ export const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
 
   return (
     <div className="auth-page-bg">
-      <div className="auth-card">
-        <div className="auth-header">
-          <div className="auth-logo">🏆</div>
-          <h1 className="auth-title">Dự Đoán WC 2026</h1>
-          <p className="auth-subtitle">Trang dự đoán bóng đá nội bộ công ty</p>
-        </div>
-
-        {error && (
-          <div className="alert alert-error">
-            <span>⚠️</span>
-            <span>{error}</span>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label" htmlFor="username">
-              Tên đăng nhập
-            </label>
-            <input
-              id="username"
-              type="text"
-              className="form-input"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Nhập tên đăng nhập (ví dụ: an.nguyen)"
-              required
-            />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '440px' }}>
+        <div className="auth-card" style={{ width: '100%', margin: 0 }}>
+          <div className="auth-header">
+            <div className="auth-logo">🏆</div>
+            <h1 className="auth-title">Dự Đoán WC 2026</h1>
+            <p className="auth-subtitle">Trang dự đoán bóng đá nội bộ công ty</p>
           </div>
 
-          {isRegister && (
-            <div className="form-group">
-              <label className="form-label" htmlFor="fullName">
-                Họ và tên
-              </label>
-              <input
-                id="fullName"
-                type="text"
-                className="form-input"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Ví dụ: Nguyễn Văn An"
-                required
-              />
+          {error && (
+            <div className="alert alert-error">
+              <span>⚠️</span>
+              <span>{error}</span>
             </div>
           )}
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="password">
-              Mật khẩu
-            </label>
-            <input
-              id="password"
-              type="password"
-              className="form-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Nhập mật khẩu"
-              required
-            />
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label" htmlFor="username">
+                Tên đăng nhập
+              </label>
+              <input
+                id="username"
+                type="text"
+                className="form-input"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Nhập tên đăng nhập (ví dụ: an.nguyen)"
+                required
+              />
+            </div>
+
+            {isRegister && (
+              <div className="form-group">
+                <label className="form-label" htmlFor="fullName">
+                  Họ và tên
+                </label>
+                <input
+                  id="fullName"
+                  type="text"
+                  className="form-input"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Ví dụ: Nguyễn Văn An"
+                  required
+                />
+              </div>
+            )}
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="password">
+                Mật khẩu
+              </label>
+              <input
+                id="password"
+                type="password"
+                className="form-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Nhập mật khẩu"
+                required
+              />
+            </div>
+
+            <button type="submit" className="auth-btn" disabled={loading}>
+              {loading ? 'Đang xử lý...' : isRegister ? 'Đăng Ký Tham Gia' : 'Đăng Nhập'}
+            </button>
+          </form>
+
+          <div className="auth-toggle-msg">
+            {isRegister ? (
+              <>
+                Đã có tài khoản?{' '}
+                <button 
+                  type="button" 
+                  className="auth-toggle-link" 
+                  onClick={() => { setIsRegister(false); setError(''); }}
+                >
+                  Đăng nhập ngay
+                </button>
+              </>
+            ) : (
+              <>
+                Chưa tham gia?{' '}
+                <button 
+                  type="button" 
+                  className="auth-toggle-link" 
+                  onClick={() => { setIsRegister(true); setError(''); }}
+                >
+                  Đăng ký thành viên
+                </button>
+              </>
+            )}
           </div>
-
-          <button type="submit" className="auth-btn" disabled={loading}>
-            {loading ? 'Đang xử lý...' : isRegister ? 'Đăng Ký Tham Gia' : 'Đăng Nhập'}
-          </button>
-        </form>
-
-        <div className="auth-toggle-msg">
-          {isRegister ? (
-            <>
-              Đã có tài khoản?{' '}
-              <button 
-                type="button" 
-                className="auth-toggle-link" 
-                onClick={() => { setIsRegister(false); setError(''); }}
-              >
-                Đăng nhập ngay
-              </button>
-            </>
-          ) : (
-            <>
-              Chưa tham gia?{' '}
-              <button 
-                type="button" 
-                className="auth-toggle-link" 
-                onClick={() => { setIsRegister(true); setError(''); }}
-              >
-                Đăng ký thành viên
-              </button>
-            </>
-          )}
         </div>
-      </div>
-      <div style={{ marginTop: '24px', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center' }}>
-        Powered by Nam Tran -{' '}
-        <a 
-          href="https://github.com/blackpearl9798/WC2026" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600, transition: 'all 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-secondary)'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
-        >
-          https://github.com/blackpearl9798/WC2026
-        </a>
+
+        <div style={{ marginTop: '24px', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center' }}>
+          Powered by Nam Tran -{' '}
+          <a 
+            href="https://github.com/blackpearl9798/WC2026" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600, transition: 'all 0.2s' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-secondary)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
+          >
+            https://github.com/blackpearl9798/WC2026
+          </a>
+        </div>
       </div>
     </div>
   );
