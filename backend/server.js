@@ -357,53 +357,60 @@ app.post('/api/predictions', authenticate, (req, res) => {
 // 6. Lấy bảng xếp hạng (Leaderboard)
 app.get('/api/leaderboard', (req, res) => {
   const db = readDB();
+  const finishedMatches = db.matches.filter(m => m.status === 'finished');
+  const finishedMatchesCount = finishedMatches.length;
   
-  // Tính điểm cho từng user
+  // Tính toán kết quả dự đoán cho từng user
   const leaderboard = db.users.map(user => {
     const userPredictions = db.predictions.filter(p => p.userId === user.id);
     
     let correctPredictions = 0;
     let incorrectPredictions = 0;
-    let totalPredictions = userPredictions.length;
+    let predictedFinishedCount = 0;
 
     userPredictions.forEach(p => {
-      const match = db.matches.find(m => m.id === p.matchId);
-      if (match && match.status === 'finished') {
-        if (p.pointsTotal === 1) {
-          incorrectPredictions++; // Đoán sai nhận 1 điểm
+      const match = finishedMatches.find(m => m.id === p.matchId);
+      if (match) {
+        predictedFinishedCount++;
+        const points = calculatePoints(p, match.homeScore, match.awayScore, match.handicap);
+        if (points.pointsHandicap === 0) {
+          correctPredictions++;
         } else {
-          correctPredictions++; // Đoán đúng nhận 0 điểm
+          incorrectPredictions++;
         }
       }
     });
 
-    const totalPoints = incorrectPredictions; // Tổng điểm = số trận đoán sai (1 điểm/trận sai)
+    const unpredictedMatches = finishedMatchesCount - predictedFinishedCount;
 
     return {
       userId: user.id,
       username: user.username,
       fullName: user.fullName || user.username,
       isAdmin: user.isAdmin,
-      totalPoints,
       correctPredictions,
       incorrectPredictions,
-      totalPredictions
+      unpredictedMatches,
+      totalPredictions: userPredictions.length
     };
   });
 
-  // Sắp xếp: Điểm cao nhất -> Số trận sai ít nhất -> Tên chữ cái
+  // Mặc định sắp xếp theo Số trận đúng (Thánh Dự) giảm dần
   leaderboard.sort((a, b) => {
-    if (b.totalPoints !== a.totalPoints) {
-      return b.totalPoints - a.totalPoints;
+    if (b.correctPredictions !== a.correctPredictions) {
+      return b.correctPredictions - a.correctPredictions;
     }
-    if (a.incorrectPredictions !== b.incorrectPredictions) {
-      return a.incorrectPredictions - b.incorrectPredictions; // Ít trận sai hơn xếp trên
+    const aNhot = a.incorrectPredictions + a.unpredictedMatches;
+    const bNhot = b.incorrectPredictions + b.unpredictedMatches;
+    if (aNhot !== bNhot) {
+      return aNhot - bNhot; // Ít nhọ hơn xếp trên (nhọ ít hơn)
     }
     return a.fullName.localeCompare(b.fullName);
   });
 
   res.json(leaderboard);
 });
+
 
 // 6.5 Lấy danh sách tin nhắn chat
 app.get('/api/chat', authenticate, (req, res) => {
@@ -657,52 +664,88 @@ app.get('/api/admin/export-csv', authenticate, requireAdmin, (req, res) => {
   const csvRows = [];
 
   if (type === 'leaderboard') {
-    // Tiêu đề
-    csvRows.push([
-      'Hạng',
-      'Họ và Tên',
-      'Tên đăng nhập',
-      'Điểm số',
-      'Số trận đúng',
-      'Số trận sai',
-      'Tổng số dự đoán'
-    ].map(val => `"${val.replace(/"/g, '""')}"`).join(','));
+    const finishedMatches = db.matches.filter(m => m.status === 'finished');
+    const finishedMatchesCount = finishedMatches.length;
 
-    const leaderboard = db.users.map(user => {
+    // Tính toán số liệu cho mọi user
+    const playersData = db.users.map(user => {
       const userPredictions = db.predictions.filter(p => p.userId === user.id);
+      
       let correct = 0;
       let incorrect = 0;
+      let predictedFinishedCount = 0;
+
       userPredictions.forEach(p => {
-        const match = db.matches.find(m => m.id === p.matchId);
-        if (match && match.status === 'finished') {
-          if (p.pointsTotal === 1) correct++;
-          else incorrect++;
+        const match = finishedMatches.find(m => m.id === p.matchId);
+        if (match) {
+          predictedFinishedCount++;
+          const points = calculatePoints(p, match.homeScore, match.awayScore, match.handicap);
+          if (points.pointsHandicap === 0) {
+            correct++;
+          } else {
+            incorrect++;
+          }
         }
       });
+
+      const unpredicted = finishedMatchesCount - predictedFinishedCount;
+      const nhotScore = incorrect + unpredicted;
+
       return {
+        userId: user.id,
         fullName: user.fullName || user.username,
         username: user.username,
-        points: correct,
         correct,
         incorrect,
+        unpredicted,
+        nhotScore,
         total: userPredictions.length
       };
     });
 
-    leaderboard.sort((a, b) => {
-      if (b.points !== a.points) return b.points - a.points;
-      if (a.incorrect !== b.incorrect) return a.incorrect - b.incorrect;
+    // Tạo bảng xếp hạng Thánh Dự để lấy Hạng Thánh Dự cho mỗi người
+    const duRanked = [...playersData].sort((a, b) => {
+      if (b.correct !== a.correct) return b.correct - a.correct;
+      const aNhot = a.incorrect + a.unpredicted;
+      const bNhot = b.incorrect + b.unpredicted;
+      if (aNhot !== bNhot) return aNhot - bNhot;
       return a.fullName.localeCompare(b.fullName);
     });
 
-    leaderboard.forEach((player, idx) => {
+    // Tạo bảng xếp hạng Thánh Nhọ để lấy Hạng Thánh Nhọ cho mỗi người
+    const nhotRanked = [...playersData].sort((a, b) => {
+      if (b.nhotScore !== a.nhotScore) return b.nhotScore - a.nhotScore;
+      if (a.correct !== b.correct) return a.correct - b.correct;
+      return a.fullName.localeCompare(b.fullName);
+    });
+
+    // Tiêu đề cột
+    csvRows.push([
+      'Họ và Tên',
+      'Tên đăng nhập',
+      'Hạng Thánh Dự',
+      'Số trận đúng',
+      'Hạng Thánh Nhọ',
+      'Số trận sai',
+      'Số trận không dự đoán',
+      'Tổng Nhọ (Sai + Không Đoán)',
+      'Tổng số dự đoán'
+    ].map(val => `"${val.replace(/"/g, '""')}"`).join(','));
+
+    // Xuất dữ liệu
+    playersData.forEach(player => {
+      const duRank = duRanked.findIndex(p => p.userId === player.userId) + 1;
+      const nhotRank = nhotRanked.findIndex(p => p.userId === player.userId) + 1;
+
       csvRows.push([
-        idx + 1,
         player.fullName,
         player.username,
-        player.points,
+        `#${duRank}`,
         player.correct,
+        `#${nhotRank}`,
         player.incorrect,
+        player.unpredicted,
+        player.nhotScore,
         player.total
       ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
     });

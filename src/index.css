@@ -1955,3 +1955,17 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(251, 191, 36, 0.05);
 }
 
+/* --- DUAL PODIUMS WRAPPER STYLES --- */
+.podiums-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 992px) {
+  .podiums-wrapper {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
