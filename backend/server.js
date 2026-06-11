@@ -39,109 +39,164 @@ function parseMatchDate(dateStr, stadiumId) {
   }
 }
 
-async function syncMatchesFromAPI() {
-  console.log('⏳ [Cron] Khởi chạy đồng bộ kết quả từ API...');
+const TEAM_NAME_VI = {
+  'Mexico': 'Mexico',
+  'South Africa': 'Nam Phi',
+  'South Korea': 'Hàn Quốc',
+  'Korea Republic': 'Hàn Quốc',
+  'Czech Republic': 'CH Séc',
+  'Canada': 'Canada',
+  'Bosnia and Herzegovina': 'Bosnia & Her.',
+  'Bosnia & Herzegovina': 'Bosnia & Her.',
+  'United States': 'Mỹ',
+  'USA': 'Mỹ',
+  'Paraguay': 'Paraguay',
+  'Haiti': 'Haiti',
+  'Scotland': 'Scotland',
+  'Australia': 'Úc',
+  'Turkey': 'Thổ Nhĩ Kỳ',
+  'Brazil': 'Brazil',
+  'Morocco': 'Ma-rốc',
+  'Qatar': 'Qatar',
+  'Switzerland': 'Thụy Sĩ',
+  'Ivory Coast': 'Bờ Biển Ngà',
+  'Côte d\'Ivoire': 'Bờ Biển Ngà',
+  'Ecuador': 'Ecuador',
+  'Germany': 'Đức',
+  'Curaçao': 'Curaçao',
+  'Netherlands': 'Hà Lan',
+  'Japan': 'Nhật Bản',
+  'Sweden': 'Thụy Điển',
+  'Tunisia': 'Tunisia',
+  'Iran': 'Iran',
+  'New Zealand': 'New Zealand',
+  'Spain': 'Tây Ban Nha',
+  'Cape Verde': 'Cape Verde',
+  'Belgium': 'Bỉ',
+  'Egypt': 'Ai Cập',
+  'Saudi Arabia': 'Ả Rập Xê Út',
+  'Uruguay': 'Uruguay',
+  'France': 'Pháp',
+  'Senegal': 'Senegal',
+  'Iraq': 'Iraq',
+  'Norway': 'Na Uy',
+  'Argentina': 'Argentina',
+  'Algeria': 'Algeria',
+  'Austria': 'Áo',
+  'Jordan': 'Jordan',
+  'Portugal': 'Bồ Đào Nha',
+  'Democratic Republic of the Congo': 'CHDC Congo',
+  'DR Congo': 'CHDC Congo',
+  'Congo DR': 'CHDC Congo',
+  'England': 'Anh',
+  'Croatia': 'Croatia',
+  'Uzbekistan': 'Uzbekistan',
+  'Colombia': 'Colombia',
+  'Ghana': 'Ghana',
+  'Panama': 'Panama'
+};
+
+async function syncMatchesFromAPISports() {
+  const db = readDB();
+  const now = new Date();
+  
+  // 1. Tìm các trận chưa kết thúc trong DB cục bộ nhưng thời gian bắt đầu đã trôi qua hơn 130 phút (2 tiếng 10 phút)
+  const elapsedMatches = db.matches.filter(m => {
+    if (m.status === 'finished') return false;
+    const matchTime = new Date(m.matchTime);
+    const timeDiffMinutes = (now - matchTime) / (1000 * 60);
+    return timeDiffMinutes >= 130;
+  });
+
+  if (elapsedMatches.length === 0) {
+    // Không có trận nào kết thúc cần cập nhật. Không gọi API để tiết kiệm request.
+    return;
+  }
+
+  console.log(`⏳ [API-Football] Phát hiện ${elapsedMatches.length} trận đấu đã hết giờ trên DB. Bắt đầu gọi API để kiểm tra kết quả...`);
+
   try {
-    const response = await fetch('https://worldcup26.ir/get/games');
+    const response = await fetch('https://v3.football.api-sports.io/fixtures?league=1&season=2026', {
+      headers: {
+        'x-apisports-key': 'a026db62eacba249a0c79ca0596d2d83',
+        'x-rapidapi-key': 'a026db62eacba249a0c79ca0596d2d83',
+        'x-rapidapi-host': 'v3.football.api-sports.io'
+      }
+    });
+
     if (!response.ok) {
       throw new Error(`API error: ${response.statusText}`);
     }
+
     const data = await response.json();
-    if (!data || !data.games || !Array.isArray(data.games)) {
+    if (!data || !data.response || !Array.isArray(data.response)) {
       throw new Error('Dữ liệu API không đúng định dạng');
     }
 
-    const db = readDB();
+    const apiFixtures = data.response;
     let updatedCount = 0;
     let finishedMatchesCount = 0;
+    let dbChanged = false;
 
-    // Lọc lấy các trận vòng bảng (games 1 đến 72)
-    const groupStageGames = data.games.filter(g => g.type === 'group' && parseInt(g.id) <= 72);
+    elapsedMatches.forEach(localMatch => {
+      // So khớp trận đấu tương ứng từ API dựa trên tên đội (đã dịch sang Tiếng Việt)
+      const matchingFixture = apiFixtures.find(fix => {
+        const homeEng = fix.teams.home.name;
+        const awayEng = fix.teams.away.name;
+        
+        const homeVi = TEAM_NAME_VI[homeEng] || homeEng;
+        const awayVi = TEAM_NAME_VI[awayEng] || awayEng;
 
-    groupStageGames.forEach(game => {
-      const matchId = `match_${game.id}`;
-      const existingMatch = db.matches.find(m => m.id === matchId);
+        return (homeVi === localMatch.homeTeam && awayVi === localMatch.awayTeam);
+      });
 
-      if (existingMatch) {
-        let changed = false;
+      if (matchingFixture) {
+        const fixStatus = matchingFixture.fixture.status.short;
+        const isFinished = ['FT', 'AET', 'PEN'].includes(fixStatus);
 
-        // 1. Xác định trạng thái mới của trận đấu
-        let apiStatus = 'pending';
-        if (game.finished === 'TRUE') {
-          apiStatus = 'finished';
-        } else if (game.time_elapsed !== 'notstarted') {
-          apiStatus = 'live';
-        }
+        if (isFinished) {
+          const apiHomeScore = matchingFixture.goals.home;
+          const apiAwayScore = matchingFixture.goals.away;
 
-        // 2. Xác định tỷ số mới (chỉ lấy tỷ số khi trận đấu đang diễn ra hoặc đã kết thúc)
-        let apiHomeScore = null;
-        let apiAwayScore = null;
-
-        if (apiStatus === 'live' || apiStatus === 'finished') {
-          apiHomeScore = game.home_score !== 'null' ? parseInt(game.home_score) : 0;
-          apiAwayScore = game.away_score !== 'null' ? parseInt(game.away_score) : 0;
-        }
-
-        // 3. Đồng bộ thời gian thi đấu (nếu có thay đổi lịch)
-        const apiMatchTime = parseMatchDate(game.local_date, game.stadium_id);
-
-        // Kiểm tra xem có thay đổi so với database hiện tại không
-        if (existingMatch.status !== apiStatus) {
-          // Nếu chuyển sang trạng thái đã kết thúc, tính điểm cho tất cả người dự đoán
-          if (apiStatus === 'finished' && existingMatch.status !== 'finished') {
-            db.predictions = db.predictions.map(pred => {
-              if (pred.matchId === matchId) {
-                const points = calculatePoints(pred, apiHomeScore, apiAwayScore, existingMatch.handicap);
-                return {
-                  ...pred,
-                  ...points
-                };
-              }
-              return pred;
-            });
-            finishedMatchesCount++;
-          }
-          existingMatch.status = apiStatus;
-          changed = true;
-        }
-
-        if (existingMatch.homeScore !== apiHomeScore) {
-          existingMatch.homeScore = apiHomeScore;
-          changed = true;
-        }
-
-        if (existingMatch.awayScore !== apiAwayScore) {
-          existingMatch.awayScore = apiAwayScore;
-          changed = true;
-        }
-
-        if (apiMatchTime && existingMatch.matchTime !== apiMatchTime) {
-          existingMatch.matchTime = apiMatchTime;
-          changed = true;
-        }
-
-        if (changed) {
+          // Cập nhật CSDL
+          localMatch.homeScore = apiHomeScore;
+          localMatch.awayScore = apiAwayScore;
+          localMatch.status = 'finished';
+          dbChanged = true;
           updatedCount++;
+
+          // Tự động tính toán điểm số cho các dự đoán tương ứng
+          db.predictions = db.predictions.map(pred => {
+            if (pred.matchId === localMatch.id) {
+              const points = calculatePoints(pred, apiHomeScore, apiAwayScore, localMatch.handicap);
+              return {
+                ...pred,
+                ...points
+              };
+            }
+            return pred;
+          });
+          finishedMatchesCount++;
         }
       }
     });
 
-    if (updatedCount > 0) {
+    if (dbChanged) {
       writeDB(db);
-      console.log(`✅ [Cron] Đồng bộ thành công: Cập nhật ${updatedCount} trận. Tính điểm xong cho ${finishedMatchesCount} trận đã kết thúc.`);
+      console.log(`✅ [API-Football] Đồng bộ thành công: Cập nhật kết quả ${updatedCount} trận. Tính điểm xong cho ${finishedMatchesCount} dự đoán.`);
     } else {
-      console.log('ℹ️ [Cron] Không có trận đấu nào thay đổi kết quả.');
+      console.log('ℹ️ [API-Football] Đã kiểm tra API nhưng chưa có kết quả trận đấu mới nào kết thúc hoàn toàn.');
     }
   } catch (error) {
-    console.error('❌ [Cron] Lỗi đồng bộ dữ liệu từ API:', error.message);
+    console.error('❌ [API-Football] Lỗi đồng bộ kết quả từ API:', error.message);
   }
 }
 
-// Đồng bộ lần đầu khi server khởi chạy (Đã tắt theo yêu cầu)
-// syncMatchesFromAPI();
+// Đồng bộ khi khởi chạy máy chủ
+syncMatchesFromAPISports();
 
-// Chu kỳ đồng bộ: Lặp lại mỗi 5 phút một lần (Đã tắt theo yêu cầu)
-// setInterval(syncMatchesFromAPI, 5 * 60 * 1000);
+// Chu kỳ kiểm tra định kỳ mỗi 10 phút một lần
+setInterval(syncMatchesFromAPISports, 10 * 60 * 1000);
 
 // Authentication Middleware
 function authenticate(req, res, next) {
