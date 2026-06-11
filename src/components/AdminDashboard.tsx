@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit3, Save, X, Settings, Users } from 'lucide-react';
+import { Plus, Trash2, Edit3, Settings, Users } from 'lucide-react';
 import { FlagIcon } from './FlagIcon';
 
 interface AdminDashboardProps {
@@ -23,7 +23,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
     homeFlag: '🏳️',
     awayFlag: '🏳️',
     matchTime: '',
-    handicapTeam: 'home' as 'home' | 'away' | 'none',
+    handicapTeam: 'home' as 'home' | 'away',
     handicapValue: '0.5'
   });
 
@@ -35,13 +35,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
     homeFlag: string;
     awayFlag: string;
     matchTime: string;
-    handicapTeam: 'home' | 'away' | 'none';
+    handicapTeam: 'home' | 'away';
     handicapValue: string;
+    status: 'pending' | 'live' | 'finished';
+    homeScore: string;
+    awayScore: string;
   } | null>(null);
-
-  // Edit states
-  const [editingMatchId, setEditingMatchId] = useState<string | null>(null);
-  const [editScore, setEditScore] = useState<{ [matchId: string]: { homeScore: string; awayScore: string; status: 'pending' | 'live' | 'finished' } }>({});
 
   const fetchData = async () => {
     try {
@@ -81,8 +80,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
 
     try {
       const handicap = {
-        team: newMatch.handicapTeam === 'none' ? null : newMatch.handicapTeam,
-        value: newMatch.handicapTeam === 'none' ? 0 : parseFloat(newMatch.handicapValue)
+        team: newMatch.handicapTeam,
+        value: parseFloat(newMatch.handicapValue)
       };
 
       const response = await fetch('/api/admin/matches', {
@@ -122,39 +121,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
       setError(err.message || 'Lỗi kết nối.');
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  const handleUpdateScore = async (matchId: string) => {
-    const edit = editScore[matchId];
-    if (!edit) return;
-
-    setError('');
-    setSuccess('');
-    
-    try {
-      const response = await fetch(`/api/admin/matches/${matchId}/score`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          homeScore: edit.homeScore,
-          awayScore: edit.awayScore,
-          status: edit.status
-        })
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Lỗi cập nhật tỷ số');
-
-      setSuccess('Cập nhật kết quả trận đấu thành công!');
-      setEditingMatchId(null);
-      fetchData();
-      onRefresh();
-    } catch (err: any) {
-      setError(err.message || 'Lỗi kết nối.');
     }
   };
 
@@ -202,18 +168,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
     }
   };
 
-  const startEditScore = (match: any) => {
-    setEditingMatchId(match.id);
-    setEditScore(prev => ({
-      ...prev,
-      [match.id]: {
-        homeScore: match.homeScore !== null ? match.homeScore.toString() : '0',
-        awayScore: match.awayScore !== null ? match.awayScore.toString() : '0',
-        status: match.status
-      }
-    }));
-  };
-
   const startEditMatch = (match: any) => {
     const dateObj = new Date(match.matchTime);
     const year = dateObj.getFullYear();
@@ -230,8 +184,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
       homeFlag: match.homeFlag || '🏳️',
       awayFlag: match.awayFlag || '🏳️',
       matchTime: localDateTimeStr,
-      handicapTeam: match.handicap.team === null ? 'none' : match.handicap.team,
-      handicapValue: match.handicap.value ? match.handicap.value.toString() : '0.5'
+      handicapTeam: match.handicap.team === 'away' ? 'away' : 'home',
+      handicapValue: ['0.5', '1.5', '2.5', '3.5', '4.5', '5.5'].includes(String(match.handicap.value)) 
+        ? String(match.handicap.value) 
+        : '0.5',
+      status: match.status,
+      homeScore: match.homeScore !== null ? match.homeScore.toString() : '0',
+      awayScore: match.awayScore !== null ? match.awayScore.toString() : '0'
     });
     setShowEditModal(true);
   };
@@ -246,8 +205,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
 
     try {
       const handicap = {
-        team: editingMatch.handicapTeam === 'none' ? null : editingMatch.handicapTeam,
-        value: editingMatch.handicapTeam === 'none' ? 0 : parseFloat(editingMatch.handicapValue)
+        team: editingMatch.handicapTeam,
+        value: parseFloat(editingMatch.handicapValue)
       };
 
       const response = await fetch(`/api/admin/matches/${editingMatch.id}`, {
@@ -262,14 +221,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
           homeFlag: editingMatch.homeFlag,
           awayFlag: editingMatch.awayFlag,
           matchTime: editingMatch.matchTime,
-          handicap
+          handicap,
+          status: editingMatch.status,
+          homeScore: editingMatch.homeScore,
+          awayScore: editingMatch.awayScore
         })
       });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Lỗi cập nhật trận đấu');
 
-      setSuccess('Cập nhật trận đấu thành công!');
+      setSuccess('Cập nhật trận đấu và kết quả thành công!');
       setShowEditModal(false);
       setEditingMatch(null);
       fetchData();
@@ -279,27 +241,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleEditScoreChange = (matchId: string, side: 'home' | 'away', value: string) => {
-    if (value !== '' && !/^\d+$/.test(value)) return;
-    setEditScore(prev => ({
-      ...prev,
-      [matchId]: {
-        ...prev[matchId],
-        [side === 'home' ? 'homeScore' : 'awayScore']: value
-      }
-    }));
-  };
-
-  const handleEditStatusChange = (matchId: string, value: 'pending' | 'live' | 'finished') => {
-    setEditScore(prev => ({
-      ...prev,
-      [matchId]: {
-        ...prev[matchId],
-        status: value
-      }
-    }));
   };
 
   return (
@@ -350,9 +291,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                 </thead>
                 <tbody>
                   {matches.map(match => {
-                    const isEditing = editingMatchId === match.id;
-                    const edit = editScore[match.id];
-
                     return (
                       <tr key={match.id}>
                         <td data-label="Trận đấu">
@@ -371,78 +309,29 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                         </td>
                         <td data-label="Handicap">
                           <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                            {match.handicap.team === null || match.handicap.value === 0 
-                              ? 'Đồng banh (0)' 
-                              : `${match.handicap.team === 'home' ? 'Nhà' : 'Khách'} chấp ${match.handicap.value}`}
+                            {`${match.handicap.team === 'home' ? 'Nhà' : 'Khách'} chấp ${match.handicap.value}`}
                           </span>
                         </td>
                         <td data-label="Trạng thái">
-                          {isEditing ? (
-                            <div className="admin-score-update-form">
-                              <input
-                                type="text"
-                                className="admin-score-input"
-                                value={edit.homeScore}
-                                onChange={(e) => handleEditScoreChange(match.id, 'home', e.target.value)}
-                              />
-                              <span>-</span>
-                              <input
-                                type="text"
-                                className="admin-score-input"
-                                value={edit.awayScore}
-                                onChange={(e) => handleEditScoreChange(match.id, 'away', e.target.value)}
-                              />
-                              <select
-                                className="form-input"
-                                style={{ width: '110px', height: '32px', padding: '2px 8px', fontSize: '0.8rem' }}
-                                value={edit.status}
-                                onChange={(e) => handleEditStatusChange(match.id, e.target.value as any)}
-                              >
-                                <option value="pending">Chưa đá</option>
-                                <option value="live">Đang đá</option>
-                                <option value="finished">Đã kết thúc</option>
-                              </select>
-                            </div>
-                          ) : (
-                            <span style={{ fontWeight: 700, color: 'var(--color-secondary)' }}>
-                              {match.status === 'pending' ? 'Chưa diễn ra' : `${match.homeScore} - ${match.awayScore} (${match.status === 'live' ? 'Đang đá' : 'Xong'})`}
-                            </span>
-                          )}
+                          <span style={{ fontWeight: 700, color: 'var(--color-secondary)' }}>
+                            {match.status === 'pending' ? 'Chưa diễn ra' : `${match.homeScore} - ${match.awayScore} (${match.status === 'live' ? 'Đang đá' : 'Xong'})`}
+                          </span>
                         </td>
                         <td data-label="Thao tác" style={{ textAlign: 'center' }}>
                           <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                            {isEditing ? (
-                              <>
-                                <button type="button" className="btn-secondary" style={{ padding: '4px 8px' }} onClick={() => handleUpdateScore(match.id)}>
-                                  <Save size={14} />
-                                </button>
-                                <button type="button" className="btn-secondary" style={{ padding: '4px 8px' }} onClick={() => setEditingMatchId(null)}>
-                                  <X size={14} />
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  type="button"
-                                  className="btn-secondary"
-                                  style={{ padding: '4px 8px' }}
-                                  onClick={() => {
-                                    if (match.status === 'pending') {
-                                      startEditMatch(match);
-                                    } else {
-                                      startEditScore(match);
-                                    }
-                                  }}
-                                  title="Chỉnh sửa trận đấu"
-                                >
-                                  <Edit3 size={14} />
-                                </button>
-                                {match.status === 'pending' && (
-                                  <button type="button" className="btn-danger-outline" style={{ padding: '4px 8px' }} onClick={() => handleDeleteMatch(match.id)}>
-                                    <Trash2 size={14} />
-                                  </button>
-                                )}
-                              </>
+                            <button
+                              type="button"
+                              className="btn-secondary"
+                              style={{ padding: '4px 8px' }}
+                              onClick={() => startEditMatch(match)}
+                              title="Chỉnh sửa trận đấu & Kết quả"
+                            >
+                              <Edit3 size={14} />
+                            </button>
+                            {match.status === 'pending' && (
+                              <button type="button" className="btn-danger-outline" style={{ padding: '4px 8px' }} onClick={() => handleDeleteMatch(match.id)}>
+                                <Trash2 size={14} />
+                              </button>
                             )}
                           </div>
                         </td>
@@ -565,28 +454,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                   >
                     <option value="home">{newMatch.homeFlag} {newMatch.homeTeam || 'Sân nhà'} chấp</option>
                     <option value="away">{newMatch.awayFlag} {newMatch.awayTeam || 'Sân khách'} chấp</option>
-                    <option value="none">Đồng banh (Không chấp)</option>
                   </select>
                 </div>
-                {newMatch.handicapTeam !== 'none' && (
-                  <div className="form-group">
-                    <label className="form-label">Tỷ lệ chấp</label>
-                    <select
-                      className="form-input"
-                      value={newMatch.handicapValue}
-                      onChange={(e) => setNewMatch(prev => ({ ...prev, handicapValue: e.target.value }))}
-                    >
-                      <option value="0.25">0.25 (Đồng nửa)</option>
-                      <option value="0.5">0.5 (Nửa trái)</option>
-                      <option value="0.75">0.75 (Nửa một)</option>
-                      <option value="1.0">1.0 (Một hòa)</option>
-                      <option value="1.25">1.25 (Một thua nửa)</option>
-                      <option value="1.5">1.5 (Trái rưỡi)</option>
-                      <option value="1.75">1.75 (Trái rưỡi hai)</option>
-                      <option value="2.0">2.0 (Hai hòa)</option>
-                    </select>
-                  </div>
-                )}
+                <div className="form-group">
+                  <label className="form-label">Tỷ lệ chấp</label>
+                  <select
+                    className="form-input"
+                    value={newMatch.handicapValue}
+                    onChange={(e) => setNewMatch(prev => ({ ...prev, handicapValue: e.target.value }))}
+                  >
+                    <option value="0.5">0.5 (Nửa trái)</option>
+                    <option value="1.5">1.5 (Trái rưỡi)</option>
+                    <option value="2.5">2.5 (Hai trái rưỡi)</option>
+                    <option value="3.5">3.5 (Ba trái rưỡi)</option>
+                    <option value="4.5">4.5 (Bốn trái rưỡi)</option>
+                    <option value="5.5">5.5 (Năm trái rưỡi)</option>
+                  </select>
+                </div>
               </div>
 
               <div className="modal-footer">
@@ -601,11 +485,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
           </div>
         </div>
       )}
+
       {/* Edit Match Modal */}
       {showEditModal && editingMatch && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3 className="modal-title">Chỉnh Sửa Trận Đấu</h3>
+            <h3 className="modal-title">Chỉnh Sửa Trận Đấu & Kết Quả</h3>
             <form onSubmit={handleEditMatchSubmit}>
               <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
@@ -678,29 +563,64 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                   >
                     <option value="home">{editingMatch.homeFlag} {editingMatch.homeTeam || 'Sân nhà'} chấp</option>
                     <option value="away">{editingMatch.awayFlag} {editingMatch.awayTeam || 'Sân khách'} chấp</option>
-                    <option value="none">Đồng banh (Không chấp)</option>
                   </select>
                 </div>
-                {editingMatch.handicapTeam !== 'none' && (
-                  <div className="form-group">
-                    <label className="form-label">Tỷ lệ chấp</label>
-                    <select
-                      className="form-input"
-                      value={editingMatch.handicapValue}
-                      onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, handicapValue: e.target.value }) : null)}
-                    >
-                      <option value="0.25">0.25 (Đồng nửa)</option>
-                      <option value="0.5">0.5 (Nửa trái)</option>
-                      <option value="0.75">0.75 (Nửa một)</option>
-                      <option value="1.0">1.0 (Một hòa)</option>
-                      <option value="1.25">1.25 (Một thua nửa)</option>
-                      <option value="1.5">1.5 (Trái rưỡi)</option>
-                      <option value="1.75">1.75 (Trái rưỡi hai)</option>
-                      <option value="2.0">2.0 (Hai hòa)</option>
-                    </select>
-                  </div>
-                )}
+                <div className="form-group">
+                  <label className="form-label">Tỷ lệ chấp</label>
+                  <select
+                    className="form-input"
+                    value={editingMatch.handicapValue}
+                    onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, handicapValue: e.target.value }) : null)}
+                  >
+                    <option value="0.5">0.5 (Nửa trái)</option>
+                    <option value="1.5">1.5 (Trái rưỡi)</option>
+                    <option value="2.5">2.5 (Hai trái rưỡi)</option>
+                    <option value="3.5">3.5 (Ba trái rưỡi)</option>
+                    <option value="4.5">4.5 (Bốn trái rưỡi)</option>
+                    <option value="5.5">5.5 (Năm trái rưỡi)</option>
+                  </select>
+                </div>
               </div>
+
+              <div className="form-group" style={{ marginTop: '10px' }}>
+                <label className="form-label">Trạng thái trận đấu</label>
+                <select
+                  className="form-input"
+                  value={editingMatch.status}
+                  onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, status: e.target.value as any }) : null)}
+                >
+                  <option value="pending">Chưa diễn ra</option>
+                  <option value="live">Đang diễn ra</option>
+                  <option value="finished">Đã kết thúc</option>
+                </select>
+              </div>
+
+              {editingMatch.status !== 'pending' && (
+                <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '10px' }}>
+                  <div className="form-group">
+                    <label className="form-label">Tỷ số Chủ nhà ({editingMatch.homeTeam})</label>
+                    <input
+                      type="number"
+                      min="0"
+                      className="form-input"
+                      value={editingMatch.homeScore}
+                      onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, homeScore: e.target.value }) : null)}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Tỷ số Khách ({editingMatch.awayTeam})</label>
+                    <input
+                      type="number"
+                      min="0"
+                      className="form-input"
+                      value={editingMatch.awayScore}
+                      onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, awayScore: e.target.value }) : null)}
+                      required
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => { setShowEditModal(false); setEditingMatch(null); }}>

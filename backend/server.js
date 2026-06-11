@@ -517,6 +517,17 @@ app.post('/api/admin/matches', authenticate, requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'Vui lòng cung cấp đầy đủ thông tin trận đấu' });
   }
 
+  // Xác thực handicap
+  if (!['home', 'away'].includes(handicap.team)) {
+    return res.status(400).json({ error: 'Đội chấp handicap phải là home hoặc away (không được đồng banh)' });
+  }
+
+  const validHandicaps = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
+  const handicapValue = parseFloat(handicap.value);
+  if (!validHandicaps.includes(handicapValue)) {
+    return res.status(400).json({ error: 'Tỷ lệ chấp handicap chỉ được chấp nhận là: 0.5, 1.5, 2.5, 3.5, 4.5, 5.5' });
+  }
+
   const db = readDB();
   const newMatch = {
     id: `match_${Date.now()}`,
@@ -526,8 +537,8 @@ app.post('/api/admin/matches', authenticate, requireAdmin, (req, res) => {
     awayFlag,
     matchTime,
     handicap: {
-      team: handicap.team, // 'home' | 'away' | null
-      value: parseFloat(handicap.value) || 0
+      team: handicap.team,
+      value: handicapValue
     },
     status: 'pending',
     homeScore: null,
@@ -540,10 +551,10 @@ app.post('/api/admin/matches', authenticate, requireAdmin, (req, res) => {
   res.status(201).json({ message: 'Tạo trận đấu thành công', match: newMatch });
 });
 
-// 8. Chỉnh sửa trận đấu
+// 8. Chỉnh sửa trận đấu (Hỗ trợ chỉnh sửa toàn diện cả Tỷ số & Trạng thái thủ công)
 app.put('/api/admin/matches/:id', authenticate, requireAdmin, (req, res) => {
   const { id } = req.params;
-  const { homeTeam, awayTeam, homeFlag, awayFlag, matchTime, handicap } = req.body;
+  const { homeTeam, awayTeam, homeFlag, awayFlag, matchTime, handicap, status, homeScore, awayScore } = req.body;
 
   const db = readDB();
   const matchIndex = db.matches.findIndex(m => m.id === id);
@@ -553,8 +564,34 @@ app.put('/api/admin/matches/:id', authenticate, requireAdmin, (req, res) => {
   }
 
   const match = db.matches[matchIndex];
-  if (match.status !== 'pending') {
-    return res.status(400).json({ error: 'Không thể sửa trận đấu đã bắt đầu hoặc đã kết thúc' });
+
+  // Xác thực handicap nếu thay đổi
+  let newHandicap = match.handicap;
+  if (handicap) {
+    if (!['home', 'away'].includes(handicap.team)) {
+      return res.status(400).json({ error: 'Đội chấp handicap phải là home hoặc away (không được đồng banh)' });
+    }
+    const validHandicaps = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
+    const handicapValue = parseFloat(handicap.value);
+    if (!validHandicaps.includes(handicapValue)) {
+      return res.status(400).json({ error: 'Tỷ lệ chấp handicap chỉ được chấp nhận là: 0.5, 1.5, 2.5, 3.5, 4.5, 5.5' });
+    }
+    newHandicap = {
+      team: handicap.team,
+      value: handicapValue
+    };
+  }
+
+  let newStatus = status || match.status;
+  let parsedHome = homeScore !== undefined ? parseInt(homeScore) : match.homeScore;
+  let parsedAway = awayScore !== undefined ? parseInt(awayScore) : match.awayScore;
+
+  if (newStatus === 'live' || newStatus === 'finished') {
+    if (parsedHome === null || isNaN(parsedHome)) parsedHome = 0;
+    if (parsedAway === null || isNaN(parsedAway)) parsedAway = 0;
+  } else {
+    parsedHome = null;
+    parsedAway = null;
   }
 
   db.matches[matchIndex] = {
@@ -564,11 +601,25 @@ app.put('/api/admin/matches/:id', authenticate, requireAdmin, (req, res) => {
     homeFlag: homeFlag || match.homeFlag,
     awayFlag: awayFlag || match.awayFlag,
     matchTime: matchTime || match.matchTime,
-    handicap: handicap ? {
-      team: handicap.team,
-      value: parseFloat(handicap.value) || 0
-    } : match.handicap
+    handicap: newHandicap,
+    status: newStatus,
+    homeScore: parsedHome,
+    awayScore: parsedAway
   };
+
+  // Nếu trận đấu kết thúc, tính/tính lại điểm cho tất cả người dự đoán trận này
+  if (newStatus === 'finished') {
+    db.predictions = db.predictions.map(pred => {
+      if (pred.matchId === id) {
+        const points = calculatePoints(pred, parsedHome, parsedAway, newHandicap);
+        return {
+          ...pred,
+          ...points
+        };
+      }
+      return pred;
+    });
+  }
 
   writeDB(db);
   res.json({ message: 'Cập nhật trận đấu thành công', match: db.matches[matchIndex] });
