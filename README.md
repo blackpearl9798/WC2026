@@ -1,4 +1,6 @@
-# Dự Đoán World Cup 2026 - Giao Diện Công Ty
+# Dự Đoán World Cup 2026
+Dự án được deploy trên onrỏnender
+Dự án phục vụ cho mục đích giải trí, không thương mại, không tổ chức đánh bạc dưới mọi hình thức.
 Địa chỉ triển khai chính thức: [https://wc2026-vuive.onrender.com](https://wc2026-vuive.onrender.com)
 
 Currently, two official plugins are available:
