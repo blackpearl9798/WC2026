@@ -6,7 +6,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { ChatWidget } from './components/ChatWidget';
 import { StandingsView } from './components/StandingsView';
 import { AllPredictionsView } from './components/AllPredictionsView';
-import { Trophy, Award, Settings, LogOut, ShieldAlert, LayoutGrid, Users, User } from 'lucide-react';
+import { Trophy, Award, Settings, LogOut, ShieldAlert, LayoutGrid, Users, User, X } from 'lucide-react';
 
 // Avatar styling helper functions
 const getAvatarInitials = (name: string) => {
@@ -320,9 +320,41 @@ function App() {
       
       {/* Profile Modal */}
       {showProfileModal && (
-        <div className="modal-overlay" style={{ zIndex: 110 }}>
-          <div className="modal-content" style={{ maxWidth: '500px' }}>
-            <h3 className="modal-title">Thiết Lập Tài Khoản</h3>
+        <div className="modal-overlay" style={{ zIndex: 110 }} onClick={(e) => {
+          if (e.target === e.currentTarget) setShowProfileModal(false);
+        }}>
+          <div className="modal-content" style={{ maxWidth: '500px', maxHeight: '90vh', overflowY: 'auto', position: 'relative' }}>
+            <button
+              type="button"
+              onClick={() => setShowProfileModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--color-text-muted)',
+                cursor: 'pointer',
+                padding: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '50%',
+                transition: 'all 0.2s',
+                zIndex: 10
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--color-text-muted)';
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              <X size={20} />
+            </button>
+            <h3 className="modal-title" style={{ paddingRight: '24px' }}>Thiết Lập Tài Khoản</h3>
             
             {profileError && (
               <div className="alert alert-error" style={{ marginBottom: '16px' }}>
