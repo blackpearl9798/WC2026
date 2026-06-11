@@ -1,6 +1,5 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Dự Đoán World Cup 2026 - Giao Diện Công Ty
+Địa chỉ triển khai chính thức: [https://wc2026-vuive.onrender.com](https://wc2026-vuive.onrender.com)
 
 Currently, two official plugins are available:
 
