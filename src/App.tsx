@@ -195,7 +195,7 @@ function App() {
       <>
         <div className="ticker-wrap">
           <div className="ticker-content">
-            ⚠️ Disclaimer: Website được lập ra hoàn toàn cho mục đích giải trí, thử tài dự đoán bóng đá không mang tính chất thương mại. Chúng tôi không tổ chức cá cược và không sử dụng tiền thật dưới mọi hình thức
+            ⚠️ Disclaimer: Website được lập ra hoàn toàn cho mục đích giải trí, thử tài dự đoán bóng đá không mang tính chất thương mại. Cá độ bóng đá là vi phạm pháp luật – Hãy chơi thể thao bằng niềm đam mê lành mạnh!
           </div>
         </div>
         <Auth onAuthSuccess={handleAuthSuccess} />
@@ -207,7 +207,7 @@ function App() {
     <>
       <div className="ticker-wrap">
         <div className="ticker-content">
-          ⚠️ Disclaimer: Website được lập ra hoàn toàn cho mục đích giải trí, thử tài dự đoán bóng đá không mang tính chất thương mại. Chúng tôi không tổ chức cá cược và không sử dụng tiền thật dưới mọi hình thức
+          ⚠️ Disclaimer: Website được lập ra hoàn toàn cho mục đích giải trí, thử tài dự đoán bóng đá không mang tính chất thương mại. Cá độ bóng đá là vi phạm pháp luật – Hãy chơi thể thao bằng niềm đam mê lành mạnh!
         </div>
       </div>
       <div className="app-container">
