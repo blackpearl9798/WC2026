@@ -258,7 +258,14 @@ app.post('/api/auth/register', (req, res) => {
 
   res.status(201).json({
     message: 'Đăng ký thành công',
-    user: { id: newUser.id, username: newUser.username, fullName: newUser.fullName, isAdmin: newUser.isAdmin },
+    user: { 
+      id: newUser.id, 
+      username: newUser.username, 
+      fullName: newUser.fullName, 
+      isAdmin: newUser.isAdmin,
+      avatarColor: '',
+      avatarIcon: ''
+    },
     token
   });
 });
@@ -292,7 +299,14 @@ app.post('/api/auth/login', (req, res) => {
 
   res.json({
     message: 'Đăng nhập thành công',
-    user: { id: user.id, username: user.username, fullName: user.fullName, isAdmin: user.isAdmin },
+    user: { 
+      id: user.id, 
+      username: user.username, 
+      fullName: user.fullName, 
+      isAdmin: user.isAdmin,
+      avatarColor: user.avatarColor || '',
+      avatarIcon: user.avatarIcon || ''
+    },
     token
   });
 });
@@ -304,7 +318,51 @@ app.get('/api/auth/me', authenticate, (req, res) => {
       id: req.user.id,
       username: req.user.username,
       fullName: req.user.fullName,
-      isAdmin: req.user.isAdmin
+      isAdmin: req.user.isAdmin,
+      avatarColor: req.user.avatarColor || '',
+      avatarIcon: req.user.avatarIcon || ''
+    }
+  });
+});
+
+// 3.5 Cập nhật thông tin cá nhân (Profile: fullName, password, avatarColor, avatarIcon)
+app.put('/api/user/profile', authenticate, (req, res) => {
+  const { fullName, password, avatarColor, avatarIcon } = req.body;
+
+  if (!fullName || fullName.trim() === '') {
+    return res.status(400).json({ error: 'Họ và tên không được để trống' });
+  }
+
+  if (password && password.trim().length < 6) {
+    return res.status(400).json({ error: 'Mật khẩu mới phải có độ dài từ 6 ký tự trở lên' });
+  }
+
+  const db = readDB();
+  const user = db.users.find(u => u.id === req.user.id);
+
+  if (!user) {
+    return res.status(404).json({ error: 'Không tìm thấy người dùng' });
+  }
+
+  user.fullName = fullName.trim();
+  user.avatarColor = avatarColor || '';
+  user.avatarIcon = avatarIcon || '';
+
+  if (password && password.trim() !== '') {
+    user.password = password.trim();
+  }
+
+  writeDB(db);
+
+  res.json({
+    message: 'Cập nhật tài khoản thành công',
+    user: {
+      id: user.id,
+      username: user.username,
+      fullName: user.fullName,
+      isAdmin: user.isAdmin,
+      avatarColor: user.avatarColor || '',
+      avatarIcon: user.avatarIcon || ''
     }
   });
 });
@@ -446,7 +504,9 @@ app.get('/api/leaderboard', (req, res) => {
       correctPredictions,
       incorrectPredictions,
       unpredictedMatches,
-      totalPredictions: userPredictions.length
+      totalPredictions: userPredictions.length,
+      avatarColor: user.avatarColor || '',
+      avatarIcon: user.avatarIcon || ''
     };
   });
 
@@ -467,13 +527,24 @@ app.get('/api/leaderboard', (req, res) => {
 });
 
 
-// 6.5 Lấy danh sách tin nhắn chat
+// 6.5 Lấy danh sách tin nhắn chat (Ánh xạ động Họ tên và Avatar mới nhất)
 app.get('/api/chat', authenticate, (req, res) => {
   const db = readDB();
   if (!db.chat) {
     db.chat = [];
   }
-  res.json(db.chat.slice(-50));
+
+  const mappedChat = db.chat.map(msg => {
+    const user = db.users.find(u => u.id === msg.userId);
+    return {
+      ...msg,
+      username: user ? (user.fullName || user.username) : msg.username,
+      avatarColor: user ? (user.avatarColor || '') : '',
+      avatarIcon: user ? (user.avatarIcon || '') : ''
+    };
+  });
+
+  res.json(mappedChat.slice(-50));
 });
 
 // 6.6 Gửi tin nhắn chat mới

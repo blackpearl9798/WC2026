@@ -122,6 +122,24 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
     return name.slice(0, 2).toUpperCase();
   };
 
+  const getAvatarStyle = (colorClass: string, isNhotFallback = false) => {
+    if (!colorClass) {
+      if (isNhotFallback) {
+        return { background: 'linear-gradient(135deg, #ef4444, #b91c1c)', border: '1px solid rgba(239,68,68,0.3)', boxShadow: '0 0 10px rgba(239,68,68,0.2)' };
+      }
+      return { background: 'linear-gradient(135deg, #10b981, #047857)', border: '1px solid rgba(16,185,129,0.3)', boxShadow: '0 0 10px rgba(16,185,129,0.2)' };
+    }
+    switch (colorClass) {
+      case 'gradient-blue': return { background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', border: '1px solid rgba(59,130,246,0.3)', boxShadow: '0 0 10px rgba(59,130,246,0.2)' };
+      case 'gradient-purple': return { background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)', border: '1px solid rgba(139,92,246,0.3)', boxShadow: '0 0 10px rgba(139,92,246,0.2)' };
+      case 'gradient-red': return { background: 'linear-gradient(135deg, #ef4444, #b91c1c)', border: '1px solid rgba(239,68,68,0.3)', boxShadow: '0 0 10px rgba(239,68,68,0.2)' };
+      case 'gradient-orange': return { background: 'linear-gradient(135deg, #f97316, #c2410c)', border: '1px solid rgba(249,115,22,0.3)', boxShadow: '0 0 10px rgba(249,115,22,0.2)' };
+      case 'gradient-pink': return { background: 'linear-gradient(135deg, #ec4899, #be185d)', border: '1px solid rgba(236,72,153,0.3)', boxShadow: '0 0 10px rgba(236,72,153,0.2)' };
+      case 'gradient-gold': return { background: 'linear-gradient(135deg, #fbbf24, #b45309)', border: '1px solid rgba(251,191,36,0.3)', boxShadow: '0 0 10px rgba(251,191,36,0.2)' };
+      default: return { background: 'linear-gradient(135deg, #10b981, #047857)', border: '1px solid rgba(16,185,129,0.3)', boxShadow: '0 0 10px rgba(16,185,129,0.2)' };
+    }
+  };
+
   return (
     <div>
       <h2 style={{ fontFamily: 'var(--font-display)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -154,8 +172,8 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                   {topThreeDu[1] && (
                     <div className="podium-card second">
                       <span className="podium-rank">2</span>
-                      <div className="podium-avatar">
-                        {getAvatarInitials(topThreeDu[1].fullName || topThreeDu[1].username)}
+                      <div className="podium-avatar" style={getAvatarStyle(topThreeDu[1].avatarColor)}>
+                        {topThreeDu[1].avatarIcon ? topThreeDu[1].avatarIcon : getAvatarInitials(topThreeDu[1].fullName || topThreeDu[1].username)}
                       </div>
                       <div className="podium-name" title={topThreeDu[1].fullName || topThreeDu[1].username}>
                         {topThreeDu[1].fullName || topThreeDu[1].username}
@@ -169,8 +187,8 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                   {topThreeDu[0] && (
                     <div className="podium-card first">
                       <span className="podium-rank">👑</span>
-                      <div className="podium-avatar">
-                        {getAvatarInitials(topThreeDu[0].fullName || topThreeDu[0].username)}
+                      <div className="podium-avatar" style={getAvatarStyle(topThreeDu[0].avatarColor)}>
+                        {topThreeDu[0].avatarIcon ? topThreeDu[0].avatarIcon : getAvatarInitials(topThreeDu[0].fullName || topThreeDu[0].username)}
                       </div>
                       <div className="podium-name" title={topThreeDu[0].fullName || topThreeDu[0].username}>
                         {topThreeDu[0].fullName || topThreeDu[0].username}
@@ -184,8 +202,8 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                   {topThreeDu[2] && (
                     <div className="podium-card third">
                       <span className="podium-rank">3</span>
-                      <div className="podium-avatar">
-                        {getAvatarInitials(topThreeDu[2].fullName || topThreeDu[2].username)}
+                      <div className="podium-avatar" style={getAvatarStyle(topThreeDu[2].avatarColor)}>
+                        {topThreeDu[2].avatarIcon ? topThreeDu[2].avatarIcon : getAvatarInitials(topThreeDu[2].fullName || topThreeDu[2].username)}
                       </div>
                       <div className="podium-name" title={topThreeDu[2].fullName || topThreeDu[2].username}>
                         {topThreeDu[2].fullName || topThreeDu[2].username}
@@ -213,8 +231,8 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                   {topThreeNhot[1] && (
                     <div className="podium-card second" style={{ border: '1px solid rgba(239, 68, 68, 0.3)', background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.01) 100%)' }}>
                       <span className="podium-rank" style={{ borderColor: 'rgba(239, 68, 68, 0.5)', color: 'rgba(239, 68, 68, 0.8)' }}>2</span>
-                      <div className="podium-avatar" style={{ background: 'linear-gradient(135deg, #ef4444, #b91c1c)', borderColor: 'rgba(239, 68, 68, 0.4)' }}>
-                        {getAvatarInitials(topThreeNhot[1].fullName || topThreeNhot[1].username)}
+                      <div className="podium-avatar" style={getAvatarStyle(topThreeNhot[1].avatarColor, true)}>
+                        {topThreeNhot[1].avatarIcon ? topThreeNhot[1].avatarIcon : getAvatarInitials(topThreeNhot[1].fullName || topThreeNhot[1].username)}
                       </div>
                       <div className="podium-name" title={topThreeNhot[1].fullName || topThreeNhot[1].username}>
                         {topThreeNhot[1].fullName || topThreeNhot[1].username}
@@ -230,8 +248,8 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                   {topThreeNhot[0] && (
                     <div className="podium-card first" style={{ border: '1px solid var(--color-danger)', boxShadow: '0 0 15px rgba(239, 68, 68, 0.25)', background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.02) 100%)' }}>
                       <span className="podium-rank" style={{ borderColor: 'var(--color-danger)', color: 'var(--color-danger)' }}>💀</span>
-                      <div className="podium-avatar" style={{ background: 'linear-gradient(135deg, #f87171, #991b1b)', borderColor: 'var(--color-danger)', boxShadow: '0 0 15px rgba(239, 68, 68, 0.4)' }}>
-                        {getAvatarInitials(topThreeNhot[0].fullName || topThreeNhot[0].username)}
+                      <div className="podium-avatar" style={getAvatarStyle(topThreeNhot[0].avatarColor, true)}>
+                        {topThreeNhot[0].avatarIcon ? topThreeNhot[0].avatarIcon : getAvatarInitials(topThreeNhot[0].fullName || topThreeNhot[0].username)}
                       </div>
                       <div className="podium-name" title={topThreeNhot[0].fullName || topThreeNhot[0].username}>
                         {topThreeNhot[0].fullName || topThreeNhot[0].username}
@@ -247,8 +265,8 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                   {topThreeNhot[2] && (
                     <div className="podium-card third" style={{ border: '1px solid rgba(239, 68, 68, 0.2)', background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.01) 100%)' }}>
                       <span className="podium-rank" style={{ borderColor: 'rgba(239, 68, 68, 0.4)', color: 'rgba(239, 68, 68, 0.7)' }}>3</span>
-                      <div className="podium-avatar" style={{ background: 'linear-gradient(135deg, #dc2626, #7f1d1d)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
-                        {getAvatarInitials(topThreeNhot[2].fullName || topThreeNhot[2].username)}
+                      <div className="podium-avatar" style={getAvatarStyle(topThreeNhot[2].avatarColor, true)}>
+                        {topThreeNhot[2].avatarIcon ? topThreeNhot[2].avatarIcon : getAvatarInitials(topThreeNhot[2].fullName || topThreeNhot[2].username)}
                       </div>
                       <div className="podium-name" title={topThreeNhot[2].fullName || topThreeNhot[2].username}>
                         {topThreeNhot[2].fullName || topThreeNhot[2].username}
@@ -345,8 +363,8 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ onRefreshTrigg
                           )}
                         </td>
                         <td className="player-name-cell">
-                          <div className="player-avatar-small">
-                            {getAvatarInitials(player.fullName || player.username)}
+                          <div className="player-avatar-small" style={{ ...getAvatarStyle(player.avatarColor, rankingMode === 'nhot'), color: 'white' }}>
+                            {player.avatarIcon ? player.avatarIcon : getAvatarInitials(player.fullName || player.username)}
                           </div>
                           <span>
                             {player.fullName || player.username} {player.isAdmin && <span style={{ color: 'var(--color-secondary)', fontSize: '0.75rem', fontWeight: 600 }}>(Admin)</span>}

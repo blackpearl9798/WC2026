@@ -6,6 +6,27 @@ interface ChatWidgetProps {
   currentUser: any;
 }
 
+const getAvatarInitials = (name: string) => {
+  if (!name) return '?';
+  const parts = name.trim().split(' ');
+  if (parts.length > 1) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
+};
+
+const getAvatarStyle = (colorClass: string) => {
+  switch (colorClass) {
+    case 'gradient-blue': return { background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', border: '1px solid rgba(59,130,246,0.3)', boxShadow: '0 0 10px rgba(59,130,246,0.2)' };
+    case 'gradient-purple': return { background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)', border: '1px solid rgba(139,92,246,0.3)', boxShadow: '0 0 10px rgba(139,92,246,0.2)' };
+    case 'gradient-red': return { background: 'linear-gradient(135deg, #ef4444, #b91c1c)', border: '1px solid rgba(239,68,68,0.3)', boxShadow: '0 0 10px rgba(239,68,68,0.2)' };
+    case 'gradient-orange': return { background: 'linear-gradient(135deg, #f97316, #c2410c)', border: '1px solid rgba(249,115,22,0.3)', boxShadow: '0 0 10px rgba(249,115,22,0.2)' };
+    case 'gradient-pink': return { background: 'linear-gradient(135deg, #ec4899, #be185d)', border: '1px solid rgba(236,72,153,0.3)', boxShadow: '0 0 10px rgba(236,72,153,0.2)' };
+    case 'gradient-gold': return { background: 'linear-gradient(135deg, #fbbf24, #b45309)', border: '1px solid rgba(251,191,36,0.3)', boxShadow: '0 0 10px rgba(251,191,36,0.2)' };
+    default: return { background: 'linear-gradient(135deg, #10b981, #047857)', border: '1px solid rgba(16,185,129,0.3)', boxShadow: '0 0 10px rgba(16,185,129,0.2)' };
+  }
+};
+
 export const ChatWidget: React.FC<ChatWidgetProps> = ({ token, currentUser }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
@@ -13,6 +34,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ token, currentUser }) =>
   const [sending, setSending] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const lastMessageCountRef = useRef<number | null>(null);
 
   const fetchMessages = async () => {
     if (!token) return;
@@ -23,6 +45,9 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ token, currentUser }) =>
       if (response.ok) {
         const data = await response.json();
         setMessages(data);
+        if (lastMessageCountRef.current === null) {
+          lastMessageCountRef.current = data.length;
+        }
       }
     } catch (err) {
       console.error('Lỗi tải tin nhắn chat:', err);
@@ -49,6 +74,13 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ token, currentUser }) =>
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isOpen]);
+
+  // Update last message count when chat is open
+  useEffect(() => {
+    if (isOpen) {
+      lastMessageCountRef.current = messages.length;
+    }
+  }, [isOpen, messages.length]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,11 +122,16 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ token, currentUser }) =>
     }
   };
 
+  const unreadCount = isOpen ? 0 : Math.max(0, messages.length - (lastMessageCountRef.current ?? messages.length));
+
   return (
     <>
       {/* Floating Action Button */}
       <div className="floating-chat-bubble" onClick={() => setIsOpen(prev => !prev)} title="Tán gẫu công ty">
         <MessageSquare size={24} />
+        {!isOpen && unreadCount > 0 && (
+          <span className="chat-badge">{unreadCount}</span>
+        )}
       </div>
 
       {/* Expanded Chat Window */}
@@ -116,10 +153,18 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ token, currentUser }) =>
             {messages.length > 0 ? (
               messages.map((msg: any) => {
                 const isMe = msg.userId === currentUser.id;
+                // Use current user's profile details if they've updated, otherwise fall back to msg fields
+                const displayColor = isMe ? (currentUser.avatarColor || msg.avatarColor || '') : (msg.avatarColor || '');
+                const displayIcon = isMe ? (currentUser.avatarIcon || msg.avatarIcon || '') : (msg.avatarIcon || '');
+                const displayName = isMe ? 'Bạn' : msg.username;
+
                 return (
                   <div key={msg.id} className={`chat-message-item ${isMe ? 'me' : ''}`}>
-                    <div className="chat-message-info">
-                      <span className="chat-message-user">{isMe ? 'Bạn' : msg.username}</span>
+                    <div className="chat-message-info" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div className="player-avatar-small" style={{ ...getAvatarStyle(displayColor), width: '18px', height: '18px', fontSize: '0.6rem', color: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        {displayIcon ? displayIcon : getAvatarInitials(isMe ? (currentUser.fullName || currentUser.username) : msg.username)}
+                      </div>
+                      <span className="chat-message-user">{displayName}</span>
                       {msg.department && <span className="chat-message-dept">({msg.department})</span>}
                     </div>
                     <div className="chat-message-text">{msg.message}</div>
@@ -154,3 +199,4 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ token, currentUser }) =>
     </>
   );
 };
+

@@ -6,7 +6,29 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { ChatWidget } from './components/ChatWidget';
 import { StandingsView } from './components/StandingsView';
 import { AllPredictionsView } from './components/AllPredictionsView';
-import { Trophy, Award, Settings, LogOut, ShieldAlert, LayoutGrid, Users } from 'lucide-react';
+import { Trophy, Award, Settings, LogOut, ShieldAlert, LayoutGrid, Users, User } from 'lucide-react';
+
+// Avatar styling helper functions
+const getAvatarInitials = (name: string) => {
+  if (!name) return '?';
+  const parts = name.trim().split(' ');
+  if (parts.length > 1) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
+};
+
+const getAvatarStyle = (colorClass: string) => {
+  switch (colorClass) {
+    case 'gradient-blue': return { background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', border: '1px solid rgba(59,130,246,0.3)', boxShadow: '0 0 10px rgba(59,130,246,0.2)' };
+    case 'gradient-purple': return { background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)', border: '1px solid rgba(139,92,246,0.3)', boxShadow: '0 0 10px rgba(139,92,246,0.2)' };
+    case 'gradient-red': return { background: 'linear-gradient(135deg, #ef4444, #b91c1c)', border: '1px solid rgba(239,68,68,0.3)', boxShadow: '0 0 10px rgba(239,68,68,0.2)' };
+    case 'gradient-orange': return { background: 'linear-gradient(135deg, #f97316, #c2410c)', border: '1px solid rgba(249,115,22,0.3)', boxShadow: '0 0 10px rgba(249,115,22,0.2)' };
+    case 'gradient-pink': return { background: 'linear-gradient(135deg, #ec4899, #be185d)', border: '1px solid rgba(236,72,153,0.3)', boxShadow: '0 0 10px rgba(236,72,153,0.2)' };
+    case 'gradient-gold': return { background: 'linear-gradient(135deg, #fbbf24, #b45309)', border: '1px solid rgba(251,191,36,0.3)', boxShadow: '0 0 10px rgba(251,191,36,0.2)' };
+    default: return { background: 'linear-gradient(135deg, #10b981, #047857)', border: '1px solid rgba(16,185,129,0.3)', boxShadow: '0 0 10px rgba(16,185,129,0.2)' };
+  }
+};
 
 function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem('wc_token'));
@@ -85,6 +107,80 @@ function App() {
     setRefreshTrigger(prev => prev + 1);
   };
 
+  // Profile form states
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    fullName: '',
+    password: '',
+    confirmPassword: '',
+    avatarColor: '',
+    avatarIcon: ''
+  });
+  const [profileSubmitting, setProfileSubmitting] = useState(false);
+  const [profileError, setProfileError] = useState('');
+  const [profileSuccess, setProfileSuccess] = useState('');
+
+  const openProfileModal = () => {
+    setProfileForm({
+      fullName: user ? (user.fullName || '') : '',
+      password: '',
+      confirmPassword: '',
+      avatarColor: user ? (user.avatarColor || 'gradient-emerald') : 'gradient-emerald',
+      avatarIcon: user ? (user.avatarIcon || '') : ''
+    });
+    setProfileError('');
+    setProfileSuccess('');
+    setShowProfileModal(true);
+  };
+
+  const handleProfileUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setProfileError('');
+    setProfileSuccess('');
+
+    if (profileForm.password && profileForm.password !== profileForm.confirmPassword) {
+      setProfileError('Xác nhận mật khẩu mới không khớp');
+      return;
+    }
+
+    setProfileSubmitting(true);
+
+    try {
+      const response = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          fullName: profileForm.fullName,
+          password: profileForm.password || undefined,
+          avatarColor: profileForm.avatarColor,
+          avatarIcon: profileForm.avatarIcon
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Lỗi cập nhật hồ sơ');
+      }
+
+      setProfileSuccess('Cập nhật tài khoản thành công!');
+      setUser(data.user); // Cập nhật thông tin user trong state React
+      
+      // Đóng modal sau 1.2s
+      setTimeout(() => {
+        setShowProfileModal(false);
+        setProfileSuccess('');
+      }, 1200);
+
+    } catch (err: any) {
+      setProfileError(err.message || 'Lỗi kết nối.');
+    } finally {
+      setProfileSubmitting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', color: 'var(--color-primary)' }}>
@@ -126,19 +222,30 @@ function App() {
         </div>
 
         <div className="user-status">
-          <div className="user-badge">
-            <span>Chào,</span>
-            <span className="user-name">{user.fullName || user.username}</span>
+          <div className="user-badge" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div className="player-avatar-small" style={{ ...getAvatarStyle(user.avatarColor || ''), width: '28px', height: '28px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'white', borderRadius: '50%', flexShrink: 0 }}>
+              {user.avatarIcon ? user.avatarIcon : getAvatarInitials(user.fullName || user.username)}
+            </div>
+            <div>
+              <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', display: 'block', lineHeight: 1.1 }}>Chào,</span>
+              <span className="user-name" style={{ fontWeight: 600, display: 'block', fontSize: '0.85rem', lineHeight: 1.1 }}>{user.fullName || user.username}</span>
+            </div>
             {user.isAdmin && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', fontSize: '0.7rem', background: 'rgba(251, 191, 36, 0.15)', color: 'var(--color-secondary)', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', fontSize: '0.65rem', background: 'rgba(251, 191, 36, 0.15)', color: 'var(--color-secondary)', padding: '2px 4px', borderRadius: '4px', fontWeight: 600, marginLeft: '4px' }}>
                 <ShieldAlert size={10} /> Admin
               </span>
             )}
           </div>
 
-          <button type="button" className="btn-secondary" style={{ padding: '8px 12px', fontSize: '0.85rem' }} onClick={handleLogout} title="Đăng xuất">
-            <LogOut size={14} /> <span style={{ marginLeft: '4px' }}>Đăng xuất</span>
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button type="button" className="btn-secondary" style={{ padding: '8px 12px', fontSize: '0.85rem' }} onClick={openProfileModal} title="Thiết lập tài khoản">
+              <User size={14} /> <span style={{ marginLeft: '4px' }}>Tài khoản</span>
+            </button>
+
+            <button type="button" className="btn-secondary" style={{ padding: '8px 12px', fontSize: '0.85rem' }} onClick={handleLogout} title="Đăng xuất">
+              <LogOut size={14} /> <span style={{ marginLeft: '4px' }}>Đăng xuất</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -210,6 +317,176 @@ function App() {
         )}
       </main>
       <ChatWidget token={token} currentUser={user} />
+      
+      {/* Profile Modal */}
+      {showProfileModal && (
+        <div className="modal-overlay" style={{ zIndex: 110 }}>
+          <div className="modal-content" style={{ maxWidth: '500px' }}>
+            <h3 className="modal-title">Thiết Lập Tài Khoản</h3>
+            
+            {profileError && (
+              <div className="alert alert-error" style={{ marginBottom: '16px' }}>
+                <span>⚠️</span>
+                <span>{profileError}</span>
+              </div>
+            )}
+
+            {profileSuccess && (
+              <div className="alert alert-success" style={{ marginBottom: '16px' }}>
+                <span>✅</span>
+                <span>{profileSuccess}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleProfileUpdate}>
+              <div className="form-group">
+                <label className="form-label">Tên đăng nhập (Không thể đổi)</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={user.username}
+                  disabled
+                  style={{ opacity: 0.5, cursor: 'not-allowed' }}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Họ và Tên hiển thị</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={profileForm.fullName}
+                  onChange={(e) => setProfileForm(prev => ({ ...prev, fullName: e.target.value }))}
+                  placeholder="Ví dụ: Nguyễn Văn A"
+                  required
+                />
+              </div>
+
+              {/* Avatar Builder */}
+              <div className="form-group" style={{ background: 'rgba(255,255,255,0.02)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)', marginBottom: '16px' }}>
+                <label className="form-label" style={{ marginBottom: '12px', display: 'block', fontWeight: 'bold', color: 'var(--color-secondary)' }}>🎨 TỰ THIẾT KẾ BADGE ĐẠI DIỆN</label>
+                
+                {/* Live Preview */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px', background: 'rgba(0,0,0,0.2)', padding: '12px', borderRadius: '6px' }}>
+                  <div className="player-avatar-small" style={{ ...getAvatarStyle(profileForm.avatarColor), width: '50px', height: '50px', fontSize: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', borderRadius: '50%', fontWeight: 'bold' }}>
+                    {profileForm.avatarIcon ? profileForm.avatarIcon : getAvatarInitials(profileForm.fullName || user.username)}
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', display: 'block' }}>Xem trước ảnh đại diện</span>
+                    <span style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>{profileForm.fullName || user.username}</span>
+                  </div>
+                </div>
+
+                {/* Background color selectors */}
+                <div style={{ marginBottom: '12px' }}>
+                  <label className="form-label" style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>1. Chọn màu nền Gradient:</label>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '6px' }}>
+                    {[
+                      { class: 'gradient-emerald', label: 'Xanh' },
+                      { class: 'gradient-blue', label: 'Lam' },
+                      { class: 'gradient-purple', label: 'Tím' },
+                      { class: 'gradient-orange', label: 'Cam' },
+                      { class: 'gradient-red', label: 'Đỏ' },
+                      { class: 'gradient-pink', label: 'Hồng' },
+                      { class: 'gradient-gold', label: 'Vàng' }
+                    ].map(item => (
+                      <button
+                        key={item.class}
+                        type="button"
+                        onClick={() => setProfileForm(prev => ({ ...prev, avatarColor: item.class }))}
+                        style={{
+                          ...getAvatarStyle(item.class),
+                          padding: '6px 12px',
+                          border: profileForm.avatarColor === item.class ? '2px solid white' : '1px solid transparent',
+                          borderRadius: '4px',
+                          color: 'white',
+                          fontSize: '0.75rem',
+                          fontWeight: 'bold',
+                          cursor: 'pointer',
+                          boxShadow: profileForm.avatarColor === item.class ? '0 0 10px rgba(255,255,255,0.4)' : 'none'
+                        }}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Icon selectors */}
+                <div>
+                  <label className="form-label" style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>2. Chọn biểu tượng hiển thị:</label>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '6px' }}>
+                    {[
+                      { icon: '', label: 'Chữ cái' },
+                      { icon: '⚽', label: 'Bóng' },
+                      { icon: '🏆', label: 'Cúp' },
+                      { icon: '👑', label: 'Miện' },
+                      { icon: '⚡', label: 'Sét' },
+                      { icon: '🔥', label: 'Lửa' },
+                      { icon: '🛡️', label: 'Khiên' },
+                      { icon: '🦁', label: 'Sư tử' }
+                    ].map(item => (
+                      <button
+                        key={item.icon}
+                        type="button"
+                        onClick={() => setProfileForm(prev => ({ ...prev, avatarIcon: item.icon }))}
+                        style={{
+                          padding: '6px 10px',
+                          background: profileForm.avatarIcon === item.icon ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.03)',
+                          border: profileForm.avatarIcon === item.icon ? '1px solid var(--color-primary)' : '1px solid var(--border-color)',
+                          color: 'white',
+                          borderRadius: '4px',
+                          fontSize: '0.75rem',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {item.icon ? `${item.icon} ${item.label}` : item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Password Section */}
+              <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', paddingTop: '16px', marginTop: '16px' }}>
+                <h4 style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '10px' }}>Thay đổi mật khẩu (Bỏ trống nếu không muốn đổi)</h4>
+                
+                <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="form-group">
+                    <label className="form-label">Mật khẩu mới</label>
+                    <input
+                      type="password"
+                      className="form-input"
+                      value={profileForm.password}
+                      onChange={(e) => setProfileForm(prev => ({ ...prev, password: e.target.value }))}
+                      placeholder="Tối thiểu 6 ký tự"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Xác nhận mật khẩu mới</label>
+                    <input
+                      type="password"
+                      className="form-input"
+                      value={profileForm.confirmPassword}
+                      onChange={(e) => setProfileForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                      placeholder="Nhập lại mật khẩu mới"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="modal-footer" style={{ marginTop: '20px' }}>
+                <button type="button" className="btn-secondary" onClick={() => setShowProfileModal(false)}>
+                  Hủy bỏ
+                </button>
+                <button type="submit" className="save-prediction-btn" style={{ width: 'auto' }} disabled={profileSubmitting}>
+                  {profileSubmitting ? 'Đang lưu...' : 'Lưu Thay Đổi'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
     </>
   );
