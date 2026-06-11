@@ -386,6 +386,11 @@ app.get('/api/matches', authenticate, (req, res) => {
     const myPrediction = db.predictions.find(p => p.userId === userId && p.matchId === match.id);
     const locked = isMatchLocked(match);
 
+    // Tính tổng số lượng dự đoán của mỗi đội bóng để phục vụ Prediction Ratio Bar
+    const allPreds = db.predictions.filter(p => p.matchId === match.id);
+    const homeCount = allPreds.filter(p => p.predictedHandicapWinner === 'home').length;
+    const awayCount = allPreds.filter(p => p.predictedHandicapWinner === 'away').length;
+
     // Thu thập dự đoán của người khác
     let otherPredictions = [];
     if (locked) {
@@ -395,7 +400,7 @@ app.get('/api/matches', authenticate, (req, res) => {
         .map(p => {
           const user = db.users.find(u => u.id === p.userId);
           return {
-            username: user ? user.username : 'Người dùng ẩn',
+            username: user ? (user.fullName || user.username) : 'Người dùng ẩn',
             department: user ? user.department : '',
             predictedHandicapWinner: p.predictedHandicapWinner,
             pointsTotal: p.pointsTotal
@@ -412,7 +417,12 @@ app.get('/api/matches', authenticate, (req, res) => {
         pointsHandicap: myPrediction.pointsHandicap,
         pointsTotal: myPrediction.pointsTotal
       } : null,
-      otherPredictions
+      otherPredictions,
+      predictionStats: {
+        homeCount,
+        awayCount,
+        total: homeCount + awayCount
+      }
     };
   });
 

@@ -49,16 +49,33 @@
 
 body {
   font-family: var(--font-primary);
-  background-color: var(--bg-main);
+  background-color: #030a06;
   color: var(--color-text-main);
   line-height: 1.5;
   background-image: 
-    radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(251, 191, 36, 0.06) 0%, transparent 40%),
-    linear-gradient(rgba(6, 19, 13, 0.95), rgba(6, 19, 13, 0.98));
+    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.16) 0%, transparent 60%),
+    radial-gradient(circle at 20% 100%, rgba(59, 130, 246, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 80% 100%, rgba(251, 191, 36, 0.05) 0%, transparent 40%),
+    linear-gradient(180deg, #06130d 0%, #020906 100%);
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Stadium light particles overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  opacity: 0.12;
+  z-index: 0;
 }
 
 /* Typography */
@@ -2094,3 +2111,68 @@ h1, h2, h3, h4, h5, h6 {
     display: none;
   }
 }
+
+/* Match Ticket Styles */
+.match-card-divider {
+  border-top: 1px dashed rgba(16, 185, 129, 0.25);
+  margin: 18px -24px;
+  position: relative;
+  height: 0;
+}
+
+@media (max-width: 600px) {
+  .match-card-divider {
+    margin: 18px -20px;
+  }
+}
+
+.match-card-divider::before,
+.match-card-divider::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #030a06; /* Matches stadium body background */
+  border: 1px solid var(--border-color);
+  z-index: 2;
+  transition: border-color var(--transition-normal);
+}
+
+.match-card-divider::before {
+  left: -9px;
+  border-left-color: transparent !important;
+}
+
+.match-card-divider::after {
+  right: -9px;
+  border-right-color: transparent !important;
+}
+
+.match-card:hover .match-card-divider::before {
+  border-color: var(--border-color-glow);
+  border-left-color: transparent !important;
+}
+
+.match-card:hover .match-card-divider::after {
+  border-color: var(--border-color-glow);
+  border-right-color: transparent !important;
+}
+
+/* Tab transition animation */
+.tab-transition-container {
+  animation: tabFadeSlide 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes tabFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

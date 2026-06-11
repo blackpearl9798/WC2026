@@ -265,6 +265,49 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
         🕒 Khai cuộc: {formatDate(match.matchTime)} | Handicap: <span style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>{getHandicapText(match.handicap, match.homeTeam, match.awayTeam)}</span>
       </div>
 
+      {/* Prediction Ratio Bar */}
+      {(() => {
+        const stats = match.predictionStats || { homeCount: 0, awayCount: 0, total: 0 };
+        const total = stats.total;
+        const homePercent = total > 0 ? Math.round((stats.homeCount / total) * 100) : 50;
+        const awayPercent = total > 0 ? Math.round((stats.awayCount / total) * 100) : 50;
+        return (
+          <div className="prediction-ratio-container" style={{ margin: '14px auto', maxWidth: '440px', width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '6px', fontWeight: 600 }}>
+              <span style={{ color: homePercent >= awayPercent ? 'var(--color-primary)' : 'inherit', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <FlagIcon flag={match.homeFlag} style={{ width: '16px', height: '10px' }} /> {match.homeTeam}: {homePercent}%
+              </span>
+              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.65rem', fontWeight: 'normal' }}>
+                {total > 0 ? `Đã có ${total} người dự đoán` : 'Chưa có dự đoán nào'}
+              </span>
+              <span style={{ color: awayPercent >= homePercent ? 'var(--color-secondary)' : 'inherit', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                {awayPercent}% : {match.awayTeam} <FlagIcon flag={match.awayFlag} style={{ width: '16px', height: '10px' }} />
+              </span>
+            </div>
+            <div style={{ 
+              height: '6px', 
+              width: '100%', 
+              background: 'rgba(0,0,0,0.4)', 
+              borderRadius: '3px', 
+              overflow: 'hidden', 
+              display: 'flex',
+              border: '1px solid rgba(255,255,255,0.03)'
+            }}>
+              <div style={{ 
+                width: `${homePercent}%`, 
+                background: 'linear-gradient(90deg, #10b981, #059669)', 
+                transition: 'width 0.5s ease-in-out'
+              }} />
+              <div style={{ 
+                width: `${awayPercent}%`, 
+                background: 'linear-gradient(90deg, #fbbf24, #d97706)', 
+                transition: 'width 0.5s ease-in-out'
+              }} />
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Prediction inputs inside Hero Card */}
       <div className="hero-prediction-box">
         <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '8px', fontWeight: 600, textAlign: 'center' }}>
@@ -515,6 +558,49 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                     Tỷ lệ Handicap: <span className="handicap-highlight">{getHandicapText(match.handicap, match.homeTeam, match.awayTeam)}</span>
                   </div>
 
+                  {/* Prediction Ratio Bar */}
+                  {(() => {
+                    const stats = match.predictionStats || { homeCount: 0, awayCount: 0, total: 0 };
+                    const total = stats.total;
+                    const homePercent = total > 0 ? Math.round((stats.homeCount / total) * 100) : 50;
+                    const awayPercent = total > 0 ? Math.round((stats.awayCount / total) * 100) : 50;
+                    return (
+                      <div className="prediction-ratio-container" style={{ margin: '12px 0 10px 0' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '4px', fontWeight: 600 }}>
+                          <span style={{ color: homePercent >= awayPercent ? 'var(--color-primary)' : 'inherit' }}>
+                            {match.homeTeam}: {homePercent}%
+                          </span>
+                          <span style={{ color: 'var(--color-text-muted)', fontSize: '0.65rem', fontWeight: 'normal' }}>
+                            {total > 0 ? `Đã có ${total} người dự đoán` : 'Chưa có dự đoán'}
+                          </span>
+                          <span style={{ color: awayPercent >= homePercent ? 'var(--color-secondary)' : 'inherit' }}>
+                            {awayPercent}% : {match.awayTeam}
+                          </span>
+                        </div>
+                        <div style={{ 
+                          height: '6px', 
+                          width: '100%', 
+                          background: 'rgba(255,255,255,0.05)', 
+                          borderRadius: '3px', 
+                          overflow: 'hidden', 
+                          display: 'flex',
+                          border: '1px solid rgba(255,255,255,0.03)'
+                         }}>
+                          <div style={{ 
+                            width: `${homePercent}%`, 
+                            background: 'linear-gradient(90deg, #10b981, #059669)', 
+                            transition: 'width 0.5s ease-in-out'
+                          }} />
+                          <div style={{ 
+                            width: `${awayPercent}%`, 
+                            background: 'linear-gradient(90deg, #fbbf24, #d97706)', 
+                            transition: 'width 0.5s ease-in-out'
+                          }} />
+                        </div>
+                      </div>
+                    );
+                  })()}
+
                   {/* Seeded stats summary for Match Card */}
                   <div className="match-stats-summary" style={{
                     display: 'flex',
@@ -571,12 +657,15 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                           }}>{res}</span>
                         ))}
                       </div>
-                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.65rem' }}>P.Độ</span>
-                    </div>
+                    <span style={{ color: 'var(--color-text-muted)', fontSize: '0.65rem' }}>P.Độ</span>
                   </div>
+                </div>
 
-                  {/* Prediction Form Section */}
-                  <div className="prediction-section">
+                {/* Ticket Divider with punches */}
+                <div className="match-card-divider" />
+
+                {/* Prediction Form Section */}
+                <div className="prediction-section">
                     <p className="prediction-title">
                       {locked ? (
                         <span style={{ color: 'var(--color-danger)', display: 'flex', alignItems: 'center', gap: '4px' }}>

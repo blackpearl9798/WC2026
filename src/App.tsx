@@ -294,8 +294,8 @@ function App() {
         )}
       </nav>
 
-      {/* Active Tab View */}
-      <main>
+      {/* Active Tab View with Transition */}
+      <main className="tab-transition-container" key={activeTab}>
         {activeTab === 'matches' && (
           <MatchCenter matches={matches} token={token} onRefresh={triggerRefresh} />
         )}
