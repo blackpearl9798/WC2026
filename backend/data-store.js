@@ -156,8 +156,9 @@ export function readDB() {
       needsMigration = true;
     } else {
       const hasMissingGroup = db.matches.some(m => !m.group);
+      const hasMissingStadium = db.matches.some(m => !m.stadium);
       const zeroHandicapCount = db.matches.filter(m => !m.handicap || (m.handicap.team === null && m.handicap.value === 0)).length;
-      if (hasMissingGroup || zeroHandicapCount > 10) {
+      if (hasMissingGroup || zeroHandicapCount > 10 || hasMissingStadium) {
         needsMigration = true;
       }
     }
