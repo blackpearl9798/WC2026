@@ -87,6 +87,93 @@ interface MatchCenterProps {
   onRefresh: () => void;
 }
 
+const MatchCountdown: React.FC<{ matchTime: string; onZero?: () => void; isMini?: boolean }> = ({ matchTime, onZero, isMini }) => {
+  const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number } | null>(null);
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const difference = new Date(matchTime).getTime() - Date.now();
+      if (difference <= 0) {
+        setTimeLeft(null);
+        if (onZero) onZero();
+        return;
+      }
+
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((difference / 1000 / 60) % 60);
+      const seconds = Math.floor((difference / 1000) % 60);
+
+      setTimeLeft({ days, hours, minutes, seconds });
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, [matchTime]);
+
+  if (!timeLeft) {
+    return (
+      <div className="countdown-locked" style={{ fontSize: isMini ? '0.75rem' : '0.9rem', color: 'var(--color-danger)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center', margin: isMini ? '4px 0' : '28px auto' }}>
+        <Lock size={isMini ? 12 : 16} /> Trận đấu đã bắt đầu hoặc đang diễn ra!
+      </div>
+    );
+  }
+
+  if (isMini) {
+    const daysStr = timeLeft.days > 0 ? `${timeLeft.days}d ` : '';
+    const hrs = timeLeft.hours.toString().padStart(2, '0');
+    const mins = timeLeft.minutes.toString().padStart(2, '0');
+    const secs = timeLeft.seconds.toString().padStart(2, '0');
+    return (
+      <div className="mini-countdown-wrap" style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        gap: '6px', 
+        background: 'rgba(16, 185, 129, 0.05)', 
+        border: '1px solid rgba(16, 185, 129, 0.15)', 
+        borderRadius: '6px', 
+        padding: '4px 8px', 
+        fontSize: '0.75rem', 
+        color: 'var(--color-primary)', 
+        fontFamily: 'monospace',
+        fontWeight: 'bold',
+        margin: '6px 0',
+        boxShadow: '0 0 5px rgba(16, 185, 129, 0.1)'
+      }}>
+        <Clock size={12} style={{ color: 'var(--color-primary)' }} />
+        <span>Còn: {daysStr}{hrs}:{mins}:{secs}</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="countdown-container">
+      <div className="countdown-segment">
+        <span className="countdown-digit">{timeLeft.days.toString().padStart(2, '0')}</span>
+        <span className="countdown-label">NGÀY</span>
+      </div>
+      <span className="countdown-colon">:</span>
+      <div className="countdown-segment">
+        <span className="countdown-digit">{timeLeft.hours.toString().padStart(2, '0')}</span>
+        <span className="countdown-label">GIỜ</span>
+      </div>
+      <span className="countdown-colon">:</span>
+      <div className="countdown-segment">
+        <span className="countdown-digit">{timeLeft.minutes.toString().padStart(2, '0')}</span>
+        <span className="countdown-label">PHÚT</span>
+      </div>
+      <span className="countdown-colon">:</span>
+      <div className="countdown-segment">
+        <span className="countdown-digit countdown-sec-neon">{timeLeft.seconds.toString().padStart(2, '0')}</span>
+        <span className="countdown-label">GIÂY</span>
+      </div>
+    </div>
+  );
+};
+
 // Subcomponent for the hero countdown match card
 interface FeaturedMatchHeroProps {
   match: any;
@@ -111,31 +198,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
   getHandicapButtonLabel,
   formatDate
 }) => {
-  const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number } | null>(null);
-
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = new Date(match.matchTime).getTime() - Date.now();
-      if (difference <= 0) {
-        setTimeLeft(null);
-        onRefresh(); // Lock prediction once time starts
-        return;
-      }
-
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((difference / 1000 / 60) % 60);
-      const seconds = Math.floor((difference / 1000) % 60);
-
-      setTimeLeft({ days, hours, minutes, seconds });
-    };
-
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
-
-    return () => clearInterval(timer);
-  }, [match.matchTime, onRefresh]);
-
+  const locked = match.isLocked || new Date(match.matchTime).getTime() <= Date.now();
   const myPred = match.myPrediction;
   const local = localPreds[match.id];
   const curWinner = local ? local.winner : (myPred ? myPred.predictedHandicapWinner : 'home');
@@ -232,34 +295,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
       </div>
 
       {/* Countdown Timer */}
-      {timeLeft ? (
-        <div className="countdown-container">
-          <div className="countdown-segment">
-            <span className="countdown-digit">{timeLeft.days.toString().padStart(2, '0')}</span>
-            <span className="countdown-label">NGÀY</span>
-          </div>
-          <span className="countdown-colon">:</span>
-          <div className="countdown-segment">
-            <span className="countdown-digit">{timeLeft.hours.toString().padStart(2, '0')}</span>
-            <span className="countdown-label">GIỜ</span>
-          </div>
-          <span className="countdown-colon">:</span>
-          <div className="countdown-segment">
-            <span className="countdown-digit">{timeLeft.minutes.toString().padStart(2, '0')}</span>
-            <span className="countdown-label">PHÚT</span>
-          </div>
-          <span className="countdown-colon">:</span>
-          <div className="countdown-segment">
-            <span className="countdown-digit countdown-sec-neon">{timeLeft.seconds.toString().padStart(2, '0')}</span>
-            <span className="countdown-label">GIÂY</span>
-          </div>
-        </div>
-      ) : (
-        <div className="countdown-locked">
-          <Clock size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
-          Trận đấu đã bắt đầu hoặc đang diễn ra!
-        </div>
-      )}
+      <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} />
 
       <div className="hero-match-info-bar">
         🕒 Khai cuộc: {formatDate(match.matchTime)} | Handicap: <span style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>{getHandicapText(match.handicap, match.homeTeam, match.awayTeam)}</span>
@@ -309,53 +345,72 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
       })()}
 
       {/* Prediction inputs inside Hero Card */}
-      <div className="hero-prediction-box">
-        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '8px', fontWeight: 600, textAlign: 'center' }}>
-          DỰ ĐOÁN ĐỘI THẮNG KÈO HANDICAP:
-        </div>
-        <div className="handicap-predict-row" style={{ gap: '12px' }}>
-          <button
-            type="button"
-            className={`handicap-opt-btn ${curWinner === 'home' ? 'active' : ''}`}
-            onClick={() => handleHandicapChange(match.id, 'home')}
-          >
-            <span style={{ fontSize: '0.75rem', opacity: 0.6 }}>Sân nhà</span>
-            <span style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
-              <FlagIcon flag={match.homeFlag} />
-              {getHandicapButtonLabel(match, 'home')}
-            </span>
-          </button>
-          <button
-            type="button"
-            className={`handicap-opt-btn ${curWinner === 'away' ? 'active' : ''}`}
-            onClick={() => handleHandicapChange(match.id, 'away')}
-          >
-            <span style={{ fontSize: '0.75rem', opacity: 0.6 }}>Sân khách</span>
-            <span style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
-              <FlagIcon flag={match.awayFlag} />
-              {getHandicapButtonLabel(match, 'away')}
-            </span>
-          </button>
-        </div>
-
-        {hasSavedPrediction && (
-          <div style={{ textAlign: 'center', marginTop: '12px' }}>
-            <span className="hero-saved-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
-              Đã chọn: <FlagIcon flag={myPred.predictedHandicapWinner === 'home' ? match.homeFlag : match.awayFlag} /> {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
-            </span>
+      {!locked ? (
+        <div className="hero-prediction-box">
+          <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '8px', fontWeight: 600, textAlign: 'center' }}>
+            DỰ ĐOÁN ĐỘI THẮNG KÈO HANDICAP:
           </div>
-        )}
+          <div className="handicap-predict-row" style={{ gap: '12px' }}>
+            <button
+              type="button"
+              className={`handicap-opt-btn ${curWinner === 'home' ? 'active' : ''}`}
+              onClick={() => handleHandicapChange(match.id, 'home')}
+            >
+              <span style={{ fontSize: '0.75rem', opacity: 0.6 }}>Sân nhà</span>
+              <span style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                <FlagIcon flag={match.homeFlag} />
+                {getHandicapButtonLabel(match, 'home')}
+              </span>
+            </button>
+            <button
+              type="button"
+              className={`handicap-opt-btn ${curWinner === 'away' ? 'active' : ''}`}
+              onClick={() => handleHandicapChange(match.id, 'away')}
+            >
+              <span style={{ fontSize: '0.75rem', opacity: 0.6 }}>Sân khách</span>
+              <span style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                <FlagIcon flag={match.awayFlag} />
+                {getHandicapButtonLabel(match, 'away')}
+              </span>
+            </button>
+          </div>
 
-        <button
-          type="button"
-          className="save-prediction-btn"
-          style={{ marginTop: '20px', background: 'linear-gradient(135deg, var(--color-secondary), #d97706)', color: 'var(--color-text-dark)' }}
-          disabled={savingId === match.id}
-          onClick={() => handleSave(match.id, match)}
-        >
-          {savingId === match.id ? 'Đang gửi...' : hasSavedPrediction ? 'Cập Nhật Dự Đoán Của Bạn' : 'Gửi Dự Đoán Trận Cầu Tâm Điểm'}
-        </button>
-      </div>
+          {hasSavedPrediction && (
+            <div style={{ textAlign: 'center', marginTop: '12px' }}>
+              <span className="hero-saved-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                Đã chọn: <FlagIcon flag={myPred.predictedHandicapWinner === 'home' ? match.homeFlag : match.awayFlag} /> {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
+              </span>
+            </div>
+          )}
+
+          <button
+            type="button"
+            className="save-prediction-btn"
+            style={{ marginTop: '20px', background: 'linear-gradient(135deg, var(--color-secondary), #d97706)', color: 'var(--color-text-dark)' }}
+            disabled={savingId === match.id}
+            onClick={() => handleSave(match.id, match)}
+          >
+            {savingId === match.id ? 'Đang gửi...' : hasSavedPrediction ? 'Cập Nhật Dự Đoán Của Bạn' : 'Gửi Dự Đoán Trận Cầu Tâm Điểm'}
+          </button>
+        </div>
+      ) : (
+        <div className="hero-prediction-box locked" style={{ border: '1px dashed rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.03)' }}>
+          <p style={{ color: 'var(--color-danger)', fontWeight: 700, textAlign: 'center', marginBottom: '10px', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+            <Lock size={14} /> Dự đoán của bạn (Đã khóa)
+          </p>
+          {hasSavedPrediction ? (
+            <div style={{ textAlign: 'center' }}>
+              <span className="hero-saved-tag" style={{ animation: 'none', background: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24', border: '1px solid rgba(251, 191, 36, 0.3)', display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                Đã chọn: <FlagIcon flag={myPred.predictedHandicapWinner === 'home' ? match.homeFlag : match.awayFlag} /> {myPred.predictedHandicapWinner === 'home' ? match.homeTeam : match.awayTeam}
+              </span>
+            </div>
+          ) : (
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', fontStyle: 'italic', textAlign: 'center' }}>
+              Bạn đã không tham gia dự đoán trận này.
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -504,7 +559,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
       ) : (
         <div className="matches-grid">
           {remainingMatches.map((match) => {
-            const locked = match.isLocked;
+            const locked = match.isLocked || new Date(match.matchTime).getTime() <= Date.now();
             const myPred = match.myPrediction;
             const local = localPreds[match.id];
 
@@ -531,6 +586,10 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                       {match.status === 'finished' ? 'Đã kết thúc' : match.status === 'live' ? 'Trực tiếp' : 'Chưa đá'}
                     </span>
                   </div>
+
+                  {match.status === 'pending' && (
+                    <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} isMini={true} />
+                  )}
 
                   {/* Score and Flag Area */}
                   <div className="match-teams-score">

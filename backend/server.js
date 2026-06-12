@@ -363,8 +363,7 @@ const isMatchLocked = (match) => {
   if (match.status === 'live' || match.status === 'finished') return true;
   const matchDate = new Date(match.matchTime);
   const now = new Date();
-  // Khóa trước 5 phút
-  return now.getTime() >= matchDate.getTime() - 5 * 60 * 1000;
+  return now.getTime() >= matchDate.getTime();
 };
 
 // 4. Lấy danh sách trận đấu và dự đoán của bản thân
