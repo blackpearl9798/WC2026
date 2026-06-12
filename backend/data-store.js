@@ -177,6 +177,51 @@ export function readDB() {
       }
     }
 
+    // Luôn đồng bộ hóa matchTime và tỷ số kết quả từ file db.json mặc định (trong Git) vào CSDL thực tế đang chạy
+    if (fs.existsSync(defaultDB) && defaultDB !== DB_FILE) {
+      try {
+        const defaultData = JSON.parse(fs.readFileSync(defaultDB, 'utf8'));
+        if (defaultData && defaultData.matches) {
+          let updatedCount = 0;
+          defaultData.matches.forEach(gitMatch => {
+            const activeMatch = db.matches.find(m => m.id === gitMatch.id);
+            if (activeMatch) {
+              let changed = false;
+              if (activeMatch.matchTime !== gitMatch.matchTime) {
+                activeMatch.matchTime = gitMatch.matchTime;
+                changed = true;
+              }
+              if (gitMatch.status === 'finished' && activeMatch.status !== 'finished') {
+                activeMatch.status = 'finished';
+                activeMatch.homeScore = gitMatch.homeScore;
+                activeMatch.awayScore = gitMatch.awayScore;
+                
+                // Recalculate predictions for this match
+                db.predictions = db.predictions.map(pred => {
+                  if (pred.matchId === activeMatch.id) {
+                    const points = calculatePoints(pred, gitMatch.homeScore, gitMatch.awayScore, activeMatch.handicap);
+                    return { ...pred, ...points };
+                  }
+                  return pred;
+                });
+                changed = true;
+              }
+              if (changed) {
+                updatedCount++;
+              }
+            }
+          });
+          if (updatedCount > 0) {
+            writeDB(db);
+            console.log(`[Sync] Successfully synced matchTime/scores from defaultDB for ${updatedCount} matches.`);
+          }
+        }
+      } catch (err) {
+        console.error('[Sync] Failed to sync matches from defaultDB:', err);
+      }
+    }
+
+
     // Tự động recalculate điểm số khi luật chơi thay đổi (đoán sai được 1đ, đoán đúng 0đ)
     if (db.predictions && db.predictions.length > 0) {
       let dbUpdated = false;
