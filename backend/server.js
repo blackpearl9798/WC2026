@@ -580,6 +580,20 @@ app.post('/api/chat', authenticate, (req, res) => {
 
 // --- ADMIN API ENDPOINTS (Yêu cầu quyền Admin) ---
 
+function logAdminAction(db, admin, action, details) {
+  if (!db.adminLogs) {
+    db.adminLogs = [];
+  }
+  db.adminLogs.push({
+    id: `log_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+    adminId: admin.id,
+    adminName: admin.fullName || admin.username,
+    action,
+    details,
+    timestamp: new Date().toISOString()
+  });
+}
+
 // 7. Thêm trận đấu mới
 app.post('/api/admin/matches', authenticate, requireAdmin, (req, res) => {
   const { homeTeam, awayTeam, homeFlag, awayFlag, matchTime, handicap } = req.body;
@@ -617,6 +631,7 @@ app.post('/api/admin/matches', authenticate, requireAdmin, (req, res) => {
   };
 
   db.matches.push(newMatch);
+  logAdminAction(db, req.user, 'CREATE_MATCH', `Tạo trận đấu mới: ${homeFlag} ${homeTeam} vs ${awayFlag} ${awayTeam} (Giờ đá: ${matchTime})`);
   writeDB(db);
 
   res.status(201).json({ message: 'Tạo trận đấu thành công', match: newMatch });
@@ -692,6 +707,7 @@ app.put('/api/admin/matches/:id', authenticate, requireAdmin, (req, res) => {
     });
   }
 
+  logAdminAction(db, req.user, 'UPDATE_MATCH', `Chỉnh sửa trận đấu: ${match.homeFlag} ${match.homeTeam} vs ${match.awayFlag} ${match.awayTeam} -> Kèo: ${newHandicap.team === 'home' ? 'chủ nhà' : 'khách'} chấp ${newHandicap.value}, Trạng thái: ${newStatus}, Tỉ số: ${parsedHome !== null ? `${parsedHome}-${parsedAway}` : 'Chưa có'}`);
   writeDB(db);
   res.json({ message: 'Cập nhật trận đấu thành công', match: db.matches[matchIndex] });
 });
@@ -739,6 +755,7 @@ app.post('/api/admin/matches/:id/score', authenticate, requireAdmin, (req, res) 
     });
   }
 
+  logAdminAction(db, req.user, 'UPDATE_SCORE', `Cập nhật tỉ số: ${match.homeFlag} ${match.homeTeam} vs ${match.awayFlag} ${match.awayTeam} thành ${parsedHome} - ${parsedAway} (Trạng thái: ${status === 'finished' ? 'Đã kết thúc' : 'Đang diễn ra'})`);
   writeDB(db);
   res.json({ message: 'Cập nhật kết quả và tính điểm thành công', match });
 });
@@ -757,6 +774,7 @@ app.delete('/api/admin/matches/:id', authenticate, requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'Chỉ có thể xóa trận đấu chưa diễn ra' });
   }
 
+  logAdminAction(db, req.user, 'DELETE_MATCH', `Xóa trận đấu: ${match.homeFlag} ${match.homeTeam} vs ${match.awayFlag} ${match.awayTeam} (ID: ${id})`);
   db.matches = db.matches.filter(m => m.id !== id);
   db.predictions = db.predictions.filter(p => p.matchId !== id); // Xóa các dự đoán đi kèm
   writeDB(db);
@@ -790,11 +808,23 @@ app.delete('/api/admin/users/:id', authenticate, requireAdmin, (req, res) => {
     return res.status(404).json({ error: 'Không tìm thấy người dùng' });
   }
 
+  const targetUser = db.users.find(u => u.id === id);
+  const targetName = targetUser ? (targetUser.fullName || targetUser.username) : id;
+
   db.users = db.users.filter(u => u.id !== id);
   db.predictions = db.predictions.filter(p => p.userId !== id);
+  logAdminAction(db, req.user, 'DELETE_USER', `Xóa người dùng: ${targetName} (ID: ${id}) cùng toàn bộ dự đoán`);
   writeDB(db);
 
   res.json({ message: 'Xóa người dùng và các dự đoán liên quan thành công' });
+});
+
+// 12.1 Lấy nhật ký hoạt động của Admin
+app.get('/api/admin/logs', authenticate, requireAdmin, (req, res) => {
+  const db = readDB();
+  const logs = db.adminLogs || [];
+  const sortedLogs = [...logs].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  res.json(sortedLogs.slice(0, 200));
 });
 
 // 13. Danh sách người dùng công khai (Dành cho tab Tổng hợp hiển thị tên)

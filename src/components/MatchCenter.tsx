@@ -114,9 +114,17 @@ const MatchCountdown: React.FC<{ matchTime: string; onZero?: () => void; isMini?
   }, [matchTime]);
 
   if (!timeLeft) {
+    if (isMini) {
+      return (
+        <div className="mini-countdown-locked">
+          <Lock size={12} style={{ marginRight: '2px' }} />
+          <span>Đã khóa bình chọn!</span>
+        </div>
+      );
+    }
     return (
-      <div className="countdown-locked" style={{ fontSize: isMini ? '0.75rem' : '0.9rem', color: 'var(--color-danger)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center', margin: isMini ? '4px 0' : '28px auto' }}>
-        <Lock size={isMini ? 12 : 16} /> Trận đấu đã bắt đầu hoặc đang diễn ra!
+      <div className="countdown-locked" style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+        <Lock size={16} /> Trận đấu đã bắt đầu hoặc đang diễn ra!
       </div>
     );
   }

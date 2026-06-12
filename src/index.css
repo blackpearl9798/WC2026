@@ -1868,6 +1868,24 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
 }
 
+.mini-countdown-locked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 6px 0;
+  box-shadow: 0 0 5px rgba(239, 68, 68, 0.05);
+}
+
+
 .hero-match-info-bar {
   position: relative;
   text-align: center;

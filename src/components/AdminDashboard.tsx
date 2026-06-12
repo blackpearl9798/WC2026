@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit3, Settings, Users, X } from 'lucide-react';
+import { Plus, Trash2, Edit3, Settings, Users, X, Clock } from 'lucide-react';
 import { FlagIcon } from './FlagIcon';
 import { createPortal } from 'react-dom';
 
@@ -11,6 +11,7 @@ interface AdminDashboardProps {
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh }) => {
   const [matches, setMatches] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
+  const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -61,6 +62,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
       if (userRes.ok) {
         const userData = await userRes.json();
         setUsers(userData);
+      }
+
+      // Fetch admin logs
+      const logRes = await fetch('/api/admin/logs', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (logRes.ok) {
+        const logData = await logRes.json();
+        setLogs(logData);
       }
     } catch (err: any) {
       setError(err.message || 'Lỗi tải dữ liệu admin');
@@ -272,110 +282,187 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
       {loading ? (
         <div style={{ textAlign: 'center', padding: '20px' }}>Đang tải dữ liệu admin...</div>
       ) : (
-        <div className="admin-grid-layout">
-          {/* Matches Management */}
-          <div className="glass-card">
-            <h3 style={{ marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '8px' }}>
-              Quản Lý Trận Đấu ({matches.length})
-            </h3>
-            
-            <div style={{ overflowX: 'auto' }}>
-              <table className="admin-match-table">
-                <thead>
-                  <tr>
-                    <th>Trận đấu</th>
-                    <th>Thời gian</th>
-                    <th>Handicap</th>
-                    <th>Kết quả / Trạng thái</th>
-                    <th style={{ textAlign: 'center' }}>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {matches.map(match => {
-                    return (
-                      <tr key={match.id}>
-                        <td data-label="Trận đấu">
-                          <div className="match-teams-display">
-                            <FlagIcon flag={match.homeFlag} />
-                            <span>{match.homeTeam}</span>
-                            <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>vs</span>
-                            <span>{match.awayTeam}</span>
-                            <FlagIcon flag={match.awayFlag} style={{ marginLeft: '6px', marginRight: '0' }} />
-                          </div>
-                        </td>
-                        <td data-label="Thời gian">
-                          <span style={{ fontSize: '0.8rem' }}>
-                            {new Date(match.matchTime).toLocaleString('vi-VN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                        </td>
-                        <td data-label="Handicap">
-                          <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                            {`${match.handicap.team === 'home' ? 'Nhà' : 'Khách'} chấp ${match.handicap.value}`}
-                          </span>
-                        </td>
-                        <td data-label="Trạng thái">
-                          <span style={{ fontWeight: 700, color: 'var(--color-secondary)' }}>
-                            {match.status === 'pending' ? 'Chưa diễn ra' : `${match.homeScore} - ${match.awayScore} (${match.status === 'live' ? 'Đang đá' : 'Xong'})`}
-                          </span>
-                        </td>
-                        <td data-label="Thao tác" style={{ textAlign: 'center' }}>
-                          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                            <button
-                              type="button"
-                              className="btn-secondary"
-                              style={{ padding: '4px 8px' }}
-                              onClick={() => startEditMatch(match)}
-                              title="Chỉnh sửa trận đấu & Kết quả"
-                            >
-                              <Edit3 size={14} />
-                            </button>
-                            {match.status === 'pending' && (
-                              <button type="button" className="btn-danger-outline" style={{ padding: '4px 8px' }} onClick={() => handleDeleteMatch(match.id)}>
-                                <Trash2 size={14} />
+        <>
+          <div className="admin-grid-layout">
+            {/* Matches Management */}
+            <div className="glass-card">
+              <h3 style={{ marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '8px' }}>
+                Quản Lý Trận Đấu ({matches.length})
+              </h3>
+              
+              <div style={{ overflowX: 'auto' }}>
+                <table className="admin-match-table">
+                  <thead>
+                    <tr>
+                      <th>Trận đấu</th>
+                      <th>Thời gian</th>
+                      <th>Handicap</th>
+                      <th>Kết quả / Trạng thái</th>
+                      <th style={{ textAlign: 'center' }}>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {matches.map(match => {
+                      return (
+                        <tr key={match.id}>
+                          <td data-label="Trận đấu">
+                            <div className="match-teams-display">
+                              <FlagIcon flag={match.homeFlag} />
+                              <span>{match.homeTeam}</span>
+                              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>vs</span>
+                              <span>{match.awayTeam}</span>
+                              <FlagIcon flag={match.awayFlag} style={{ marginLeft: '6px', marginRight: '0' }} />
+                            </div>
+                          </td>
+                          <td data-label="Thời gian">
+                            <span style={{ fontSize: '0.8rem' }}>
+                              {new Date(match.matchTime).toLocaleString('vi-VN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </td>
+                          <td data-label="Handicap">
+                            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                              {`${match.handicap.team === 'home' ? 'Nhà' : 'Khách'} chấp ${match.handicap.value}`}
+                            </span>
+                          </td>
+                          <td data-label="Trạng thái">
+                            <span style={{ fontWeight: 700, color: 'var(--color-secondary)' }}>
+                              {match.status === 'pending' ? 'Chưa diễn ra' : `${match.homeScore} - ${match.awayScore} (${match.status === 'live' ? 'Đang đá' : 'Xong'})`}
+                            </span>
+                          </td>
+                          <td data-label="Thao tác" style={{ textAlign: 'center' }}>
+                            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                              <button
+                                type="button"
+                                className="btn-secondary"
+                                style={{ padding: '4px 8px' }}
+                                onClick={() => startEditMatch(match)}
+                                title="Chỉnh sửa trận đấu & Kết quả"
+                              >
+                                <Edit3 size={14} />
                               </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                              {match.status === 'pending' && (
+                                <button type="button" className="btn-danger-outline" style={{ padding: '4px 8px' }} onClick={() => handleDeleteMatch(match.id)}>
+                                  <Trash2 size={14} />
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Users Management */}
+            <div className="glass-card">
+              <h3 style={{ marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Users size={18} /> Thành Viên ({users.length})
+              </h3>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {users.map(user => (
+                  <div key={user.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', background: 'rgba(255,255,255,0.02)', borderRadius: '6px' }}>
+                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                        {user.fullName || user.username} {user.isAdmin && <span style={{ color: 'var(--color-secondary)' }}>(Admin)</span>}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                        Tên đăng nhập: {user.username}
+                      </div>
+                    </div>
+                    {!user.isAdmin && (
+                      <button
+                        type="button"
+                        className="btn-danger-outline"
+                        style={{ padding: '6px' }}
+                        onClick={() => handleDeleteUser(user.id, user.username)}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Users Management */}
-          <div className="glass-card">
+          {/* Admin Activity Log */}
+          <div className="glass-card" style={{ marginTop: '24px' }}>
             <h3 style={{ marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Users size={18} /> Thành Viên ({users.length})
+              <Clock size={18} /> Nhật Ký Hoạt Động Quản Trị
             </h3>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {users.map(user => (
-                <div key={user.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', background: 'rgba(255,255,255,0.02)', borderRadius: '6px' }}>
-                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>
-                      {user.fullName || user.username} {user.isAdmin && <span style={{ color: 'var(--color-secondary)' }}>(Admin)</span>}
-                    </div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                      Tên đăng nhập: {user.username}
-                    </div>
-                  </div>
-                  {!user.isAdmin && (
-                    <button
-                      type="button"
-                      className="btn-danger-outline"
-                      style={{ padding: '6px' }}
-                      onClick={() => handleDeleteUser(user.id, user.username)}
+            {logs.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
+                Chưa có hoạt động nào được ghi nhận.
+              </div>
+            ) : (
+              <div className="admin-logs-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '400px', overflowY: 'auto', paddingRight: '4px' }}>
+                {logs.map((log) => {
+                  let borderColor = 'rgba(255,255,255,0.1)';
+                  
+                  // Color code based on actions
+                  if (log.action.includes('CREATE') || log.action.includes('ADD')) {
+                    borderColor = 'var(--color-primary)';
+                  } else if (log.action.includes('UPDATE') || log.action.includes('EDIT')) {
+                    borderColor = 'var(--color-secondary)';
+                  } else if (log.action.includes('DELETE') || log.action.includes('REMOVE')) {
+                    borderColor = 'var(--color-danger)';
+                  }
+
+                  // Human readable action translation
+                  const actionMap: Record<string, string> = {
+                    'CREATE_MATCH': 'Tạo trận đấu',
+                    'UPDATE_MATCH': 'Cập nhật trận đấu',
+                    'UPDATE_SCORE': 'Cập nhật tỷ số',
+                    'DELETE_MATCH': 'Xóa trận đấu',
+                    'DELETE_USER': 'Xóa thành viên',
+                  };
+                  
+                  const readableAction = actionMap[log.action] || log.action;
+
+                  return (
+                    <div 
+                      key={log.id} 
+                      style={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: '4px', 
+                        padding: '10px 14px', 
+                        background: 'rgba(255,255,255,0.02)', 
+                        borderRadius: '6px',
+                        borderLeft: `4px solid ${borderColor}`
+                      }}
                     >
-                      <Trash2 size={14} />
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                        <span style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--color-secondary)' }}>
+                          {readableAction}
+                        </span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                          {new Date(log.timestamp).toLocaleString('vi-VN', { 
+                            month: '2-digit', 
+                            day: '2-digit', 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            second: '2-digit'
+                          })}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--color-text-main)' }}>
+                        {log.details}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                        Thực hiện bởi: <span style={{ color: 'var(--color-text-main)', fontWeight: 500 }}>{log.adminName}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        </div>
+        </>
       )}
 
       {/* Add Match Modal */}
