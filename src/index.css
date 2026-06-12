@@ -2284,7 +2284,134 @@ h1, h2, h3, h4, h5, h6 {
   .team-display .grid-duel-player-mobile {
     display: none !important;
   }
+
+  /* Scale up FeaturedMatchHero elements from countdown to bottom on desktop */
+  .featured-hero-card .countdown-digit {
+    font-size: 3.2rem !important;
+    padding: 8px 16px !important;
+    min-width: 80px !important;
+  }
+  
+  .featured-hero-card .countdown-segment {
+    min-width: 90px !important;
+  }
+  
+  .featured-hero-card .countdown-colon {
+    font-size: 3rem !important;
+    padding-bottom: 30px !important;
+  }
+  
+  .featured-hero-card .countdown-label {
+    font-size: 0.8rem !important;
+    letter-spacing: 2px !important;
+    margin-top: 10px !important;
+  }
+  
+  .hero-countdown-duel-wrapper {
+    gap: 60px !important;
+    margin: 32px auto !important;
+  }
+  
+  .hero-duel-player-desktop {
+    height: 165px !important;
+  }
+
+  .featured-hero-card:hover .hero-duel-player-desktop {
+    transform: scale(1.1) translateY(-6px) !important;
+  }
+  
+  .featured-hero-card .hero-match-info-bar {
+    font-size: 1.05rem !important;
+    padding: 14px 28px !important;
+    max-width: 680px !important;
+    margin: 0 auto 36px auto !important;
+    border-radius: var(--radius-md) !important;
+  }
+  
+  .hero-prediction-ratio-wrapper {
+    max-width: 680px !important;
+    margin: 24px auto !important;
+  }
+  
+  .hero-ratio-header {
+    font-size: 0.95rem !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .hero-ratio-total {
+    font-size: 0.8rem !important;
+  }
+  
+  .hero-ratio-bar-bg {
+    height: 12px !important;
+    border-radius: 6px !important;
+  }
+  
+  .hero-prediction-box {
+    max-width: 680px !important;
+    padding: 32px 40px !important;
+    border-radius: var(--radius-md) !important;
+  }
+  
+  .hero-prediction-box .handicap-predict-row {
+    gap: 16px !important;
+  }
+  
+  .hero-prediction-box .handicap-opt-btn {
+    padding: 16px 20px !important;
+    font-size: 1rem !important;
+    border-radius: var(--radius-md) !important;
+  }
+  
+  .hero-prediction-box .handicap-opt-btn span {
+    font-size: 0.85rem !important;
+  }
+  
+  .hero-prediction-box .save-prediction-btn {
+    padding: 15px !important;
+    font-size: 1.1rem !important;
+    border-radius: var(--radius-md) !important;
+    margin-top: 24px !important;
+  }
+  
+  .hero-prediction-box .hero-saved-tag {
+    font-size: 0.9rem !important;
+    padding: 6px 14px !important;
+  }
 }
+
+/* Prediction ratio bar mobile defaults */
+.hero-prediction-ratio-wrapper {
+  margin: 14px auto;
+  max-width: 440px;
+  width: 100%;
+}
+
+.hero-ratio-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.hero-ratio-total {
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+  font-weight: normal;
+}
+
+.hero-ratio-bar-bg {
+  height: 6px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
 
 
 

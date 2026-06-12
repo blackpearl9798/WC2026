@@ -367,27 +367,19 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
         const homePercent = total > 0 ? Math.round((stats.homeCount / total) * 100) : 50;
         const awayPercent = total > 0 ? Math.round((stats.awayCount / total) * 100) : 50;
         return (
-          <div className="prediction-ratio-container" style={{ margin: '14px auto', maxWidth: '440px', width: '100%' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '6px', fontWeight: 600 }}>
+          <div className="hero-prediction-ratio-wrapper">
+            <div className="hero-ratio-header">
               <span style={{ color: homePercent >= awayPercent ? 'var(--color-primary)' : 'inherit', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <FlagIcon flag={match.homeFlag} style={{ width: '16px', height: '10px' }} /> {match.homeTeam}: {homePercent}%
               </span>
-              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.65rem', fontWeight: 'normal' }}>
+              <span className="hero-ratio-total">
                 {total > 0 ? `Đã có ${total} người dự đoán` : 'Chưa có dự đoán nào'}
               </span>
               <span style={{ color: awayPercent >= homePercent ? 'var(--color-secondary)' : 'inherit', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 {awayPercent}% : {match.awayTeam} <FlagIcon flag={match.awayFlag} style={{ width: '16px', height: '10px' }} />
               </span>
             </div>
-            <div style={{ 
-              height: '6px', 
-              width: '100%', 
-              background: 'rgba(0,0,0,0.4)', 
-              borderRadius: '3px', 
-              overflow: 'hidden', 
-              display: 'flex',
-              border: '1px solid rgba(255,255,255,0.03)'
-            }}>
+            <div className="hero-ratio-bar-bg">
               <div style={{ 
                 width: `${homePercent}%`, 
                 background: 'linear-gradient(90deg, #10b981, #059669)', 
