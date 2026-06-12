@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Trophy, Lock, Unlock, Users, ChevronDown, ChevronUp, Clock } from 'lucide-react';
+import { Calendar, Trophy, Lock, Unlock, Users, ChevronDown, ChevronUp, Clock, MapPin } from 'lucide-react';
 import { FlagIcon } from './FlagIcon';
 
 const TEAM_RATINGS: { [key: string]: number } = {
@@ -297,8 +297,16 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
       {/* Countdown Timer */}
       <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} />
 
-      <div className="hero-match-info-bar">
-        🕒 Khai cuộc: {formatDate(match.matchTime)} | Handicap: <span style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>{getHandicapText(match.handicap, match.homeTeam, match.awayTeam)}</span>
+      <div className="hero-match-info-bar" style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
+        <div>
+          🕒 Khai cuộc: {formatDate(match.matchTime)} | Handicap: <span style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>{getHandicapText(match.handicap, match.homeTeam, match.awayTeam)}</span>
+        </div>
+        {match.stadium && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
+            <MapPin size={12} style={{ color: 'var(--color-secondary)' }} />
+            <span>Sân: {match.stadium} ({match.city}, {match.country})</span>
+          </div>
+        )}
       </div>
 
       {/* Prediction Ratio Bar */}
@@ -616,6 +624,13 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                   <div className="handicap-banner">
                     Tỷ lệ Handicap: <span className="handicap-highlight">{getHandicapText(match.handicap, match.homeTeam, match.awayTeam)}</span>
                   </div>
+
+                  {match.stadium && (
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center', margin: '4px 0 10px 0' }}>
+                      <MapPin size={12} style={{ color: 'var(--color-secondary)' }} />
+                      <span style={{ fontWeight: 500 }}>Sân: {match.stadium} ({match.city})</span>
+                    </div>
+                  )}
 
                   {/* Prediction Ratio Bar */}
                   {(() => {

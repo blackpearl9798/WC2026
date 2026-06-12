@@ -34,7 +34,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio Azteca",
+      "city": "Mexico City",
+      "country": "Mexico"
     },
     {
       "id": "match_2",
@@ -50,7 +53,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio Akron",
+      "city": "Guadalajara (Zapopan)",
+      "country": "Mexico"
     },
     {
       "id": "match_3",
@@ -66,7 +72,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BMO Field",
+      "city": "Toronto",
+      "country": "Canada"
     },
     {
       "id": "match_4",
@@ -82,7 +91,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "SoFi Stadium",
+      "city": "Los Angeles (Inglewood)",
+      "country": "United States"
     },
     {
       "id": "match_5",
@@ -98,7 +110,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Gillette Stadium",
+      "city": "Boston (Foxborough)",
+      "country": "United States"
     },
     {
       "id": "match_6",
@@ -114,7 +129,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada"
     },
     {
       "id": "match_7",
@@ -130,7 +148,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "MetLife Stadium",
+      "city": "New York/New Jersey (East Rutherford)",
+      "country": "United States"
     },
     {
       "id": "match_8",
@@ -146,7 +167,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Levi's Stadium",
+      "city": "San Francisco Bay Area (Santa Clara)",
+      "country": "United States"
     },
     {
       "id": "match_9",
@@ -162,7 +186,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lincoln Financial Field",
+      "city": "Philadelphia",
+      "country": "United States"
     },
     {
       "id": "match_10",
@@ -178,7 +205,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "NRG Stadium",
+      "city": "Houston",
+      "country": "United States"
     },
     {
       "id": "match_11",
@@ -194,7 +224,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
     },
     {
       "id": "match_12",
@@ -210,7 +243,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio BBVA",
+      "city": "Monterrey (Guadalupe)",
+      "country": "Mexico"
     },
     {
       "id": "match_13",
@@ -226,7 +262,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "SoFi Stadium",
+      "city": "Los Angeles (Inglewood)",
+      "country": "United States"
     },
     {
       "id": "match_14",
@@ -242,7 +281,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "United States"
     },
     {
       "id": "match_15",
@@ -258,7 +300,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lumen Field",
+      "city": "Seattle",
+      "country": "United States"
     },
     {
       "id": "match_16",
@@ -274,7 +319,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Hard Rock Stadium",
+      "city": "Miami (Miami Gardens)",
+      "country": "United States"
     },
     {
       "id": "match_17",
@@ -290,7 +338,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "MetLife Stadium",
+      "city": "New York/New Jersey (East Rutherford)",
+      "country": "United States"
     },
     {
       "id": "match_18",
@@ -306,7 +357,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Gillette Stadium",
+      "city": "Boston (Foxborough)",
+      "country": "United States"
     },
     {
       "id": "match_19",
@@ -322,7 +376,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "city": "Kansas City",
+      "country": "United States"
     },
     {
       "id": "match_20",
@@ -338,7 +395,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Levi's Stadium",
+      "city": "San Francisco Bay Area (Santa Clara)",
+      "country": "United States"
     },
     {
       "id": "match_21",
@@ -354,7 +414,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "NRG Stadium",
+      "city": "Houston",
+      "country": "United States"
     },
     {
       "id": "match_22",
@@ -370,7 +433,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
     },
     {
       "id": "match_23",
@@ -386,7 +452,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio Azteca",
+      "city": "Mexico City",
+      "country": "Mexico"
     },
     {
       "id": "match_24",
@@ -402,7 +471,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BMO Field",
+      "city": "Toronto",
+      "country": "Canada"
     },
     {
       "id": "match_25",
@@ -418,7 +490,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio Akron",
+      "city": "Guadalajara (Zapopan)",
+      "country": "Mexico"
     },
     {
       "id": "match_26",
@@ -434,7 +509,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "SoFi Stadium",
+      "city": "Los Angeles (Inglewood)",
+      "country": "United States"
     },
     {
       "id": "match_27",
@@ -450,7 +528,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada"
     },
     {
       "id": "match_28",
@@ -466,7 +547,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "United States"
     },
     {
       "id": "match_29",
@@ -482,7 +566,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lincoln Financial Field",
+      "city": "Philadelphia",
+      "country": "United States"
     },
     {
       "id": "match_30",
@@ -498,7 +585,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Gillette Stadium",
+      "city": "Boston (Foxborough)",
+      "country": "United States"
     },
     {
       "id": "match_31",
@@ -514,7 +604,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lumen Field",
+      "city": "Seattle",
+      "country": "United States"
     },
     {
       "id": "match_32",
@@ -530,7 +623,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Levi's Stadium",
+      "city": "San Francisco Bay Area (Santa Clara)",
+      "country": "United States"
     },
     {
       "id": "match_33",
@@ -546,7 +642,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BMO Field",
+      "city": "Toronto",
+      "country": "Canada"
     },
     {
       "id": "match_34",
@@ -562,7 +661,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "city": "Kansas City",
+      "country": "United States"
     },
     {
       "id": "match_35",
@@ -578,7 +680,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "NRG Stadium",
+      "city": "Houston",
+      "country": "United States"
     },
     {
       "id": "match_36",
@@ -594,7 +699,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio BBVA",
+      "city": "Monterrey (Guadalupe)",
+      "country": "Mexico"
     },
     {
       "id": "match_37",
@@ -610,7 +718,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "SoFi Stadium",
+      "city": "Los Angeles (Inglewood)",
+      "country": "United States"
     },
     {
       "id": "match_38",
@@ -626,7 +737,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada"
     },
     {
       "id": "match_39",
@@ -642,7 +756,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "United States"
     },
     {
       "id": "match_40",
@@ -658,7 +775,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Hard Rock Stadium",
+      "city": "Miami (Miami Gardens)",
+      "country": "United States"
     },
     {
       "id": "match_41",
@@ -674,7 +794,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lincoln Financial Field",
+      "city": "Philadelphia",
+      "country": "United States"
     },
     {
       "id": "match_42",
@@ -690,7 +813,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "MetLife Stadium",
+      "city": "New York/New Jersey (East Rutherford)",
+      "country": "United States"
     },
     {
       "id": "match_43",
@@ -706,7 +832,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
     },
     {
       "id": "match_44",
@@ -722,7 +851,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Levi's Stadium",
+      "city": "San Francisco Bay Area (Santa Clara)",
+      "country": "United States"
     },
     {
       "id": "match_45",
@@ -738,7 +870,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "NRG Stadium",
+      "city": "Houston",
+      "country": "United States"
     },
     {
       "id": "match_46",
@@ -754,7 +889,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BMO Field",
+      "city": "Toronto",
+      "country": "Canada"
     },
     {
       "id": "match_47",
@@ -770,7 +908,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio Akron",
+      "city": "Guadalajara (Zapopan)",
+      "country": "Mexico"
     },
     {
       "id": "match_48",
@@ -786,7 +927,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Gillette Stadium",
+      "city": "Boston (Foxborough)",
+      "country": "United States"
     },
     {
       "id": "match_49",
@@ -802,7 +946,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Hard Rock Stadium",
+      "city": "Miami (Miami Gardens)",
+      "country": "United States"
     },
     {
       "id": "match_50",
@@ -818,7 +965,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "United States"
     },
     {
       "id": "match_51",
@@ -834,7 +984,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio BBVA",
+      "city": "Monterrey (Guadalupe)",
+      "country": "Mexico"
     },
     {
       "id": "match_52",
@@ -850,7 +1003,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio Azteca",
+      "city": "Mexico City",
+      "country": "Mexico"
     },
     {
       "id": "match_53",
@@ -866,7 +1022,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lumen Field",
+      "city": "Seattle",
+      "country": "United States"
     },
     {
       "id": "match_54",
@@ -882,7 +1041,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada"
     },
     {
       "id": "match_55",
@@ -898,7 +1060,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lincoln Financial Field",
+      "city": "Philadelphia",
+      "country": "United States"
     },
     {
       "id": "match_56",
@@ -914,7 +1079,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "MetLife Stadium",
+      "city": "New York/New Jersey (East Rutherford)",
+      "country": "United States"
     },
     {
       "id": "match_57",
@@ -930,7 +1098,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Levi's Stadium",
+      "city": "San Francisco Bay Area (Santa Clara)",
+      "country": "United States"
     },
     {
       "id": "match_58",
@@ -946,7 +1117,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "SoFi Stadium",
+      "city": "Los Angeles (Inglewood)",
+      "country": "United States"
     },
     {
       "id": "match_59",
@@ -962,7 +1136,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
     },
     {
       "id": "match_60",
@@ -978,7 +1155,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "city": "Kansas City",
+      "country": "United States"
     },
     {
       "id": "match_61",
@@ -994,7 +1174,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BMO Field",
+      "city": "Toronto",
+      "country": "Canada"
     },
     {
       "id": "match_62",
@@ -1010,7 +1193,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Gillette Stadium",
+      "city": "Boston (Foxborough)",
+      "country": "United States"
     },
     {
       "id": "match_63",
@@ -1026,7 +1212,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lumen Field",
+      "city": "Seattle",
+      "country": "United States"
     },
     {
       "id": "match_64",
@@ -1042,7 +1231,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada"
     },
     {
       "id": "match_65",
@@ -1058,7 +1250,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "NRG Stadium",
+      "city": "Houston",
+      "country": "United States"
     },
     {
       "id": "match_66",
@@ -1074,7 +1269,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Estadio Akron",
+      "city": "Guadalajara (Zapopan)",
+      "country": "Mexico"
     },
     {
       "id": "match_67",
@@ -1090,7 +1288,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "MetLife Stadium",
+      "city": "New York/New Jersey (East Rutherford)",
+      "country": "United States"
     },
     {
       "id": "match_68",
@@ -1106,7 +1307,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Lincoln Financial Field",
+      "city": "Philadelphia",
+      "country": "United States"
     },
     {
       "id": "match_69",
@@ -1122,7 +1326,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "city": "Kansas City",
+      "country": "United States"
     },
     {
       "id": "match_70",
@@ -1138,7 +1345,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
     },
     {
       "id": "match_71",
@@ -1154,7 +1364,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Hard Rock Stadium",
+      "city": "Miami (Miami Gardens)",
+      "country": "United States"
     },
     {
       "id": "match_72",
@@ -1170,7 +1383,10 @@
       },
       "status": "pending",
       "homeScore": null,
-      "awayScore": null
+      "awayScore": null,
+      "stadium": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "United States"
     }
   ],
   "predictions": [],
