@@ -116,10 +116,11 @@ async function syncMatchesFromAPISports() {
   console.log(`⏳ [API-Football] Phát hiện ${elapsedMatches.length} trận đấu đã hết giờ trên DB. Bắt đầu gọi API để kiểm tra kết quả...`);
 
   try {
+    const apiKey = process.env.API_SPORTS_KEY || 'a026db62eacba249a0c79ca0596d2d83';
     const response = await fetch('https://v3.football.api-sports.io/fixtures?league=1&season=2026', {
       headers: {
-        'x-apisports-key': 'a026db62eacba249a0c79ca0596d2d83',
-        'x-rapidapi-key': 'a026db62eacba249a0c79ca0596d2d83',
+        'x-apisports-key': apiKey,
+        'x-rapidapi-key': apiKey,
         'x-rapidapi-host': 'v3.football.api-sports.io'
       }
     });
@@ -129,8 +130,14 @@ async function syncMatchesFromAPISports() {
     }
 
     const data = await response.json();
+    
+    // Log any business errors returned by API-Sports (e.g. plan/subscription limits)
+    if (data && data.errors && Object.keys(data.errors).length > 0) {
+      console.error('❌ [API-Football] Lỗi nghiệp vụ từ API-Sports:', JSON.stringify(data.errors));
+    }
+
     if (!data || !data.response || !Array.isArray(data.response)) {
-      throw new Error('Dữ liệu API không đúng định dạng');
+      throw new Error('Dữ liệu API không đúng định dạng hoặc không có phản hồi');
     }
 
     const apiFixtures = data.response;
