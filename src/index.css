@@ -2263,13 +2263,13 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 24px;
+    gap: 6px !important;
     margin: 10px auto;
   }
   
   .grid-duel-player-desktop {
     display: block !important;
-    height: 95px;
+    height: 140px !important;
     object-fit: contain;
     filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.45));
     transition: transform 0.3s ease;
@@ -2308,16 +2308,16 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .hero-countdown-duel-wrapper {
-    gap: 60px !important;
+    gap: 12px !important;
     margin: 32px auto !important;
   }
   
   .hero-duel-player-desktop {
-    height: 165px !important;
+    height: 245px !important;
   }
 
   .featured-hero-card:hover .hero-duel-player-desktop {
-    transform: scale(1.1) translateY(-6px) !important;
+    transform: scale(1.08) translateY(-4px) !important;
   }
   
   .featured-hero-card .hero-match-info-bar {
