@@ -444,6 +444,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
   const [savingId, setSavingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
+  const [subTab, setSubTab] = useState<'upcoming' | 'finished'>('upcoming');
 
   const handleHandicapChange = (matchId: string, winner: 'home' | 'away') => {
     setLocalPreds(prev => {
@@ -546,6 +547,15 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
     ? matches.filter(m => m.id !== featuredMatch.id)
     : matches;
 
+  // Filter and sort remaining matches based on selected subTab
+  const filteredMatches = remainingMatches
+    .filter(m => subTab === 'upcoming' ? m.status !== 'finished' : m.status === 'finished')
+    .sort((a, b) => {
+      const timeA = parseDateToVietnam(a.matchTime).getTime();
+      const timeB = parseDateToVietnam(b.matchTime).getTime();
+      return subTab === 'upcoming' ? timeA - timeB : timeB - timeA;
+    });
+
   return (
     <div>
       {/* Featured Match Hero section */}
@@ -569,6 +579,40 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
         <Trophy style={{ color: 'var(--color-primary)' }} /> Danh Sách Trận Đấu
       </h2>
 
+      {/* Sub-tabs for upcoming vs finished matches */}
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+        <button
+          type="button"
+          className={`btn-secondary ${subTab === 'upcoming' ? 'active' : ''}`}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            background: subTab === 'upcoming' ? 'var(--color-primary)' : 'rgba(255,255,255,0.02)',
+            color: subTab === 'upcoming' ? 'var(--color-text-dark)' : 'var(--color-text-main)',
+            borderColor: subTab === 'upcoming' ? 'var(--color-primary)' : 'var(--border-color)',
+            boxShadow: subTab === 'upcoming' ? 'var(--glow-green)' : 'none'
+          }}
+          onClick={() => setSubTab('upcoming')}
+        >
+          <Clock size={16} style={{ marginRight: '6px' }} /> Trận Sắp Diễn Ra
+        </button>
+        <button
+          type="button"
+          className={`btn-secondary ${subTab === 'finished' ? 'active' : ''}`}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            background: subTab === 'finished' ? 'var(--color-primary)' : 'rgba(255,255,255,0.02)',
+            color: subTab === 'finished' ? 'var(--color-text-dark)' : 'var(--color-text-main)',
+            borderColor: subTab === 'finished' ? 'var(--color-primary)' : 'var(--border-color)',
+            boxShadow: subTab === 'finished' ? 'var(--glow-green)' : 'none'
+          }}
+          onClick={() => setSubTab('finished')}
+        >
+          <Trophy size={16} style={{ marginRight: '6px' }} /> Trận Đã Kết Thúc
+        </button>
+      </div>
+
       {message && (
         <div className={`alert ${message.type === 'success' ? 'alert-success' : 'alert-error'}`}>
           <span>{message.type === 'success' ? '✅' : '⚠️'}</span>
@@ -576,16 +620,17 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
         </div>
       )}
 
-      {remainingMatches.length === 0 ? (
+      {filteredMatches.length === 0 ? (
         <div className="glass-card" style={{ textAlign: 'center', padding: '40px', color: 'var(--color-text-muted)' }}>
-          Hiện chưa có trận đấu nào khác được thêm vào.
+          {subTab === 'upcoming' ? 'Không có trận đấu nào sắp diễn ra.' : 'Chưa có trận đấu nào kết thúc.'}
         </div>
       ) : (
         <div className="matches-grid">
-          {remainingMatches.map((match) => {
+          {filteredMatches.map((match) => {
             const locked = match.isLocked || parseDateToVietnam(match.matchTime).getTime() <= Date.now();
             const myPred = match.myPrediction;
             const local = localPreds[match.id];
+
 
             const curWinner = local ? local.winner : (myPred ? myPred.predictedHandicapWinner : 'home');
 
