@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit3, Settings, Users } from 'lucide-react';
+import { Plus, Trash2, Edit3, Settings, Users, X } from 'lucide-react';
 import { FlagIcon } from './FlagIcon';
+import { createPortal } from 'react-dom';
 
 interface AdminDashboardProps {
   token: string;
@@ -378,10 +379,43 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
       )}
 
       {/* Add Match Modal */}
-      {showAddModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3 className="modal-title">Thêm Trận Đấu Mới</h3>
+      {showAddModal && createPortal(
+        <div className="modal-overlay" style={{ zIndex: 110 }} onClick={(e) => {
+          if (e.target === e.currentTarget) setShowAddModal(false);
+        }}>
+          <div className="modal-content" style={{ position: 'relative', maxWidth: '500px', maxHeight: '90vh', overflowY: 'auto' }}>
+            <button
+              type="button"
+              onClick={() => setShowAddModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--color-text-muted)',
+                cursor: 'pointer',
+                padding: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '50%',
+                transition: 'all 0.2s',
+                zIndex: 10
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--color-text-muted)';
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              <X size={20} />
+            </button>
+
+            <h3 className="modal-title" style={{ paddingRight: '24px' }}>Thêm Trận Đấu Mới</h3>
             <form onSubmit={handleAddMatch}>
               <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
@@ -483,14 +517,54 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Edit Match Modal */}
-      {showEditModal && editingMatch && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3 className="modal-title">Chỉnh Sửa Trận Đấu & Kết Quả</h3>
+      {showEditModal && editingMatch && createPortal(
+        <div className="modal-overlay" style={{ zIndex: 110 }} onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            setShowEditModal(false);
+            setEditingMatch(null);
+          }
+        }}>
+          <div className="modal-content" style={{ position: 'relative', maxWidth: '500px', maxHeight: '90vh', overflowY: 'auto' }}>
+            <button
+              type="button"
+              onClick={() => {
+                setShowEditModal(false);
+                setEditingMatch(null);
+              }}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--color-text-muted)',
+                cursor: 'pointer',
+                padding: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '50%',
+                transition: 'all 0.2s',
+                zIndex: 10
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--color-text-muted)';
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              <X size={20} />
+            </button>
+
+            <h3 className="modal-title" style={{ paddingRight: '24px' }}>Chỉnh Sửa Trận Đấu & Kết Quả</h3>
             <form onSubmit={handleEditMatchSubmit}>
               <div className="modal-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div className="form-group">
@@ -632,7 +706,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
