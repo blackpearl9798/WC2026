@@ -39,6 +39,13 @@ function parseMatchDate(dateStr, stadiumId) {
   }
 }
 
+function parseDateToVietnam(dateStr) {
+  if (typeof dateStr === 'string' && !dateStr.includes('Z') && !dateStr.includes('+') && !dateStr.match(/-\d{2}:\d{2}$/)) {
+    return new Date(dateStr + '+07:00');
+  }
+  return new Date(dateStr);
+}
+
 const TEAM_NAME_VI = {
   'Mexico': 'Mexico',
   'South Africa': 'Nam Phi',
@@ -103,7 +110,7 @@ async function syncMatchesFromFreeAPI() {
   // 1. Tìm các trận chưa kết thúc trong DB cục bộ nhưng thời gian bắt đầu đã trôi qua hơn 130 phút (2 tiếng 10 phút)
   const elapsedMatches = db.matches.filter(m => {
     if (m.status === 'finished') return false;
-    const matchTime = new Date(m.matchTime);
+    const matchTime = parseDateToVietnam(m.matchTime);
     const timeDiffMinutes = (now - matchTime) / (1000 * 60);
     return timeDiffMinutes >= 130;
   });
@@ -361,7 +368,7 @@ app.put('/api/user/profile', authenticate, (req, res) => {
 // Helper check match locked (started)
 const isMatchLocked = (match) => {
   if (match.status === 'live' || match.status === 'finished') return true;
-  const matchDate = new Date(match.matchTime);
+  const matchDate = parseDateToVietnam(match.matchTime);
   const now = new Date();
   return now.getTime() >= matchDate.getTime();
 };
@@ -976,7 +983,7 @@ app.get('/api/admin/export-csv', authenticate, requireAdmin, (req, res) => {
     ].map(val => `"${val.replace(/"/g, '""')}"`).join(','));
 
     db.matches.forEach(match => {
-      const matchTimeStr = new Date(match.matchTime).toLocaleString('vi-VN');
+      const matchTimeStr = parseDateToVietnam(match.matchTime).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
       const handicapText = match.handicap.team === null || match.handicap.value === 0 
         ? 'Đồng banh (0)' 
         : `${match.handicap.team === 'home' ? match.homeTeam : match.awayTeam} chấp ${match.handicap.value}`;

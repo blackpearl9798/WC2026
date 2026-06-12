@@ -3,6 +3,13 @@ import { Plus, Trash2, Edit3, Settings, Users, X, Clock } from 'lucide-react';
 import { FlagIcon } from './FlagIcon';
 import { createPortal } from 'react-dom';
 
+const parseDateToVietnam = (dateStr: string) => {
+  if (typeof dateStr === 'string' && !dateStr.includes('Z') && !dateStr.includes('+') && !dateStr.match(/-\d{2}:\d{2}$/)) {
+    return new Date(dateStr + '+07:00');
+  }
+  return new Date(dateStr);
+};
+
 interface AdminDashboardProps {
   token: string;
   onRefresh: () => void;
@@ -180,13 +187,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
   };
 
   const startEditMatch = (match: any) => {
-    const dateObj = new Date(match.matchTime);
-    const year = dateObj.getFullYear();
-    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const day = String(dateObj.getDate()).padStart(2, '0');
-    const hours = String(dateObj.getHours()).padStart(2, '0');
-    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-    const localDateTimeStr = `${year}-${month}-${day}T${hours}:${minutes}`;
+    const dateObj = parseDateToVietnam(match.matchTime);
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Ho_Chi_Minh',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+    const parts = formatter.formatToParts(dateObj);
+    const partMap = Object.fromEntries(parts.map(p => [p.type, p.value]));
+    const localDateTimeStr = `${partMap.year}-${partMap.month}-${partMap.day}T${partMap.hour}:${partMap.minute}`;
 
     setEditingMatch({
       id: match.id,
@@ -316,8 +329,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                           </td>
                           <td data-label="Thời gian">
                             <span style={{ fontSize: '0.8rem' }}>
-                              {new Date(match.matchTime).toLocaleString('vi-VN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
-                            </span>
+                            {parseDateToVietnam(match.matchTime).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                          </span>
                           </td>
                           <td data-label="Handicap">
                             <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
@@ -441,7 +454,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                           {readableAction}
                         </span>
                         <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                          {new Date(log.timestamp).toLocaleString('vi-VN', { 
+                          {parseDateToVietnam(log.timestamp).toLocaleString('vi-VN', { 
+                            timeZone: 'Asia/Ho_Chi_Minh',
                             month: '2-digit', 
                             day: '2-digit', 
                             hour: '2-digit', 

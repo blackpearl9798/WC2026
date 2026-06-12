@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Download, Users, Trophy, Lock, EyeOff } from 'lucide-react';
 import { FlagIcon } from './FlagIcon';
 
+const parseDateToVietnam = (dateStr: string) => {
+  if (typeof dateStr === 'string' && !dateStr.includes('Z') && !dateStr.includes('+') && !dateStr.match(/-\d{2}:\d{2}$/)) {
+    return new Date(dateStr + '+07:00');
+  }
+  return new Date(dateStr);
+};
+
 interface AllPredictionsViewProps {
   matches: any[];
   token: string;
@@ -95,8 +102,9 @@ export const AllPredictionsView: React.FC<AllPredictionsViewProps> = ({ matches,
   };
 
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const date = parseDateToVietnam(dateStr);
     return date.toLocaleString('vi-VN', {
+      timeZone: 'Asia/Ho_Chi_Minh',
       hour: '2-digit',
       minute: '2-digit',
       day: '2-digit',

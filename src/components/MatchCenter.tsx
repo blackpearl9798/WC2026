@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Trophy, Lock, Unlock, Users, ChevronDown, ChevronUp, Clock, MapPin } from 'lucide-react';
 import { FlagIcon } from './FlagIcon';
 
+const parseDateToVietnam = (dateStr: string) => {
+  if (typeof dateStr === 'string' && !dateStr.includes('Z') && !dateStr.includes('+') && !dateStr.match(/-\d{2}:\d{2}$/)) {
+    return new Date(dateStr + '+07:00');
+  }
+  return new Date(dateStr);
+};
+
 const TEAM_RATINGS: { [key: string]: number } = {
   'Algeria': 6.5, 'Argentina': 10.0, 'Úc': 6.5, 'Áo': 7.5, 'Bỉ': 8.5,
   'Bosnia & Her.': 6.0, 'Brazil': 9.5, 'Canada': 6.5, 'Cape Verde': 5.5,
@@ -92,7 +99,7 @@ const MatchCountdown: React.FC<{ matchTime: string; onZero?: () => void; isMini?
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const difference = new Date(matchTime).getTime() - Date.now();
+      const difference = parseDateToVietnam(matchTime).getTime() - Date.now();
       if (difference <= 0) {
         setTimeLeft(null);
         if (onZero) onZero();
@@ -206,7 +213,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
   getHandicapButtonLabel,
   formatDate
 }) => {
-  const locked = match.isLocked || new Date(match.matchTime).getTime() <= Date.now();
+  const locked = match.isLocked || parseDateToVietnam(match.matchTime).getTime() <= Date.now();
   const myPred = match.myPrediction;
   const local = localPreds[match.id];
   const curWinner = local ? local.winner : (myPred ? myPred.predictedHandicapWinner : 'home');
@@ -487,8 +494,9 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
   };
 
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const date = parseDateToVietnam(dateStr);
     return date.toLocaleString('vi-VN', {
+      timeZone: 'Asia/Ho_Chi_Minh',
       hour: '2-digit',
       minute: '2-digit',
       day: '2-digit',
@@ -528,8 +536,8 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
 
   // Find the closest upcoming match that has not started yet
   const upcomingMatches = matches
-    .filter(m => m.status === 'pending' && !m.isLocked && new Date(m.matchTime).getTime() > Date.now())
-    .sort((a, b) => new Date(a.matchTime).getTime() - new Date(b.matchTime).getTime());
+    .filter(m => m.status === 'pending' && !m.isLocked && parseDateToVietnam(m.matchTime).getTime() > Date.now())
+    .sort((a, b) => parseDateToVietnam(a.matchTime).getTime() - parseDateToVietnam(b.matchTime).getTime());
 
   const featuredMatch = upcomingMatches.length > 0 ? upcomingMatches[0] : null;
 
@@ -575,7 +583,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
       ) : (
         <div className="matches-grid">
           {remainingMatches.map((match) => {
-            const locked = match.isLocked || new Date(match.matchTime).getTime() <= Date.now();
+            const locked = match.isLocked || parseDateToVietnam(match.matchTime).getTime() <= Date.now();
             const myPred = match.myPrediction;
             const local = localPreds[match.id];
 
