@@ -2202,4 +2202,89 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* --- PLAYER DUEL RESPONSIVE STYLES --- */
+/* Mobile first defaults */
+.hero-duel-player-mobile {
+  display: block;
+  height: 85px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.4));
+  margin-bottom: 4px;
+}
+
+.hero-duel-player-desktop {
+  display: none;
+}
+
+.grid-duel-player-mobile {
+  display: block;
+  height: 75px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.4));
+  margin-bottom: 4px;
+}
+
+.grid-duel-player-desktop {
+  display: none;
+}
+
+/* Desktop overrides */
+@media (min-width: 768px) {
+  .hero-countdown-duel-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    margin: 20px auto;
+  }
+  
+  .hero-duel-player-desktop {
+    display: block !important;
+    height: 140px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.5));
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: none;
+    pointer-events: none; /* Keep clicks flowing through if needed, though they don't block anything */
+  }
+  
+  /* Apply subtle scaling hover effect on the parent container */
+  .featured-hero-card:hover .hero-duel-player-desktop {
+    transform: scale(1.08) translateY(-4px);
+    filter: drop-shadow(0 0 22px rgba(251, 191, 36, 0.6));
+  }
+  
+  .hero-team-display .hero-duel-player-mobile {
+    display: none !important;
+  }
+  
+  /* Grid match card styling */
+  .grid-countdown-duel-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin: 10px auto;
+  }
+  
+  .grid-duel-player-desktop {
+    display: block !important;
+    height: 95px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.45));
+    transition: transform 0.3s ease;
+    user-select: none;
+  }
+  
+  .match-card:hover .grid-duel-player-desktop {
+    transform: scale(1.08) translateY(-2px);
+    filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
+  }
+  
+  .team-display .grid-duel-player-mobile {
+    display: none !important;
+  }
+}
+
+
 

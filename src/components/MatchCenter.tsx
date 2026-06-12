@@ -237,12 +237,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
             <img 
               src="/img/canada.png" 
               alt="Canada Player" 
-              style={{ 
-                height: '85px', 
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.4))',
-                marginBottom: '4px'
-              }} 
+              className="hero-duel-player-mobile"
             />
           )}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
@@ -260,12 +255,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
             <img 
               src="/img/bosnia.png" 
               alt="Bosnia Player" 
-              style={{ 
-                height: '85px', 
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.4))',
-                marginBottom: '4px'
-              }} 
+              className="hero-duel-player-mobile"
             />
           )}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
@@ -338,7 +328,25 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
       </div>
 
       {/* Countdown Timer */}
-      <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} />
+      <div className="hero-countdown-duel-wrapper">
+        {match.id === 'match_3' && (
+          <img 
+            src="/img/canada.png" 
+            alt="Canada Player" 
+            className="hero-duel-player-desktop"
+          />
+        )}
+        
+        <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} />
+
+        {match.id === 'match_3' && (
+          <img 
+            src="/img/bosnia.png" 
+            alt="Bosnia Player" 
+            className="hero-duel-player-desktop"
+          />
+        )}
+      </div>
 
       <div className="hero-match-info-bar" style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
         <div>
@@ -685,7 +693,25 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                   </div>
 
                   {match.status === 'pending' && (
-                    <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} isMini={true} />
+                    <div className="grid-countdown-duel-wrapper">
+                      {match.id === 'match_3' && (
+                        <img 
+                          src="/img/canada.png" 
+                          alt="Canada Player" 
+                          className="grid-duel-player-desktop"
+                        />
+                      )}
+                      
+                      <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} isMini={true} />
+
+                      {match.id === 'match_3' && (
+                        <img 
+                          src="/img/bosnia.png" 
+                          alt="Bosnia Player" 
+                          className="grid-duel-player-desktop"
+                        />
+                      )}
+                    </div>
                   )}
 
                   {/* Score and Flag Area */}
@@ -695,12 +721,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                         <img 
                           src="/img/canada.png" 
                           alt="Canada Player" 
-                          style={{ 
-                            height: '75px', 
-                            objectFit: 'contain',
-                            filter: 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.4))',
-                            marginBottom: '4px'
-                          }} 
+                          className="grid-duel-player-mobile"
                         />
                       )}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
@@ -722,12 +743,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                         <img 
                           src="/img/bosnia.png" 
                           alt="Bosnia Player" 
-                          style={{ 
-                            height: '75px', 
-                            objectFit: 'contain',
-                            filter: 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.4))',
-                            marginBottom: '4px'
-                          }} 
+                          className="grid-duel-player-mobile"
                         />
                       )}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
