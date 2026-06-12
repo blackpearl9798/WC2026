@@ -2263,8 +2263,16 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px !important;
+    gap: 0px !important;
     margin: 10px auto;
+  }
+  
+  .grid-countdown-duel-wrapper > img:first-child {
+    margin-right: -10px !important;
+  }
+  
+  .grid-countdown-duel-wrapper > img:last-child {
+    margin-left: -10px !important;
   }
   
   .grid-duel-player-desktop {
@@ -2274,6 +2282,7 @@ h1, h2, h3, h4, h5, h6 {
     filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.45));
     transition: transform 0.3s ease;
     user-select: none;
+    z-index: 2;
   }
   
   .match-card:hover .grid-duel-player-desktop {
@@ -2308,12 +2317,21 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .hero-countdown-duel-wrapper {
-    gap: 12px !important;
+    gap: 0px !important;
     margin: 32px auto !important;
+  }
+  
+  .hero-countdown-duel-wrapper > img:first-child {
+    margin-right: -25px !important;
+  }
+  
+  .hero-countdown-duel-wrapper > img:last-child {
+    margin-left: -25px !important;
   }
   
   .hero-duel-player-desktop {
     height: 245px !important;
+    z-index: 2;
   }
 
   .featured-hero-card:hover .hero-duel-player-desktop {
