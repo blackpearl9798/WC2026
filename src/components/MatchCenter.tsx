@@ -661,13 +661,27 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                   )}
 
                   {/* Score and Flag Area */}
-                  <div className="match-teams-score">
-                    <div className="team-display">
-                      <FlagIcon flag={match.homeFlag} style={{ width: '28px', height: '18px', marginRight: '0' }} />
-                      <span className="team-name" title={match.homeTeam}>{match.homeTeam}</span>
+                  <div className="match-teams-score" style={{ alignItems: match.id === 'match_3' ? 'flex-end' : 'center', minHeight: match.id === 'match_3' ? '110px' : 'auto' }}>
+                    <div className="team-display" style={match.id === 'match_3' ? { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' } : undefined}>
+                      {match.id === 'match_3' && (
+                        <img 
+                          src="/img/canada.png" 
+                          alt="Canada Player" 
+                          style={{ 
+                            height: '75px', 
+                            objectFit: 'contain',
+                            filter: 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.4))',
+                            marginBottom: '4px'
+                          }} 
+                        />
+                      )}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                        <FlagIcon flag={match.homeFlag} style={{ width: '28px', height: '18px', marginRight: '0' }} />
+                        <span className="team-name" title={match.homeTeam}>{match.homeTeam}</span>
+                      </div>
                     </div>
 
-                    <div className="score-center">
+                    <div className="score-center" style={match.id === 'match_3' ? { marginBottom: '6px' } : undefined}>
                       {isFinished || match.status === 'live' ? (
                         <span className="actual-score-display">{match.homeScore} - {match.awayScore}</span>
                       ) : (
@@ -675,9 +689,23 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                       )}
                     </div>
 
-                    <div className="team-display">
-                      <FlagIcon flag={match.awayFlag} style={{ width: '28px', height: '18px', marginRight: '0' }} />
-                      <span className="team-name" title={match.awayTeam}>{match.awayTeam}</span>
+                    <div className="team-display" style={match.id === 'match_3' ? { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' } : undefined}>
+                      {match.id === 'match_3' && (
+                        <img 
+                          src="/img/bosnia.png" 
+                          alt="Bosnia Player" 
+                          style={{ 
+                            height: '75px', 
+                            objectFit: 'contain',
+                            filter: 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.4))',
+                            marginBottom: '4px'
+                          }} 
+                        />
+                      )}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                        <FlagIcon flag={match.awayFlag} style={{ width: '28px', height: '18px', marginRight: '0' }} />
+                        <span className="team-name" title={match.awayTeam}>{match.awayTeam}</span>
+                      </div>
                     </div>
                   </div>
 
