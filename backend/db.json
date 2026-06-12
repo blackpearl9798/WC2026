@@ -32,9 +32,9 @@
         "team": "home",
         "value": 0.5
       },
-      "status": "pending",
-      "homeScore": null,
-      "awayScore": null,
+      "status": "finished",
+      "homeScore": 2,
+      "awayScore": 0,
       "stadium": "Estadio Azteca",
       "city": "Mexico City",
       "country": "Mexico"
@@ -51,9 +51,9 @@
         "team": "home",
         "value": 0.25
       },
-      "status": "pending",
-      "homeScore": null,
-      "awayScore": null,
+      "status": "finished",
+      "homeScore": 2,
+      "awayScore": 1,
       "stadium": "Estadio Akron",
       "city": "Guadalajara (Zapopan)",
       "country": "Mexico"
