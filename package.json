@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "server": "node backend/server.js",
-    "server:dev": "nodemon backend/server.js",
+    "server:dev": "nodemon --ignore backend/db.json --ignore backend/db-template.json backend/server.js",
     "dev:all": "concurrently \"npm run server:dev\" \"npm run dev\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

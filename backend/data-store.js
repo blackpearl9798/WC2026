@@ -152,7 +152,7 @@ export function readDB() {
     // Tự động di cư dữ liệu trận đấu nếu thiếu, thiếu bảng đấu (group) hoặc thiếu tỷ lệ handicap
     const defaultDB = path.join(__dirname, 'db-template.json');
     let needsMigration = false;
-    if (!db.matches || db.matches.length < 72) {
+    if (!db.matches || db.matches.length < 104) {
       needsMigration = true;
     } else {
       const hasMissingGroup = db.matches.some(m => !m.group);
@@ -167,7 +167,7 @@ export function readDB() {
       console.log(`[Migration] Active DB matches need update. Migrating matches from ${defaultDB} to ${DB_FILE}`);
       try {
         const defaultData = JSON.parse(fs.readFileSync(defaultDB, 'utf8'));
-        if (defaultData && defaultData.matches && defaultData.matches.length >= 72) {
+        if (defaultData && defaultData.matches && defaultData.matches.length >= 104) {
           db.matches = defaultData.matches;
           writeDB(db);
           console.log(`[Migration] Successfully migrated ${defaultData.matches.length} matches to active database.`);
@@ -209,6 +209,10 @@ export function readDB() {
               if (changed) {
                 updatedCount++;
               }
+            } else {
+              // Bổ sung trận đấu mới nếu thiếu trong DB thực tế đang chạy
+              db.matches.push(gitMatch);
+              updatedCount++;
             }
           });
           if (updatedCount > 0) {

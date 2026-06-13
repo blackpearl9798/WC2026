@@ -1379,6 +1379,582 @@
       "stadium": "Mercedes-Benz Stadium",
       "city": "Atlanta",
       "country": "United States"
+    },
+    {
+      "id": "match_73",
+      "homeTeam": "Nhì Bảng A",
+      "awayTeam": "Nhì Bảng B",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-06-28T19:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "SoFi Stadium",
+      "city": "Los Angeles (Inglewood)",
+      "country": "United States"
+    },
+    {
+      "id": "match_74",
+      "homeTeam": "Nhất Bảng E",
+      "awayTeam": "Hạng 3 A/B/C/D/F",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-06-29T21:30:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Gillette Stadium",
+      "city": "Boston (Foxborough)",
+      "country": "United States"
+    },
+    {
+      "id": "match_75",
+      "homeTeam": "Nhất Bảng F",
+      "awayTeam": "Nhì Bảng C",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-06-30T01:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Estadio BBVA",
+      "city": "Monterrey (Guadalupe)",
+      "country": "Mexico"
+    },
+    {
+      "id": "match_76",
+      "homeTeam": "Nhất Bảng C",
+      "awayTeam": "Nhì Bảng F",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-06-29T16:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "NRG Stadium",
+      "city": "Houston",
+      "country": "United States"
+    },
+    {
+      "id": "match_77",
+      "homeTeam": "Nhất Bảng I",
+      "awayTeam": "Hạng 3 C/D/F/G/H",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-06-30T21:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "MetLife Stadium",
+      "city": "New York/New Jersey (East Rutherford)",
+      "country": "United States"
+    },
+    {
+      "id": "match_78",
+      "homeTeam": "Nhì Bảng E",
+      "awayTeam": "Nhì Bảng I",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-06-30T19:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
+    },
+    {
+      "id": "match_79",
+      "homeTeam": "Nhất Bảng A",
+      "awayTeam": "Hạng 3 C/E/F/H/I",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-01T01:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Estadio Azteca",
+      "city": "Mexico City",
+      "country": "Mexico"
+    },
+    {
+      "id": "match_80",
+      "homeTeam": "Nhất Bảng L",
+      "awayTeam": "Hạng 3 E/H/I/J/K",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-01T19:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "United States"
+    },
+    {
+      "id": "match_81",
+      "homeTeam": "Nhất Bảng D",
+      "awayTeam": "Hạng 3 B/E/F/I/J",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-02T00:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Levi's Stadium",
+      "city": "San Francisco Bay Area (Santa Clara)",
+      "country": "United States"
+    },
+    {
+      "id": "match_82",
+      "homeTeam": "Nhất Bảng G",
+      "awayTeam": "Hạng 3 A/E/H/I/J",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-01T18:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Lumen Field",
+      "city": "Seattle",
+      "country": "United States"
+    },
+    {
+      "id": "match_83",
+      "homeTeam": "Nhì Bảng K",
+      "awayTeam": "Nhì Bảng L",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-02T23:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "BMO Field",
+      "city": "Toronto",
+      "country": "Canada"
+    },
+    {
+      "id": "match_84",
+      "homeTeam": "Nhất Bảng H",
+      "awayTeam": "Nhì Bảng J",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-02T19:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "SoFi Stadium",
+      "city": "Los Angeles (Inglewood)",
+      "country": "United States"
+    },
+    {
+      "id": "match_85",
+      "homeTeam": "Nhất Bảng B",
+      "awayTeam": "Hạng 3 E/F/G/I/J",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-03T00:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    {
+      "id": "match_86",
+      "homeTeam": "Nhất Bảng J",
+      "awayTeam": "Nhì Bảng H",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-03T23:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Hard Rock Stadium",
+      "city": "Miami (Miami Gardens)",
+      "country": "United States"
+    },
+    {
+      "id": "match_87",
+      "homeTeam": "Nhất Bảng K",
+      "awayTeam": "Hạng 3 D/E/I/J/L",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-04T00:30:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "city": "Kansas City",
+      "country": "United States"
+    },
+    {
+      "id": "match_88",
+      "homeTeam": "Nhì Bảng D",
+      "awayTeam": "Nhì Bảng G",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-03T20:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
+    },
+    {
+      "id": "match_89",
+      "homeTeam": "Thắng Trận 74",
+      "awayTeam": "Thắng Trận 77",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-04T21:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Lincoln Financial Field",
+      "city": "Philadelphia",
+      "country": "United States"
+    },
+    {
+      "id": "match_90",
+      "homeTeam": "Thắng Trận 73",
+      "awayTeam": "Thắng Trận 75",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-04T16:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "NRG Stadium",
+      "city": "Houston",
+      "country": "United States"
+    },
+    {
+      "id": "match_91",
+      "homeTeam": "Thắng Trận 76",
+      "awayTeam": "Thắng Trận 78",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-05T20:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "MetLife Stadium",
+      "city": "New York/New Jersey (East Rutherford)",
+      "country": "United States"
+    },
+    {
+      "id": "match_92",
+      "homeTeam": "Thắng Trận 79",
+      "awayTeam": "Thắng Trận 80",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-06T00:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Estadio Azteca",
+      "city": "Mexico City",
+      "country": "Mexico"
+    },
+    {
+      "id": "match_93",
+      "homeTeam": "Thắng Trận 83",
+      "awayTeam": "Thắng Trận 84",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-06T21:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
+    },
+    {
+      "id": "match_94",
+      "homeTeam": "Thắng Trận 81",
+      "awayTeam": "Thắng Trận 82",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-06T22:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Lumen Field",
+      "city": "Seattle",
+      "country": "United States"
+    },
+    {
+      "id": "match_95",
+      "homeTeam": "Thắng Trận 86",
+      "awayTeam": "Thắng Trận 88",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-07T19:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "United States"
+    },
+    {
+      "id": "match_96",
+      "homeTeam": "Thắng Trận 85",
+      "awayTeam": "Thắng Trận 87",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-07T17:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    {
+      "id": "match_97",
+      "homeTeam": "Thắng Trận 89",
+      "awayTeam": "Thắng Trận 90",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-09T21:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Gillette Stadium",
+      "city": "Boston (Foxborough)",
+      "country": "United States"
+    },
+    {
+      "id": "match_98",
+      "homeTeam": "Thắng Trận 93",
+      "awayTeam": "Thắng Trận 94",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-10T19:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "SoFi Stadium",
+      "city": "Los Angeles (Inglewood)",
+      "country": "United States"
+    },
+    {
+      "id": "match_99",
+      "homeTeam": "Thắng Trận 91",
+      "awayTeam": "Thắng Trận 92",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-11T22:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Hard Rock Stadium",
+      "city": "Miami (Miami Gardens)",
+      "country": "United States"
+    },
+    {
+      "id": "match_100",
+      "homeTeam": "Thắng Trận 95",
+      "awayTeam": "Thắng Trận 96",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-12T00:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "GEHA Field at Arrowhead Stadium",
+      "city": "Kansas City",
+      "country": "United States"
+    },
+    {
+      "id": "match_101",
+      "homeTeam": "Thắng Trận 97",
+      "awayTeam": "Thắng Trận 98",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-14T21:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "AT&T Stadium",
+      "city": "Dallas (Arlington, Texas)",
+      "country": "United States"
+    },
+    {
+      "id": "match_102",
+      "homeTeam": "Thắng Trận 99",
+      "awayTeam": "Thắng Trận 100",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-15T22:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "United States"
+    },
+    {
+      "id": "match_103",
+      "homeTeam": "Thua Trận 101",
+      "awayTeam": "Thua Trận 102",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-18T22:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "Hard Rock Stadium",
+      "city": "Miami (Miami Gardens)",
+      "country": "United States"
+    },
+    {
+      "id": "match_104",
+      "homeTeam": "Thắng Trận 101",
+      "awayTeam": "Thắng Trận 102",
+      "homeFlag": "🏳️",
+      "awayFlag": "🏳️",
+      "matchTime": "2026-07-19T19:00:00.000Z",
+      "handicap": {
+        "team": "home",
+        "value": 0
+      },
+      "status": "pending",
+      "homeScore": null,
+      "awayScore": null,
+      "stadium": "MetLife Stadium",
+      "city": "New York/New Jersey (East Rutherford)",
+      "country": "United States"
     }
   ],
   "predictions": [],

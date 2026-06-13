@@ -120,8 +120,25 @@ export const StandingsView: React.FC<StandingsViewProps> = ({ matches }) => {
       return a.name.localeCompare(b.name);
     });
 
+  // Check if all group stage matches are finished
+  const isGroupStageFinished = matches
+    .filter(m => m.group)
+    .every(m => m.status === 'finished');
+
   // Resolve team name and flag for bracket nodes
   const resolveTeam = (node: any) => {
+    if (!isGroupStageFinished) {
+      if (node.type === 'winner') {
+        return { name: `Nhất Bảng ${node.group}`, flag: '🏳️', isPlaceholder: true };
+      }
+      if (node.type === 'runner_up') {
+        return { name: `Nhì Bảng ${node.group}`, flag: '🏳️', isPlaceholder: true };
+      }
+      if (node.type === 'third') {
+        return { name: node.label || `Hạng 3 thứ ${node.rank + 1}`, flag: '🏳️', isPlaceholder: true };
+      }
+    }
+
     if (node.type === 'winner') {
       const g = allGroupStandings[node.group];
       if (g && g[0]) return { name: g[0].name, flag: g[0].flag };
@@ -135,106 +152,216 @@ export const StandingsView: React.FC<StandingsViewProps> = ({ matches }) => {
     if (node.type === 'third') {
       const t = rankedThirds[node.rank];
       if (t) return { name: t.name, flag: t.flag };
-      return { name: `Hạng 3 thứ ${node.rank + 1}`, flag: '🏳️', isPlaceholder: true };
+      return { name: node.label || `Hạng 3 thứ ${node.rank + 1}`, flag: '🏳️', isPlaceholder: true };
     }
     return { name: 'TBD', flag: '🏳️', isPlaceholder: true };
   };
 
-  // Find a knockout match in the database between two teams
-  const findKnockoutMatch = (teamA: any, teamB: any) => {
-    if (!teamA || !teamB || teamA.isPlaceholder || teamB.isPlaceholder) return null;
-    return matches.find(m => 
-      // Knockout matches don't have m.group or group is null
-      !m.group &&
-      (
-        (m.homeTeam === teamA.name && m.awayTeam === teamB.name) ||
-        (m.homeTeam === teamB.name && m.awayTeam === teamA.name)
-      )
-    );
+  const formatVietnamTime = (dateStr: string) => {
+    try {
+      const date = new Date(dateStr);
+      const optionsStr = date.toLocaleString('vi-VN', {
+        timeZone: 'Asia/Ho_Chi_Minh',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+      return optionsStr.replace(',', ' -').replace(/\s+/g, ' ');
+    } catch (e) {
+      return dateStr;
+    }
   };
 
-  // Get the winner of a knockout match
-  const getMatchWinner = (teamA: any, teamB: any) => {
-    const match = findKnockoutMatch(teamA, teamB);
-    if (match && match.status === 'finished' && match.homeScore !== null && match.awayScore !== null) {
-      if (match.homeTeam === teamA.name) {
-        return match.homeScore > match.awayScore ? teamA : teamB;
-      } else {
-        return match.awayScore > match.homeScore ? teamA : teamB;
-      }
-    }
-    return null;
-  };
+  const resolvedMatches: { [key: string]: any } = {};
 
   // Pairings for Round of 32
   const r32Matchups = [
-    { id: '1', home: { type: 'winner', group: 'A' }, away: { type: 'third', rank: 0 } },
-    { id: '2', home: { type: 'runner_up', group: 'A' }, away: { type: 'runner_up', group: 'B' } },
-    { id: '3', home: { type: 'winner', group: 'B' }, away: { type: 'third', rank: 1 } },
-    { id: '4', home: { type: 'winner', group: 'C' }, away: { type: 'third', rank: 2 } },
-    { id: '5', home: { type: 'runner_up', group: 'C' }, away: { type: 'runner_up', group: 'D' } },
-    { id: '6', home: { type: 'winner', group: 'D' }, away: { type: 'third', rank: 3 } },
-    { id: '7', home: { type: 'winner', group: 'E' }, away: { type: 'runner_up', group: 'F' } },
-    { id: '8', home: { type: 'winner', group: 'F' }, away: { type: 'runner_up', group: 'E' } },
-    { id: '9', home: { type: 'winner', group: 'G' }, away: { type: 'third', rank: 4 } },
-    { id: '10', home: { type: 'runner_up', group: 'G' }, away: { type: 'runner_up', group: 'H' } },
-    { id: '11', home: { type: 'winner', group: 'H' }, away: { type: 'third', rank: 5 } },
-    { id: '12', home: { type: 'winner', group: 'I' }, away: { type: 'runner_up', group: 'J' } },
-    { id: '13', home: { type: 'winner', group: 'J' }, away: { type: 'runner_up', group: 'I' } },
-    { id: '14', home: { type: 'winner', group: 'K' }, away: { type: 'third', rank: 6 } },
-    { id: '15', home: { type: 'runner_up', group: 'K' }, away: { type: 'runner_up', group: 'L' } },
-    { id: '16', home: { type: 'winner', group: 'L' }, away: { type: 'third', rank: 7 } },
+    { id: '74', home: { type: 'winner', group: 'E' }, away: { type: 'third', rank: 0, label: 'Hạng 3 A/B/C/D/F' } },
+    { id: '77', home: { type: 'winner', group: 'I' }, away: { type: 'third', rank: 1, label: 'Hạng 3 C/D/F/G/H' } },
+    { id: '73', home: { type: 'runner_up', group: 'A' }, away: { type: 'runner_up', group: 'B' } },
+    { id: '75', home: { type: 'winner', group: 'F' }, away: { type: 'runner_up', group: 'C' } },
+
+    { id: '83', home: { type: 'runner_up', group: 'K' }, away: { type: 'runner_up', group: 'L' } },
+    { id: '84', home: { type: 'winner', group: 'H' }, away: { type: 'runner_up', group: 'J' } },
+    { id: '81', home: { type: 'winner', group: 'D' }, away: { type: 'third', rank: 4, label: 'Hạng 3 B/E/F/I/J' } },
+    { id: '82', home: { type: 'winner', group: 'G' }, away: { type: 'third', rank: 5, label: 'Hạng 3 A/E/H/I/J' } },
+
+    { id: '76', home: { type: 'winner', group: 'C' }, away: { type: 'runner_up', group: 'F' } },
+    { id: '78', home: { type: 'runner_up', group: 'E' }, away: { type: 'runner_up', group: 'I' } },
+    { id: '79', home: { type: 'winner', group: 'A' }, away: { type: 'third', rank: 2, label: 'Hạng 3 C/E/F/H/I' } },
+    { id: '80', home: { type: 'winner', group: 'L' }, away: { type: 'third', rank: 3, label: 'Hạng 3 E/H/I/J/K' } },
+
+    { id: '86', home: { type: 'winner', group: 'J' }, away: { type: 'runner_up', group: 'H' } },
+    { id: '88', home: { type: 'runner_up', group: 'D' }, away: { type: 'runner_up', group: 'G' } },
+    { id: '85', home: { type: 'winner', group: 'B' }, away: { type: 'third', rank: 6, label: 'Hạng 3 E/F/G/I/J' } },
+    { id: '87', home: { type: 'winner', group: 'K' }, away: { type: 'third', rank: 7, label: 'Hạng 3 D/E/I/J/L' } },
   ];
 
   // 1. Round of 32 Matches
   const r32Matches = r32Matchups.map(m => {
-    const home = resolveTeam(m.home);
-    const away = resolveTeam(m.away);
-    const dbMatch = findKnockoutMatch(home, away);
-    const winner = getMatchWinner(home, away);
-    return { id: m.id, home, away, dbMatch, winner };
+    const dbMatch = matches.find(dm => dm.id === `match_${m.id}`);
+    const useDBHome = dbMatch && dbMatch.homeFlag && dbMatch.homeFlag !== '🏳️';
+    const useDBAway = dbMatch && dbMatch.awayFlag && dbMatch.awayFlag !== '🏳️';
+
+    const home = useDBHome 
+      ? { name: dbMatch.homeTeam, flag: dbMatch.homeFlag } 
+      : resolveTeam(m.home);
+    const away = useDBAway 
+      ? { name: dbMatch.awayTeam, flag: dbMatch.awayFlag } 
+      : resolveTeam(m.away);
+
+    const winner = dbMatch && dbMatch.status === 'finished' && dbMatch.homeScore !== null && dbMatch.awayScore !== null
+      ? (dbMatch.homeScore > dbMatch.awayScore ? home : away)
+      : null;
+
+    const res = { id: m.id, home, away, dbMatch, winner };
+    resolvedMatches[`match_${m.id}`] = res;
+    return res;
   });
-  const r32Winners = r32Matches.map(m => m.winner);
 
   // 2. Round of 16 Matches
-  const r16Matches = [];
-  for (let i = 0; i < 8; i++) {
-    const home = r32Winners[2 * i] || { name: `Thắng Trận ${2 * i + 1}`, flag: '🏳️', isPlaceholder: true };
-    const away = r32Winners[2 * i + 1] || { name: `Thắng Trận ${2 * i + 2}`, flag: '🏳️', isPlaceholder: true };
-    const dbMatch = findKnockoutMatch(home, away);
-    const winner = getMatchWinner(home, away);
-    r16Matches.push({ id: `${i + 1}`, home, away, dbMatch, winner });
-  }
-  const r16Winners = r16Matches.map(m => m.winner);
+  const r16Matchups = [
+    { id: '89', homeMatchId: 'match_74', awayMatchId: 'match_77' },
+    { id: '90', homeMatchId: 'match_73', awayMatchId: 'match_75' },
+    { id: '91', homeMatchId: 'match_76', awayMatchId: 'match_78' },
+    { id: '92', homeMatchId: 'match_79', awayMatchId: 'match_80' },
+    { id: '93', homeMatchId: 'match_83', awayMatchId: 'match_84' },
+    { id: '94', homeMatchId: 'match_81', awayMatchId: 'match_82' },
+    { id: '95', homeMatchId: 'match_86', awayMatchId: 'match_88' },
+    { id: '96', homeMatchId: 'match_85', awayMatchId: 'match_87' },
+  ];
+
+  const r16Matches = r16Matchups.map(m => {
+    const dbMatch = matches.find(dm => dm.id === `match_${m.id}`);
+    const useDBHome = dbMatch && dbMatch.homeFlag && dbMatch.homeFlag !== '🏳️';
+    const useDBAway = dbMatch && dbMatch.awayFlag && dbMatch.awayFlag !== '🏳️';
+
+    const homeParent = resolvedMatches[m.homeMatchId];
+    const awayParent = resolvedMatches[m.awayMatchId];
+
+    const home = useDBHome
+      ? { name: dbMatch.homeTeam, flag: dbMatch.homeFlag }
+      : (homeParent && homeParent.winner 
+          ? homeParent.winner 
+          : { name: `Thắng Trận ${m.homeMatchId.replace('match_', '')}`, flag: '🏳️', isPlaceholder: true });
+
+    const away = useDBAway
+      ? { name: dbMatch.awayTeam, flag: dbMatch.awayFlag }
+      : (awayParent && awayParent.winner 
+          ? awayParent.winner 
+          : { name: `Thắng Trận ${m.awayMatchId.replace('match_', '')}`, flag: '🏳️', isPlaceholder: true });
+
+    const winner = dbMatch && dbMatch.status === 'finished' && dbMatch.homeScore !== null && dbMatch.awayScore !== null
+      ? (dbMatch.homeScore > dbMatch.awayScore ? home : away)
+      : null;
+
+    const res = { id: m.id, home, away, dbMatch, winner };
+    resolvedMatches[`match_${m.id}`] = res;
+    return res;
+  });
 
   // 3. Quarterfinals (Tứ Kết)
-  const qfMatches = [];
-  for (let i = 0; i < 4; i++) {
-    const home = r16Winners[2 * i] || { name: `Thắng Vòng 16 Trận ${2 * i + 1}`, flag: '🏳️', isPlaceholder: true };
-    const away = r16Winners[2 * i + 1] || { name: `Thắng Vòng 16 Trận ${2 * i + 2}`, flag: '🏳️', isPlaceholder: true };
-    const dbMatch = findKnockoutMatch(home, away);
-    const winner = getMatchWinner(home, away);
-    qfMatches.push({ id: `${i + 1}`, home, away, dbMatch, winner });
-  }
-  const qfWinners = qfMatches.map(m => m.winner);
+  const qfMatchups = [
+    { id: '97', homeMatchId: 'match_89', awayMatchId: 'match_90' },
+    { id: '98', homeMatchId: 'match_93', awayMatchId: 'match_94' },
+    { id: '99', homeMatchId: 'match_91', awayMatchId: 'match_92' },
+    { id: '100', homeMatchId: 'match_95', awayMatchId: 'match_96' },
+  ];
+
+  const qfMatches = qfMatchups.map(m => {
+    const dbMatch = matches.find(dm => dm.id === `match_${m.id}`);
+    const useDBHome = dbMatch && dbMatch.homeFlag && dbMatch.homeFlag !== '🏳️';
+    const useDBAway = dbMatch && dbMatch.awayFlag && dbMatch.awayFlag !== '🏳️';
+
+    const homeParent = resolvedMatches[m.homeMatchId];
+    const awayParent = resolvedMatches[m.awayMatchId];
+
+    const home = useDBHome
+      ? { name: dbMatch.homeTeam, flag: dbMatch.homeFlag }
+      : (homeParent && homeParent.winner 
+          ? homeParent.winner 
+          : { name: `Thắng Trận ${m.homeMatchId.replace('match_', '')}`, flag: '🏳️', isPlaceholder: true });
+
+    const away = useDBAway
+      ? { name: dbMatch.awayTeam, flag: dbMatch.awayFlag }
+      : (awayParent && awayParent.winner 
+          ? awayParent.winner 
+          : { name: `Thắng Trận ${m.awayMatchId.replace('match_', '')}`, flag: '🏳️', isPlaceholder: true });
+
+    const winner = dbMatch && dbMatch.status === 'finished' && dbMatch.homeScore !== null && dbMatch.awayScore !== null
+      ? (dbMatch.homeScore > dbMatch.awayScore ? home : away)
+      : null;
+
+    const res = { id: m.id, home, away, dbMatch, winner };
+    resolvedMatches[`match_${m.id}`] = res;
+    return res;
+  });
 
   // 4. Semifinals (Bán Kết)
-  const sfMatches = [];
-  for (let i = 0; i < 2; i++) {
-    const home = qfWinners[2 * i] || { name: `Thắng Tứ Kết ${2 * i + 1}`, flag: '🏳️', isPlaceholder: true };
-    const away = qfWinners[2 * i + 1] || { name: `Thắng Tứ Kết ${2 * i + 2}`, flag: '🏳️', isPlaceholder: true };
-    const dbMatch = findKnockoutMatch(home, away);
-    const winner = getMatchWinner(home, away);
-    sfMatches.push({ id: `${i + 1}`, home, away, dbMatch, winner });
-  }
-  const sfWinners = sfMatches.map(m => m.winner);
+  const sfMatchups = [
+    { id: '101', homeMatchId: 'match_97', awayMatchId: 'match_98' },
+    { id: '102', homeMatchId: 'match_99', awayMatchId: 'match_100' },
+  ];
+
+  const sfMatches = sfMatchups.map(m => {
+    const dbMatch = matches.find(dm => dm.id === `match_${m.id}`);
+    const useDBHome = dbMatch && dbMatch.homeFlag && dbMatch.homeFlag !== '🏳️';
+    const useDBAway = dbMatch && dbMatch.awayFlag && dbMatch.awayFlag !== '🏳️';
+
+    const homeParent = resolvedMatches[m.homeMatchId];
+    const awayParent = resolvedMatches[m.awayMatchId];
+
+    const home = useDBHome
+      ? { name: dbMatch.homeTeam, flag: dbMatch.homeFlag }
+      : (homeParent && homeParent.winner 
+          ? homeParent.winner 
+          : { name: `Thắng Trận ${m.homeMatchId.replace('match_', '')}`, flag: '🏳️', isPlaceholder: true });
+
+    const away = useDBAway
+      ? { name: dbMatch.awayTeam, flag: dbMatch.awayFlag }
+      : (awayParent && awayParent.winner 
+          ? awayParent.winner 
+          : { name: `Thắng Trận ${m.awayMatchId.replace('match_', '')}`, flag: '🏳️', isPlaceholder: true });
+
+    const winner = dbMatch && dbMatch.status === 'finished' && dbMatch.homeScore !== null && dbMatch.awayScore !== null
+      ? (dbMatch.homeScore > dbMatch.awayScore ? home : away)
+      : null;
+
+    const res = { id: m.id, home, away, dbMatch, winner };
+    resolvedMatches[`match_${m.id}`] = res;
+    return res;
+  });
 
   // 5. Final (Chung Kết)
-  const homeFinal = sfWinners[0] || { name: 'Thắng Bán Kết 1', flag: '🏳️', isPlaceholder: true };
-  const awayFinal = sfWinners[1] || { name: 'Thắng Bán Kết 2', flag: '🏳️', isPlaceholder: true };
-  const finalMatchDB = findKnockoutMatch(homeFinal, awayFinal);
-  const champion = getMatchWinner(homeFinal, awayFinal);
-  const finalMatch = { id: 'Chung Kết', home: homeFinal, away: awayFinal, dbMatch: finalMatchDB, winner: champion };
+  const finalMatchup = { id: '104', homeMatchId: 'match_101', awayMatchId: 'match_102' };
+
+  const dbMatchFinal = matches.find(dm => dm.id === `match_${finalMatchup.id}`);
+  const useDBHomeFinal = dbMatchFinal && dbMatchFinal.homeFlag && dbMatchFinal.homeFlag !== '🏳️';
+  const useDBAwayFinal = dbMatchFinal && dbMatchFinal.awayFlag && dbMatchFinal.awayFlag !== '🏳️';
+
+  const homeParentFinal = resolvedMatches[finalMatchup.homeMatchId];
+  const awayParentFinal = resolvedMatches[finalMatchup.awayMatchId];
+
+  const homeFinal = useDBHomeFinal
+    ? { name: dbMatchFinal.homeTeam, flag: dbMatchFinal.homeFlag }
+    : (homeParentFinal && homeParentFinal.winner 
+        ? homeParentFinal.winner 
+        : { name: `Thắng Trận ${finalMatchup.homeMatchId.replace('match_', '')}`, flag: '🏳️', isPlaceholder: true });
+
+  const awayFinal = useDBAwayFinal
+    ? { name: dbMatchFinal.awayTeam, flag: dbMatchFinal.awayFlag }
+    : (awayParentFinal && awayParentFinal.winner 
+        ? awayParentFinal.winner 
+        : { name: `Thắng Trận ${finalMatchup.awayMatchId.replace('match_', '')}`, flag: '🏳️', isPlaceholder: true });
+
+  const champion = dbMatchFinal && dbMatchFinal.status === 'finished' && dbMatchFinal.homeScore !== null && dbMatchFinal.awayScore !== null
+    ? (dbMatchFinal.homeScore > dbMatchFinal.awayScore ? homeFinal : awayFinal)
+    : null;
+
+  const finalMatch = { id: finalMatchup.id, home: homeFinal, away: awayFinal, dbMatch: dbMatchFinal, winner: champion };
 
   // Render a match node in the bracket
   const renderMatchCard = (m: any) => {
@@ -278,6 +405,17 @@ export const StandingsView: React.FC<StandingsViewProps> = ({ matches }) => {
           </span>
           <span style={{ fontWeight: 'bold' }}>{awayScore}</span>
         </div>
+
+        {dbMatch && (
+          <div style={{ marginTop: '6px', paddingTop: '4px', borderTop: '1px solid rgba(255,255,255,0.03)', fontSize: '0.65rem', color: 'var(--color-text-muted)', lineHeight: '1.2' }}>
+            <div style={{ fontWeight: '500', color: 'var(--color-secondary)' }}>
+              🕒 {formatVietnamTime(dbMatch.matchTime)}
+            </div>
+            <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={`${dbMatch.stadium}, ${dbMatch.city}`}>
+              📍 {dbMatch.stadium}, {dbMatch.city}
+            </div>
+          </div>
+        )}
       </div>
     );
   };

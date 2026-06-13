@@ -138,6 +138,11 @@ async function syncMatchesFromFreeAPI() {
 
     elapsedMatches.forEach(localMatch => {
       const matchingGame = freeGames.find(game => {
+        // Khớp theo ID trận đấu để đảm bảo chính xác cho cả vòng knockout
+        if (`match_${game.id}` === localMatch.id) {
+          return true;
+        }
+
         const homeEng = game.home_team_name_en;
         const awayEng = game.away_team_name_en;
         
