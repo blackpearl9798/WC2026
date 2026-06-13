@@ -130,6 +130,20 @@ function App() {
     };
 
     fetchMatches();
+
+    // Định kỳ tự động cập nhật & đồng bộ tỉ số sau mỗi 2 phút
+    const interval = setInterval(fetchMatches, 2 * 60 * 1000);
+
+    // Tự động cập nhật khi người dùng quay lại tab (window focus)
+    const handleFocus = () => {
+      fetchMatches();
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, [token, user, refreshTrigger]);
 
   const handleAuthSuccess = (authUser: any, authToken: string) => {
