@@ -46,6 +46,57 @@ function parseDateToVietnam(dateStr) {
   return new Date(dateStr);
 }
 
+const FLAG_MAP = {
+  'Mexico': '🇲🇽',
+  'South Africa': '🇿🇦',
+  'South Korea': '🇰🇷',
+  'Czech Republic': '🇨🇿',
+  'Canada': '🇨🇦',
+  'Bosnia and Herzegovina': '🇧🇦',
+  'United States': '🇺🇸',
+  'Paraguay': '🇵🇾',
+  'Haiti': '🇭🇹',
+  'Scotland': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  'Australia': '🇦🇺',
+  'Turkey': '🇹🇷',
+  'Brazil': '🇧🇷',
+  'Morocco': '🇲🇦',
+  'Qatar': '🇶🇦',
+  'Switzerland': '🇨🇭',
+  'Ivory Coast': '🇨🇮',
+  'Ecuador': '🇪🇨',
+  'Germany': '🇩🇪',
+  'Curaçao': '🇨🇼',
+  'Netherlands': '🇳🇱',
+  'Japan': '🇯🇵',
+  'Sweden': '🇸🇪',
+  'Tunisia': '🇹🇳',
+  'Iran': '🇮🇷',
+  'New Zealand': '🇳🇿',
+  'Spain': '🇪🇸',
+  'Cape Verde': '🇨🇻',
+  'Belgium': '🇧🇪',
+  'Egypt': '🇪🇬',
+  'Saudi Arabia': '🇸🇦',
+  'Uruguay': '🇺🇾',
+  'France': '🇫🇷',
+  'Senegal': '🇸🇳',
+  'Iraq': '🇮🇶',
+  'Norway': '🇳🇴',
+  'Argentina': '🇦🇷',
+  'Algeria': '🇩🇿',
+  'Austria': '🇦🇹',
+  'Jordan': '🇯🇴',
+  'Portugal': '🇵🇹',
+  'Democratic Republic of the Congo': '🇨🇩',
+  'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+  'Croatia': '🇭🇷',
+  'Uzbekistan': '🇺🇿',
+  'Colombia': '🇨🇴',
+  'Ghana': '🇬🇭',
+  'Panama': '🇵🇦',
+};
+
 const TEAM_NAME_VI = {
   'Mexico': 'Mexico',
   'South Africa': 'Nam Phi',
@@ -429,6 +480,79 @@ app.get('/api/matches', authenticate, (req, res) => {
   });
 
   res.json(matchesWithPredictions);
+});
+
+// 4b. Đồng bộ tỉ số trận đấu từ client-side (vượt qua tường lửa server Render)
+app.post('/api/matches/sync-client', authenticate, (req, res) => {
+  const { games } = req.body;
+
+  if (!games || !Array.isArray(games)) {
+    return res.status(400).json({ error: 'Dữ liệu không đúng định dạng' });
+  }
+
+  const db = readDB();
+  let dbChanged = false;
+  let updatedCount = 0;
+  let finishedMatchesCount = 0;
+
+  db.matches.forEach(localMatch => {
+    if (localMatch.status === 'finished') return;
+
+    // So khớp theo ID trận đấu để đảm bảo độ chính xác
+    const matchId = localMatch.id.replace('match_', '');
+    const apiGame = games.find(g => g.id === matchId);
+
+    if (apiGame) {
+      const isFinished = apiGame.finished === 'TRUE' || apiGame.time_elapsed === 'finished';
+
+      if (isFinished) {
+        const apiHomeScore = parseInt(apiGame.home_score);
+        const apiAwayScore = parseInt(apiGame.away_score);
+
+        if (!isNaN(apiHomeScore) && !isNaN(apiAwayScore)) {
+          localMatch.homeScore = apiHomeScore;
+          localMatch.awayScore = apiAwayScore;
+          localMatch.status = 'finished';
+
+          // Đồng bộ luôn các đội tuyển thật sự nếu là trận Knockout đã có kết quả
+          const isKnockout = parseInt(matchId) >= 73;
+          if (isKnockout) {
+            const apiHome = apiGame.home_team_name_en;
+            const apiAway = apiGame.away_team_name_en;
+            if (apiHome && apiAway && apiHome !== '0' && apiAway !== '0' && !apiHome.includes('Group') && !apiAway.includes('Group') && !apiHome.includes('Match') && !apiAway.includes('Match')) {
+              localMatch.homeTeam = TEAM_NAME_VI[apiHome] || apiHome;
+              localMatch.awayTeam = TEAM_NAME_VI[apiAway] || apiAway;
+              localMatch.homeFlag = FLAG_MAP[apiHome] || '🏳️';
+              localMatch.awayFlag = FLAG_MAP[apiAway] || '🏳️';
+            }
+          }
+
+          dbChanged = true;
+          updatedCount++;
+
+          // Tự động tính toán điểm số cho các dự đoán tương ứng
+          db.predictions = db.predictions.map(pred => {
+            if (pred.matchId === localMatch.id) {
+              const points = calculatePoints(pred, apiHomeScore, apiAwayScore, localMatch.handicap);
+              return {
+                ...pred,
+                ...points
+              };
+            }
+            return pred;
+          });
+          finishedMatchesCount++;
+        }
+      }
+    }
+  });
+
+  if (dbChanged) {
+    writeDB(db);
+    console.log(`✅ [Client Sync] Đồng bộ thành công: Cập nhật kết quả ${updatedCount} trận. Tính điểm xong cho ${finishedMatchesCount} dự đoán.`);
+  }
+
+  res.json({ success: true, updatedCount });
 });
 
 // 5. Lưu hoặc cập nhật dự đoán

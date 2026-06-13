@@ -68,6 +68,46 @@ function App() {
     checkToken();
   }, [token]);
 
+  const syncLiveScoresWithServer = async (localMatches: any[], authToken: string) => {
+    try {
+      // 1. Kiểm tra xem có trận nào đã đá xong nhưng chưa cập nhật tỉ số không
+      const now = new Date();
+      const needsSync = localMatches.some(m => {
+        if (m.status === 'finished') return false;
+        const matchTime = new Date(m.matchTime);
+        // Nếu đã trôi qua hơn 130 phút kể từ giờ đấu
+        return now.getTime() - matchTime.getTime() > 130 * 60 * 1000;
+      });
+
+      if (!needsSync) return;
+
+      console.log("Phát hiện trận đấu đã kết thúc nhưng chưa có tỉ số. Đang tải kết quả từ API...");
+      const apiRes = await fetch('https://worldcup26.ir/get/games');
+      if (apiRes.ok) {
+        const apiData = await apiRes.json();
+        if (apiData && apiData.games) {
+          const syncRes = await fetch('/api/matches/sync-client', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify({ games: apiData.games })
+          });
+          if (syncRes.ok) {
+            const syncData = await syncRes.json();
+            if (syncData.updatedCount > 0) {
+              console.log(`Đã đồng bộ thành công ${syncData.updatedCount} trận đấu mới lên server!`);
+              setRefreshTrigger(prev => prev + 1);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error("Lỗi đồng bộ tỉ số client-server:", e);
+    }
+  };
+
   // Fetch matches whenever token changes or refresh is triggered
   useEffect(() => {
     const fetchMatches = async () => {
@@ -81,6 +121,8 @@ function App() {
         if (response.ok) {
           const data = await response.json();
           setMatches(data);
+          // Đồng bộ tỉ số tự động từ trình duyệt (vượt qua tường lửa Render)
+          syncLiveScoresWithServer(data, token);
         }
       } catch (err) {
         console.error('Lỗi tải danh sách trận đấu:', err);
