@@ -231,33 +231,19 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
         🔥 TRẬN CẦU TÂM ĐIỂM TIẾP THEO
       </div>
 
-      <div className="hero-teams-row" style={{ alignItems: match.id === 'match_3' ? 'flex-end' : 'center', minHeight: match.id === 'match_3' ? '120px' : 'auto' }}>
-        <div className="hero-team-display" style={match.id === 'match_3' ? { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' } : undefined}>
-          {match.id === 'match_3' && (
-            <img 
-              src="/img/canada.png" 
-              alt="Canada Player" 
-              className="hero-duel-player-mobile"
-            />
-          )}
+      <div className="hero-teams-row">
+        <div className="hero-team-display">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
             <FlagIcon flag={match.homeFlag} style={{ width: '36px', height: '24px', marginRight: '0' }} />
             <span className="hero-team-name">{match.homeTeam}</span>
           </div>
         </div>
 
-        <div className="hero-vs-center" style={match.id === 'match_3' ? { marginBottom: '8px' } : undefined}>
+        <div className="hero-vs-center">
           <span className="hero-vs-label">VS</span>
         </div>
 
-        <div className="hero-team-display" style={match.id === 'match_3' ? { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' } : undefined}>
-          {match.id === 'match_3' && (
-            <img 
-              src="/img/bosnia.png" 
-              alt="Bosnia Player" 
-              className="hero-duel-player-mobile"
-            />
-          )}
+        <div className="hero-team-display">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
             <FlagIcon flag={match.awayFlag} style={{ width: '36px', height: '24px', marginRight: '0' }} />
             <span className="hero-team-name">{match.awayTeam}</span>
@@ -328,25 +314,7 @@ const FeaturedMatchHero: React.FC<FeaturedMatchHeroProps> = ({
       </div>
 
       {/* Countdown Timer */}
-      <div className="hero-countdown-duel-wrapper">
-        {match.id === 'match_3' && (
-          <img 
-            src="/img/canada.png" 
-            alt="Canada Player" 
-            className="hero-duel-player-desktop"
-          />
-        )}
-        
-        <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} />
-
-        {match.id === 'match_3' && (
-          <img 
-            src="/img/bosnia.png" 
-            alt="Bosnia Player" 
-            className="hero-duel-player-desktop"
-          />
-        )}
-      </div>
+      <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} />
 
       <div className="hero-match-info-bar" style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
         <div>
@@ -685,44 +653,19 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                   </div>
 
                   {match.status === 'pending' && (
-                    <div className="grid-countdown-duel-wrapper">
-                      {match.id === 'match_3' && (
-                        <img 
-                          src="/img/canada.png" 
-                          alt="Canada Player" 
-                          className="grid-duel-player-desktop"
-                        />
-                      )}
-                      
-                      <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} isMini={true} />
-
-                      {match.id === 'match_3' && (
-                        <img 
-                          src="/img/bosnia.png" 
-                          alt="Bosnia Player" 
-                          className="grid-duel-player-desktop"
-                        />
-                      )}
-                    </div>
+                    <MatchCountdown matchTime={match.matchTime} onZero={onRefresh} isMini={true} />
                   )}
 
                   {/* Score and Flag Area */}
-                  <div className="match-teams-score" style={{ alignItems: match.id === 'match_3' ? 'flex-end' : 'center', minHeight: match.id === 'match_3' ? '110px' : 'auto' }}>
-                    <div className="team-display" style={match.id === 'match_3' ? { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' } : undefined}>
-                      {match.id === 'match_3' && (
-                        <img 
-                          src="/img/canada.png" 
-                          alt="Canada Player" 
-                          className="grid-duel-player-mobile"
-                        />
-                      )}
+                  <div className="match-teams-score">
+                    <div className="team-display">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
                         <FlagIcon flag={match.homeFlag} style={{ width: '28px', height: '18px', marginRight: '0' }} />
                         <span className="team-name" title={match.homeTeam}>{match.homeTeam}</span>
                       </div>
                     </div>
 
-                    <div className="score-center" style={match.id === 'match_3' ? { marginBottom: '6px' } : undefined}>
+                    <div className="score-center">
                       {isFinished || match.status === 'live' ? (
                         <span className="actual-score-display">{match.homeScore} - {match.awayScore}</span>
                       ) : (
@@ -730,14 +673,7 @@ export const MatchCenter: React.FC<MatchCenterProps> = ({ matches, token, onRefr
                       )}
                     </div>
 
-                    <div className="team-display" style={match.id === 'match_3' ? { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' } : undefined}>
-                      {match.id === 'match_3' && (
-                        <img 
-                          src="/img/bosnia.png" 
-                          alt="Bosnia Player" 
-                          className="grid-duel-player-mobile"
-                        />
-                      )}
+                    <div className="team-display">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
                         <FlagIcon flag={match.awayFlag} style={{ width: '28px', height: '18px', marginRight: '0' }} />
                         <span className="team-name" title={match.awayTeam}>{match.awayTeam}</span>
