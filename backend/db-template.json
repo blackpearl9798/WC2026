@@ -9,14 +9,6 @@
       "token": "token-6f3bi9xnb-mq8t53rz",
       "password": "696969",
       "fullName": "Quản trị viên"
-    },
-    {
-      "id": "user_1781019990222",
-      "username": "testuser_k1bg7",
-      "fullName": "Test User",
-      "password": "my-password-123",
-      "isAdmin": false,
-      "token": "token-xvp5qogvf-mq6tbfma"
     }
   ],
   "matches": [
@@ -1390,14 +1382,5 @@
     }
   ],
   "predictions": [],
-  "chat": [
-    {
-      "id": "msg_1780810335267",
-      "userId": "admin_user",
-      "username": "admin",
-      "department": "IT",
-      "message": "let's go",
-      "timestamp": "2026-06-07T05:32:15.267Z"
-    }
-  ]
+  "chat": []
 }

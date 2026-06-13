@@ -107,7 +107,7 @@ export function readDB() {
 
     if (!fs.existsSync(DB_FILE)) {
       // Nếu file DB trên ổ đĩa mount chưa tồn tại, sao chép file mặc định đi kèm code để giữ 72 trận đấu
-      const defaultDB = path.join(__dirname, 'db.json');
+      const defaultDB = path.join(__dirname, 'db-template.json');
       if (fs.existsSync(defaultDB) && defaultDB !== DB_FILE) {
         console.log(`Copying default database from ${defaultDB} to ${DB_FILE}`);
         fs.copyFileSync(defaultDB, DB_FILE);
@@ -150,7 +150,7 @@ export function readDB() {
     }
 
     // Tự động di cư dữ liệu trận đấu nếu thiếu, thiếu bảng đấu (group) hoặc thiếu tỷ lệ handicap
-    const defaultDB = path.join(__dirname, 'db.json');
+    const defaultDB = path.join(__dirname, 'db-template.json');
     let needsMigration = false;
     if (!db.matches || db.matches.length < 72) {
       needsMigration = true;
