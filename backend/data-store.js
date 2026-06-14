@@ -155,9 +155,13 @@ export function readDB() {
     if (!db.matches || db.matches.length < 104) {
       needsMigration = true;
     } else {
-      const hasMissingGroup = db.matches.some(m => !m.group);
+      const isGroupMatch = (m) => {
+        const idVal = parseInt(m.id.replace('match_', ''), 10);
+        return idVal >= 1 && idVal <= 72;
+      };
+      const hasMissingGroup = db.matches.some(m => isGroupMatch(m) && !m.group);
       const hasMissingStadium = db.matches.some(m => !m.stadium);
-      const zeroHandicapCount = db.matches.filter(m => !m.handicap || (m.handicap.team === null && m.handicap.value === 0)).length;
+      const zeroHandicapCount = db.matches.filter(m => isGroupMatch(m) && (!m.handicap || (m.handicap.team === null && m.handicap.value === 0))).length;
       if (hasMissingGroup || zeroHandicapCount > 10 || hasMissingStadium) {
         needsMigration = true;
       }
@@ -191,10 +195,66 @@ export function readDB() {
                 activeMatch.matchTime = gitMatch.matchTime;
                 changed = true;
               }
+              if (gitMatch.group && activeMatch.group !== gitMatch.group) {
+                activeMatch.group = gitMatch.group;
+                changed = true;
+              }
+              if (gitMatch.stadium && activeMatch.stadium !== gitMatch.stadium) {
+                activeMatch.stadium = gitMatch.stadium;
+                changed = true;
+              }
+              if (gitMatch.city && activeMatch.city !== gitMatch.city) {
+                activeMatch.city = gitMatch.city;
+                changed = true;
+              }
+              if (gitMatch.country && activeMatch.country !== gitMatch.country) {
+                activeMatch.country = gitMatch.country;
+                changed = true;
+              }
+              if (gitMatch.handicap && JSON.stringify(activeMatch.handicap) !== JSON.stringify(gitMatch.handicap)) {
+                activeMatch.handicap = gitMatch.handicap;
+                changed = true;
+              }
+
+              // Đồng bộ tên đội & cờ cho các trận vòng bảng, hoặc trận knockout vẫn là placeholder
+              const matchIdNum = parseInt(gitMatch.id.replace('match_', ''), 10);
+              const isKnockout = matchIdNum >= 73;
+              const activeHasPlaceholder = !activeMatch.homeTeam || 
+                                           activeMatch.homeTeam.includes('Bảng') || 
+                                           activeMatch.homeTeam.includes('Nhánh') || 
+                                           activeMatch.homeTeam.includes('Thắng') || 
+                                           activeMatch.homeTeam.includes('Thua') || 
+                                           activeMatch.homeTeam.includes('Hạng 3') ||
+                                           activeMatch.homeTeam === gitMatch.homeTeam;
+
+              if (!isKnockout || activeHasPlaceholder) {
+                if (activeMatch.homeTeam !== gitMatch.homeTeam) {
+                  activeMatch.homeTeam = gitMatch.homeTeam;
+                  changed = true;
+                }
+                if (activeMatch.awayTeam !== gitMatch.awayTeam) {
+                  activeMatch.awayTeam = gitMatch.awayTeam;
+                  changed = true;
+                }
+                if (activeMatch.homeFlag !== gitMatch.homeFlag) {
+                  activeMatch.homeFlag = gitMatch.homeFlag;
+                  changed = true;
+                }
+                if (activeMatch.awayFlag !== gitMatch.awayFlag) {
+                  activeMatch.awayFlag = gitMatch.awayFlag;
+                  changed = true;
+                }
+              }
+
               if (gitMatch.status === 'finished' && activeMatch.status !== 'finished') {
                 activeMatch.status = 'finished';
                 activeMatch.homeScore = gitMatch.homeScore;
                 activeMatch.awayScore = gitMatch.awayScore;
+                // Nếu trận đấu đã kết thúc ở gitMatch thì cập nhật luôn đội tuyển/cờ thật sự từ gitMatch
+                activeMatch.homeTeam = gitMatch.homeTeam;
+                activeMatch.awayTeam = gitMatch.awayTeam;
+                activeMatch.homeFlag = gitMatch.homeFlag;
+                activeMatch.awayFlag = gitMatch.awayFlag;
                 
                 // Recalculate predictions for this match
                 db.predictions = db.predictions.map(pred => {

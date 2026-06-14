@@ -62,9 +62,9 @@
         "team": "home",
         "value": 0.25
       },
-      "status": "pending",
-      "homeScore": null,
-      "awayScore": null,
+      "status": "finished",
+      "homeScore": 1,
+      "awayScore": 1,
       "stadium": "BMO Field",
       "city": "Toronto",
       "country": "Canada"
@@ -81,9 +81,9 @@
         "team": "home",
         "value": 0.5
       },
-      "status": "pending",
-      "homeScore": null,
-      "awayScore": null,
+      "status": "finished",
+      "homeScore": 4,
+      "awayScore": 1,
       "stadium": "SoFi Stadium",
       "city": "Los Angeles (Inglewood)",
       "country": "United States"
@@ -138,9 +138,9 @@
         "team": "home",
         "value": 0.75
       },
-      "status": "pending",
-      "homeScore": null,
-      "awayScore": null,
+      "status": "finished",
+      "homeScore": 1,
+      "awayScore": 1,
       "stadium": "MetLife Stadium",
       "city": "New York/New Jersey (East Rutherford)",
       "country": "United States"
@@ -157,9 +157,9 @@
         "team": "away",
         "value": 1.25
       },
-      "status": "pending",
-      "homeScore": null,
-      "awayScore": null,
+      "status": "finished",
+      "homeScore": 1,
+      "awayScore": 1,
       "stadium": "Levi's Stadium",
       "city": "San Francisco Bay Area (Santa Clara)",
       "country": "United States"
