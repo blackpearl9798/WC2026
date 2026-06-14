@@ -211,10 +211,6 @@ export function readDB() {
                 activeMatch.country = gitMatch.country;
                 changed = true;
               }
-              if (gitMatch.handicap && JSON.stringify(activeMatch.handicap) !== JSON.stringify(gitMatch.handicap)) {
-                activeMatch.handicap = gitMatch.handicap;
-                changed = true;
-              }
 
               // Đồng bộ tên đội & cờ cho các trận vòng bảng, hoặc trận knockout vẫn là placeholder
               const matchIdNum = parseInt(gitMatch.id.replace('match_', ''), 10);

@@ -32,7 +32,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
     homeFlag: '🏳️',
     awayFlag: '🏳️',
     matchTime: '',
-    handicapTeam: 'home' as 'home' | 'away',
+    handicapTeam: 'home' as 'home' | 'away' | 'none',
     handicapValue: '0.5'
   });
 
@@ -44,7 +44,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
     homeFlag: string;
     awayFlag: string;
     matchTime: string;
-    handicapTeam: 'home' | 'away';
+    handicapTeam: 'home' | 'away' | 'none';
     handicapValue: string;
     status: 'pending' | 'live' | 'finished';
     homeScore: string;
@@ -98,8 +98,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
 
     try {
       const handicap = {
-        team: newMatch.handicapTeam,
-        value: parseFloat(newMatch.handicapValue)
+        team: newMatch.handicapTeam === 'none' ? null : newMatch.handicapTeam,
+        value: newMatch.handicapTeam === 'none' ? 0 : parseFloat(newMatch.handicapValue)
       };
 
       const response = await fetch('/api/admin/matches', {
@@ -208,10 +208,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
       homeFlag: match.homeFlag || '🏳️',
       awayFlag: match.awayFlag || '🏳️',
       matchTime: localDateTimeStr,
-      handicapTeam: match.handicap.team === 'away' ? 'away' : 'home',
-      handicapValue: ['0.5', '1.5', '2.5', '3.5', '4.5', '5.5'].includes(String(match.handicap.value)) 
-        ? String(match.handicap.value) 
-        : '0.5',
+      handicapTeam: (match.handicap.team === 'home' || match.handicap.team === 'away') ? match.handicap.team : 'none',
+      handicapValue: String(match.handicap.value || 0),
       status: match.status,
       homeScore: match.homeScore !== null ? match.homeScore.toString() : '0',
       awayScore: match.awayScore !== null ? match.awayScore.toString() : '0'
@@ -229,8 +227,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
 
     try {
       const handicap = {
-        team: editingMatch.handicapTeam,
-        value: parseFloat(editingMatch.handicapValue)
+        team: editingMatch.handicapTeam === 'none' ? null : editingMatch.handicapTeam,
+        value: editingMatch.handicapTeam === 'none' ? 0 : parseFloat(editingMatch.handicapValue)
       };
 
       const response = await fetch(`/api/admin/matches/${editingMatch.id}`, {
@@ -585,10 +583,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                   <select
                     className="form-input"
                     value={newMatch.handicapTeam}
-                    onChange={(e) => setNewMatch(prev => ({ ...prev, handicapTeam: e.target.value as any }))}
+                    onChange={(e) => setNewMatch(prev => ({
+                      ...prev,
+                      handicapTeam: e.target.value as any,
+                      handicapValue: e.target.value === 'none' ? '0' : (prev.handicapValue === '0' ? '0.5' : prev.handicapValue)
+                    }))}
                   >
                     <option value="home">{newMatch.homeFlag} {newMatch.homeTeam || 'Sân nhà'} chấp</option>
                     <option value="away">{newMatch.awayFlag} {newMatch.awayTeam || 'Sân khách'} chấp</option>
+                    <option value="none">Đồng banh (Không chấp)</option>
                   </select>
                 </div>
                 <div className="form-group">
@@ -597,13 +600,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                     className="form-input"
                     value={newMatch.handicapValue}
                     onChange={(e) => setNewMatch(prev => ({ ...prev, handicapValue: e.target.value }))}
+                    disabled={newMatch.handicapTeam === 'none'}
                   >
-                    <option value="0.5">0.5 (Nửa trái)</option>
-                    <option value="1.5">1.5 (Trái rưỡi)</option>
-                    <option value="2.5">2.5 (Hai trái rưỡi)</option>
-                    <option value="3.5">3.5 (Ba trái rưỡi)</option>
-                    <option value="4.5">4.5 (Bốn trái rưỡi)</option>
-                    <option value="5.5">5.5 (Năm trái rưỡi)</option>
+                    {newMatch.handicapTeam === 'none' ? (
+                      <option value="0">0 (Đồng banh)</option>
+                    ) : (
+                      <>
+                        <option value="0.25">0.25 (Đồng nửa)</option>
+                        <option value="0.5">0.5 (Nửa trái)</option>
+                        <option value="0.75">0.75 (Nửa một)</option>
+                        <option value="1">1.0 (Một trái)</option>
+                        <option value="1.25">1.25 (Một thua nửa)</option>
+                        <option value="1.5">1.5 (Trái rưỡi)</option>
+                        <option value="1.75">1.75 (Hai ăn nửa)</option>
+                        <option value="2">2.0 (Hai trái)</option>
+                        <option value="2.25">2.25 (Hai thua nửa)</option>
+                        <option value="2.5">2.5 (Hai trái rưỡi)</option>
+                        <option value="3">3.0 (Ba trái)</option>
+                        <option value="3.5">3.5 (Ba trái rưỡi)</option>
+                        <option value="4">4.0 (Bốn trái)</option>
+                        <option value="4.5">4.5 (Bốn trái rưỡi)</option>
+                        <option value="5">5.0 (Năm trái)</option>
+                        <option value="5.5">5.5 (Năm trái rưỡi)</option>
+                      </>
+                    )}
                   </select>
                 </div>
               </div>
@@ -734,10 +754,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                   <select
                     className="form-input"
                     value={editingMatch.handicapTeam}
-                    onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, handicapTeam: e.target.value as any }) : null)}
+                    onChange={(e) => setEditingMatch(prev => prev ? ({ 
+                      ...prev, 
+                      handicapTeam: e.target.value as any,
+                      handicapValue: e.target.value === 'none' ? '0' : (prev.handicapValue === '0' ? '0.5' : prev.handicapValue)
+                    }) : null)}
                   >
                     <option value="home">{editingMatch.homeFlag} {editingMatch.homeTeam || 'Sân nhà'} chấp</option>
                     <option value="away">{editingMatch.awayFlag} {editingMatch.awayTeam || 'Sân khách'} chấp</option>
+                    <option value="none">Đồng banh (Không chấp)</option>
                   </select>
                 </div>
                 <div className="form-group">
@@ -746,13 +771,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onRefresh
                     className="form-input"
                     value={editingMatch.handicapValue}
                     onChange={(e) => setEditingMatch(prev => prev ? ({ ...prev, handicapValue: e.target.value }) : null)}
+                    disabled={editingMatch.handicapTeam === 'none'}
                   >
-                    <option value="0.5">0.5 (Nửa trái)</option>
-                    <option value="1.5">1.5 (Trái rưỡi)</option>
-                    <option value="2.5">2.5 (Hai trái rưỡi)</option>
-                    <option value="3.5">3.5 (Ba trái rưỡi)</option>
-                    <option value="4.5">4.5 (Bốn trái rưỡi)</option>
-                    <option value="5.5">5.5 (Năm trái rưỡi)</option>
+                    {editingMatch.handicapTeam === 'none' ? (
+                      <option value="0">0 (Đồng banh)</option>
+                    ) : (
+                      <>
+                        <option value="0.25">0.25 (Đồng nửa)</option>
+                        <option value="0.5">0.5 (Nửa trái)</option>
+                        <option value="0.75">0.75 (Nửa một)</option>
+                        <option value="1">1.0 (Một trái)</option>
+                        <option value="1.25">1.25 (Một thua nửa)</option>
+                        <option value="1.5">1.5 (Trái rưỡi)</option>
+                        <option value="1.75">1.75 (Hai ăn nửa)</option>
+                        <option value="2">2.0 (Hai trái)</option>
+                        <option value="2.25">2.25 (Hai thua nửa)</option>
+                        <option value="2.5">2.5 (Hai trái rưỡi)</option>
+                        <option value="3">3.0 (Ba trái)</option>
+                        <option value="3.5">3.5 (Ba trái rưỡi)</option>
+                        <option value="4">4.0 (Bốn trái)</option>
+                        <option value="4.5">4.5 (Bốn trái rưỡi)</option>
+                        <option value="5">5.0 (Năm trái)</option>
+                        <option value="5.5">5.5 (Năm trái rưỡi)</option>
+                      </>
+                    )}
                   </select>
                 </div>
               </div>

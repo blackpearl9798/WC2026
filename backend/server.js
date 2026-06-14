@@ -760,14 +760,21 @@ app.post('/api/admin/matches', authenticate, requireAdmin, (req, res) => {
   }
 
   // Xác thực handicap
-  if (!['home', 'away'].includes(handicap.team)) {
-    return res.status(400).json({ error: 'Đội chấp handicap phải là home hoặc away (không được đồng banh)' });
-  }
-
-  const validHandicaps = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
+  const validHandicaps = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5];
   const handicapValue = parseFloat(handicap.value);
   if (!validHandicaps.includes(handicapValue)) {
-    return res.status(400).json({ error: 'Tỷ lệ chấp handicap chỉ được chấp nhận là: 0.5, 1.5, 2.5, 3.5, 4.5, 5.5' });
+    return res.status(400).json({ error: 'Tỷ lệ chấp handicap không hợp lệ (phải là bội số của 0.25 từ 0 đến 5.5)' });
+  }
+
+  const handicapTeam = handicapValue === 0 ? null : handicap.team;
+  if (handicapValue === 0) {
+    if (handicapTeam !== null && handicapTeam !== undefined && handicapTeam !== '') {
+      return res.status(400).json({ error: 'Kèo đồng banh (0) thì đội chấp phải là null' });
+    }
+  } else {
+    if (!['home', 'away'].includes(handicapTeam)) {
+      return res.status(400).json({ error: 'Đội chấp handicap phải là home hoặc away' });
+    }
   }
 
   const db = readDB();
@@ -779,7 +786,7 @@ app.post('/api/admin/matches', authenticate, requireAdmin, (req, res) => {
     awayFlag,
     matchTime,
     handicap: {
-      team: handicap.team,
+      team: handicapTeam,
       value: handicapValue
     },
     status: 'pending',
@@ -811,16 +818,24 @@ app.put('/api/admin/matches/:id', authenticate, requireAdmin, (req, res) => {
   // Xác thực handicap nếu thay đổi
   let newHandicap = match.handicap;
   if (handicap) {
-    if (!['home', 'away'].includes(handicap.team)) {
-      return res.status(400).json({ error: 'Đội chấp handicap phải là home hoặc away (không được đồng banh)' });
-    }
-    const validHandicaps = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
+    const validHandicaps = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5];
     const handicapValue = parseFloat(handicap.value);
     if (!validHandicaps.includes(handicapValue)) {
-      return res.status(400).json({ error: 'Tỷ lệ chấp handicap chỉ được chấp nhận là: 0.5, 1.5, 2.5, 3.5, 4.5, 5.5' });
+      return res.status(400).json({ error: 'Tỷ lệ chấp handicap không hợp lệ (phải là bội số của 0.25 từ 0 đến 5.5)' });
+    }
+
+    const handicapTeam = handicapValue === 0 ? null : handicap.team;
+    if (handicapValue === 0) {
+      if (handicapTeam !== null && handicapTeam !== undefined && handicapTeam !== '') {
+        return res.status(400).json({ error: 'Kèo đồng banh (0) thì đội chấp phải là null' });
+      }
+    } else {
+      if (!['home', 'away'].includes(handicapTeam)) {
+        return res.status(400).json({ error: 'Đội chấp handicap phải là home hoặc away' });
+      }
     }
     newHandicap = {
-      team: handicap.team,
+      team: handicapTeam,
       value: handicapValue
     };
   }
