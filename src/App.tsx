@@ -70,13 +70,13 @@ function App() {
 
   const syncLiveScoresWithServer = async (localMatches: any[], authToken: string) => {
     try {
-      // 1. Kiểm tra xem có trận nào đã đá xong nhưng chưa cập nhật tỉ số không
+      // 1. Kiểm tra xem có trận nào chưa kết thúc nhưng đã/sắp diễn ra không
       const now = new Date();
       const needsSync = localMatches.some(m => {
         if (m.status === 'finished') return false;
         const matchTime = new Date(m.matchTime);
-        // Nếu đã trôi qua hơn 130 phút kể từ giờ đấu
-        return now.getTime() - matchTime.getTime() > 130 * 60 * 1000;
+        // Nếu trận đấu đã bắt đầu hoặc sắp diễn ra trong 15 phút tới
+        return now.getTime() >= matchTime.getTime() - 15 * 60 * 1000;
       });
 
       if (!needsSync) return;

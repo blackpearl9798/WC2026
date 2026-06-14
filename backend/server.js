@@ -156,24 +156,21 @@ const TEAM_NAME_VI = {
 
 async function syncMatchesFromFreeAPI() {
   const db = readDB();
-  const now = new Date();
   
-  // 1. Tìm các trận chưa kết thúc trong DB cục bộ nhưng thời gian bắt đầu đã trôi qua hơn 130 phút (2 tiếng 10 phút)
-  const elapsedMatches = db.matches.filter(m => {
-    if (m.status === 'finished') return false;
-    const matchTime = parseDateToVietnam(m.matchTime);
-    const timeDiffMinutes = (now - matchTime) / (1000 * 60);
-    return timeDiffMinutes >= 130;
-  });
+  // 1. Tìm các trận chưa kết thúc trong DB cục bộ
+  const activeMatches = db.matches.filter(m => m.status !== 'finished');
 
-  if (elapsedMatches.length === 0) {
-    // Không có trận nào kết thúc cần cập nhật.
+  if (activeMatches.length === 0) {
     return;
   }
 
-  console.log(`⏳ [Free API] Phát hiện ${elapsedMatches.length} trận đấu đã hết giờ trên DB. Bắt đầu gọi Free API (worldcup26.ir) để kiểm tra kết quả...`);
+  console.log(`⏳ [Free API] Bắt đầu gọi Free API (worldcup26.ir) để kiểm tra kết quả cho ${activeMatches.length} trận chưa kết thúc...`);
   try {
-    const response = await fetch('https://worldcup26.ir/get/games');
+    const response = await fetch('https://worldcup26.ir/get/games', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
     if (!response.ok) {
       throw new Error(`Free API error: ${response.statusText}`);
     }
@@ -187,7 +184,7 @@ async function syncMatchesFromFreeAPI() {
     let finishedMatchesCount = 0;
     let dbChanged = false;
 
-    elapsedMatches.forEach(localMatch => {
+    activeMatches.forEach(localMatch => {
       const matchingGame = freeGames.find(game => {
         // Khớp theo ID trận đấu để đảm bảo chính xác cho cả vòng knockout
         if (`match_${game.id}` === localMatch.id) {
@@ -205,16 +202,31 @@ async function syncMatchesFromFreeAPI() {
 
       if (matchingGame) {
         const isFinished = matchingGame.finished === 'TRUE' || matchingGame.time_elapsed === 'finished';
+        const isLive = matchingGame.time_elapsed === 'live';
+        const apiHomeScore = parseInt(matchingGame.home_score);
+        const apiAwayScore = parseInt(matchingGame.away_score);
 
-        if (isFinished) {
-          const apiHomeScore = parseInt(matchingGame.home_score);
-          const apiAwayScore = parseInt(matchingGame.away_score);
-
-          if (!isNaN(apiHomeScore) && !isNaN(apiAwayScore)) {
-            // Cập nhật CSDL
+        if (!isNaN(apiHomeScore) && !isNaN(apiAwayScore)) {
+          if (isFinished) {
+            // Cập nhật CSDL thành đã kết thúc
             localMatch.homeScore = apiHomeScore;
             localMatch.awayScore = apiAwayScore;
             localMatch.status = 'finished';
+            
+            // Đồng bộ luôn các đội tuyển thật sự nếu là trận Knockout đã có kết quả
+            const matchId = localMatch.id.replace('match_', '');
+            const isKnockout = parseInt(matchId) >= 73;
+            if (isKnockout) {
+              const apiHome = matchingGame.home_team_name_en;
+              const apiAway = matchingGame.away_team_name_en;
+              if (apiHome && apiAway && apiHome !== '0' && apiAway !== '0' && !apiHome.includes('Group') && !apiAway.includes('Group') && !apiHome.includes('Match') && !apiAway.includes('Match')) {
+                localMatch.homeTeam = TEAM_NAME_VI[apiHome] || apiHome;
+                localMatch.awayTeam = TEAM_NAME_VI[apiAway] || apiAway;
+                localMatch.homeFlag = FLAG_MAP[apiHome] || '🏳️';
+                localMatch.awayFlag = FLAG_MAP[apiAway] || '🏳️';
+              }
+            }
+
             dbChanged = true;
             updatedCount++;
 
@@ -230,6 +242,15 @@ async function syncMatchesFromFreeAPI() {
               return pred;
             });
             finishedMatchesCount++;
+          } else if (isLive) {
+            // Cập nhật CSDL thành đang diễn ra (live)
+            if (localMatch.status !== 'live' || localMatch.homeScore !== apiHomeScore || localMatch.awayScore !== apiAwayScore) {
+              localMatch.homeScore = apiHomeScore;
+              localMatch.awayScore = apiAwayScore;
+              localMatch.status = 'live';
+              dbChanged = true;
+              updatedCount++;
+            }
           }
         }
       }
@@ -239,7 +260,7 @@ async function syncMatchesFromFreeAPI() {
       writeDB(db);
       console.log(`✅ [Free API] Đồng bộ thành công: Cập nhật kết quả ${updatedCount} trận. Tính điểm xong cho ${finishedMatchesCount} dự đoán.`);
     } else {
-      console.log('ℹ️ [Free API] Đã kiểm tra API nhưng chưa có kết quả trận đấu mới nào kết thúc hoàn toàn.');
+      console.log('ℹ️ [Free API] Đã kiểm tra API nhưng chưa có kết quả trận đấu mới nào thay đổi.');
     }
   } catch (error) {
     console.error('❌ [Free API] Lỗi đồng bộ kết quả từ Free API:', error.message);
