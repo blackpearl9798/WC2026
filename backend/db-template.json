@@ -94,7 +94,7 @@
       "awayTeam": "Scotland",
       "homeFlag": "🇭🇹",
       "awayFlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-      "matchTime": "2026-06-14T02:00:00.000Z",
+      "matchTime": "2026-06-14T01:00:00.000Z",
       "group": "C",
       "handicap": {
         "team": "away",
@@ -113,7 +113,7 @@
       "awayTeam": "Thổ Nhĩ Kỳ",
       "homeFlag": "🇦🇺",
       "awayFlag": "🇹🇷",
-      "matchTime": "2026-06-14T01:00:00.000Z",
+      "matchTime": "2026-06-14T04:00:00.000Z",
       "group": "D",
       "handicap": {
         "team": "away",
@@ -189,7 +189,7 @@
       "awayTeam": "Curaçao",
       "homeFlag": "🇩🇪",
       "awayFlag": "🇨🇼",
-      "matchTime": "2026-06-14T16:00:00.000Z",
+      "matchTime": "2026-06-14T17:00:00.000Z",
       "group": "E",
       "handicap": {
         "team": "home",
@@ -208,7 +208,7 @@
       "awayTeam": "Nhật Bản",
       "homeFlag": "🇳🇱",
       "awayFlag": "🇯🇵",
-      "matchTime": "2026-06-14T22:00:00.000Z",
+      "matchTime": "2026-06-14T20:00:00.000Z",
       "group": "F",
       "handicap": {
         "team": "home",
@@ -265,7 +265,7 @@
       "awayTeam": "Cape Verde",
       "homeFlag": "🇪🇸",
       "awayFlag": "🇨🇻",
-      "matchTime": "2026-06-15T19:00:00.000Z",
+      "matchTime": "2026-06-15T16:00:00.000Z",
       "group": "H",
       "handicap": {
         "team": "home",
@@ -284,7 +284,7 @@
       "awayTeam": "Ai Cập",
       "homeFlag": "🇧🇪",
       "awayFlag": "🇪🇬",
-      "matchTime": "2026-06-15T17:00:00.000Z",
+      "matchTime": "2026-06-15T19:00:00.000Z",
       "group": "G",
       "handicap": {
         "team": "home",
@@ -303,7 +303,7 @@
       "awayTeam": "Uruguay",
       "homeFlag": "🇸🇦",
       "awayFlag": "🇺🇾",
-      "matchTime": "2026-06-15T23:00:00.000Z",
+      "matchTime": "2026-06-15T22:00:00.000Z",
       "group": "H",
       "handicap": {
         "team": "away",
@@ -341,7 +341,7 @@
       "awayTeam": "Na Uy",
       "homeFlag": "🇮🇶",
       "awayFlag": "🇳🇴",
-      "matchTime": "2026-06-16T23:00:00.000Z",
+      "matchTime": "2026-06-16T22:00:00.000Z",
       "group": "I",
       "handicap": {
         "team": "away",
@@ -360,7 +360,7 @@
       "awayTeam": "Algeria",
       "homeFlag": "🇦🇷",
       "awayFlag": "🇩🇿",
-      "matchTime": "2026-06-17T00:00:00.000Z",
+      "matchTime": "2026-06-17T01:00:00.000Z",
       "group": "J",
       "handicap": {
         "team": "home",
@@ -398,7 +398,7 @@
       "awayTeam": "CHDC Congo",
       "homeFlag": "🇵🇹",
       "awayFlag": "🇨🇩",
-      "matchTime": "2026-06-17T16:00:00.000Z",
+      "matchTime": "2026-06-17T17:00:00.000Z",
       "group": "K",
       "handicap": {
         "team": "home",
@@ -417,7 +417,7 @@
       "awayTeam": "Croatia",
       "homeFlag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "awayFlag": "🇭🇷",
-      "matchTime": "2026-06-17T22:00:00.000Z",
+      "matchTime": "2026-06-17T20:00:00.000Z",
       "group": "L",
       "handicap": {
         "team": "home",
@@ -512,7 +512,7 @@
       "awayTeam": "Qatar",
       "homeFlag": "🇨🇦",
       "awayFlag": "🇶🇦",
-      "matchTime": "2026-06-18T19:00:00.000Z",
+      "matchTime": "2026-06-18T22:00:00.000Z",
       "group": "B",
       "handicap": {
         "team": "home",
@@ -531,7 +531,7 @@
       "awayTeam": "Nam Phi",
       "homeFlag": "🇨🇿",
       "awayFlag": "🇿🇦",
-      "matchTime": "2026-06-18T19:00:00.000Z",
+      "matchTime": "2026-06-18T16:00:00.000Z",
       "group": "A",
       "handicap": {
         "team": "home",
@@ -569,7 +569,7 @@
       "awayTeam": "Ma-rốc",
       "homeFlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
       "awayFlag": "🇲🇦",
-      "matchTime": "2026-06-19T23:00:00.000Z",
+      "matchTime": "2026-06-19T22:00:00.000Z",
       "group": "C",
       "handicap": {
         "team": "away",
@@ -588,7 +588,7 @@
       "awayTeam": "Úc",
       "homeFlag": "🇺🇸",
       "awayFlag": "🇦🇺",
-      "matchTime": "2026-06-19T17:00:00.000Z",
+      "matchTime": "2026-06-19T19:00:00.000Z",
       "group": "D",
       "handicap": {
         "team": "home",
@@ -645,7 +645,7 @@
       "awayTeam": "Curaçao",
       "homeFlag": "🇪🇨",
       "awayFlag": "🇨🇼",
-      "matchTime": "2026-06-20T23:00:00.000Z",
+      "matchTime": "2026-06-21T00:00:00.000Z",
       "group": "E",
       "handicap": {
         "team": "home",
@@ -664,7 +664,7 @@
       "awayTeam": "Thụy Điển",
       "homeFlag": "🇳🇱",
       "awayFlag": "🇸🇪",
-      "matchTime": "2026-06-20T16:00:00.000Z",
+      "matchTime": "2026-06-20T17:00:00.000Z",
       "group": "F",
       "handicap": {
         "team": "home",
@@ -721,7 +721,7 @@
       "awayTeam": "Ai Cập",
       "homeFlag": "🇳🇿",
       "awayFlag": "🇪🇬",
-      "matchTime": "2026-06-21T22:00:00.000Z",
+      "matchTime": "2026-06-22T01:00:00.000Z",
       "group": "G",
       "handicap": {
         "team": "away",
@@ -740,7 +740,7 @@
       "awayTeam": "Ả Rập Xê Út",
       "homeFlag": "🇪🇸",
       "awayFlag": "🇸🇦",
-      "matchTime": "2026-06-21T19:00:00.000Z",
+      "matchTime": "2026-06-21T16:00:00.000Z",
       "group": "H",
       "handicap": {
         "team": "home",
@@ -759,7 +759,7 @@
       "awayTeam": "Cape Verde",
       "homeFlag": "🇺🇾",
       "awayFlag": "🇨🇻",
-      "matchTime": "2026-06-21T23:00:00.000Z",
+      "matchTime": "2026-06-21T22:00:00.000Z",
       "group": "H",
       "handicap": {
         "team": "home",
@@ -816,7 +816,7 @@
       "awayTeam": "Áo",
       "homeFlag": "🇦🇷",
       "awayFlag": "🇦🇹",
-      "matchTime": "2026-06-22T19:00:00.000Z",
+      "matchTime": "2026-06-22T17:00:00.000Z",
       "group": "J",
       "handicap": {
         "team": "home",
@@ -854,7 +854,7 @@
       "awayTeam": "Uzbekistan",
       "homeFlag": "🇵🇹",
       "awayFlag": "🇺🇿",
-      "matchTime": "2026-06-23T16:00:00.000Z",
+      "matchTime": "2026-06-23T17:00:00.000Z",
       "group": "K",
       "handicap": {
         "team": "home",
@@ -911,7 +911,7 @@
       "awayTeam": "Ghana",
       "homeFlag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "awayFlag": "🇬🇭",
-      "matchTime": "2026-06-23T21:00:00.000Z",
+      "matchTime": "2026-06-23T20:00:00.000Z",
       "group": "L",
       "handicap": {
         "team": "home",
@@ -930,7 +930,7 @@
       "awayTeam": "Brazil",
       "homeFlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
       "awayFlag": "🇧🇷",
-      "matchTime": "2026-06-24T23:00:00.000Z",
+      "matchTime": "2026-06-24T22:00:00.000Z",
       "group": "C",
       "handicap": {
         "team": "away",
@@ -949,7 +949,7 @@
       "awayTeam": "Haiti",
       "homeFlag": "🇲🇦",
       "awayFlag": "🇭🇹",
-      "matchTime": "2026-06-25T01:00:00.000Z",
+      "matchTime": "2026-06-24T22:00:00.000Z",
       "group": "C",
       "handicap": {
         "team": "home",
@@ -1006,7 +1006,7 @@
       "awayTeam": "Qatar",
       "homeFlag": "🇧🇦",
       "awayFlag": "🇶🇦",
-      "matchTime": "2026-06-24T17:00:00.000Z",
+      "matchTime": "2026-06-24T19:00:00.000Z",
       "group": "B",
       "handicap": {
         "team": "home",
@@ -1025,7 +1025,7 @@
       "awayTeam": "Canada",
       "homeFlag": "🇨🇭",
       "awayFlag": "🇨🇦",
-      "matchTime": "2026-06-24T16:00:00.000Z",
+      "matchTime": "2026-06-24T19:00:00.000Z",
       "group": "B",
       "handicap": {
         "team": "home",
@@ -1120,7 +1120,7 @@
       "awayTeam": "Thụy Điển",
       "homeFlag": "🇯🇵",
       "awayFlag": "🇸🇪",
-      "matchTime": "2026-06-26T01:00:00.000Z",
+      "matchTime": "2026-06-25T23:00:00.000Z",
       "group": "F",
       "handicap": {
         "team": "home",
@@ -1139,7 +1139,7 @@
       "awayTeam": "Hà Lan",
       "homeFlag": "🇹🇳",
       "awayFlag": "🇳🇱",
-      "matchTime": "2026-06-25T22:00:00.000Z",
+      "matchTime": "2026-06-25T23:00:00.000Z",
       "group": "F",
       "handicap": {
         "team": "away",
@@ -1177,7 +1177,7 @@
       "awayTeam": "Pháp",
       "homeFlag": "🇳🇴",
       "awayFlag": "🇫🇷",
-      "matchTime": "2026-06-26T20:00:00.000Z",
+      "matchTime": "2026-06-26T19:00:00.000Z",
       "group": "I",
       "handicap": {
         "team": "away",
@@ -1196,7 +1196,7 @@
       "awayTeam": "Iran",
       "homeFlag": "🇪🇬",
       "awayFlag": "🇮🇷",
-      "matchTime": "2026-06-27T01:00:00.000Z",
+      "matchTime": "2026-06-27T03:00:00.000Z",
       "group": "G",
       "handicap": {
         "team": "away",
@@ -1215,7 +1215,7 @@
       "awayTeam": "Bỉ",
       "homeFlag": "🇳🇿",
       "awayFlag": "🇧🇪",
-      "matchTime": "2026-06-27T00:00:00.000Z",
+      "matchTime": "2026-06-27T03:00:00.000Z",
       "group": "G",
       "handicap": {
         "team": "away",
@@ -1234,7 +1234,7 @@
       "awayTeam": "Ả Rập Xê Út",
       "homeFlag": "🇨🇻",
       "awayFlag": "🇸🇦",
-      "matchTime": "2026-06-26T23:00:00.000Z",
+      "matchTime": "2026-06-27T00:00:00.000Z",
       "group": "H",
       "handicap": {
         "team": "away",
@@ -1310,7 +1310,7 @@
       "awayTeam": "Áo",
       "homeFlag": "🇩🇿",
       "awayFlag": "🇦🇹",
-      "matchTime": "2026-06-28T01:00:00.000Z",
+      "matchTime": "2026-06-28T02:00:00.000Z",
       "group": "J",
       "handicap": {
         "team": "away",
@@ -1329,7 +1329,7 @@
       "awayTeam": "Argentina",
       "homeFlag": "🇯🇴",
       "awayFlag": "🇦🇷",
-      "matchTime": "2026-06-28T04:00:00.000Z",
+      "matchTime": "2026-06-28T02:00:00.000Z",
       "group": "J",
       "handicap": {
         "team": "away",
@@ -1348,7 +1348,7 @@
       "awayTeam": "Bồ Đào Nha",
       "homeFlag": "🇨🇴",
       "awayFlag": "🇵🇹",
-      "matchTime": "2026-06-28T00:30:00.000Z",
+      "matchTime": "2026-06-27T23:30:00.000Z",
       "group": "K",
       "handicap": {
         "team": "away",
@@ -1367,7 +1367,7 @@
       "awayTeam": "Uzbekistan",
       "homeFlag": "🇨🇩",
       "awayFlag": "🇺🇿",
-      "matchTime": "2026-06-28T02:30:00.000Z",
+      "matchTime": "2026-06-27T23:30:00.000Z",
       "group": "K",
       "handicap": {
         "team": "away",
@@ -1404,7 +1404,7 @@
       "awayTeam": "Hạng 3 A/B/C/D/F",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-06-29T21:30:00.000Z",
+      "matchTime": "2026-06-29T20:30:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1440,7 +1440,7 @@
       "awayTeam": "Nhì Bảng F",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-06-29T16:00:00.000Z",
+      "matchTime": "2026-06-29T17:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1476,7 +1476,7 @@
       "awayTeam": "Nhì Bảng I",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-06-30T19:00:00.000Z",
+      "matchTime": "2026-06-30T17:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1512,7 +1512,7 @@
       "awayTeam": "Hạng 3 E/H/I/J/K",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-01T19:00:00.000Z",
+      "matchTime": "2026-07-01T16:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1548,7 +1548,7 @@
       "awayTeam": "Hạng 3 A/E/H/I/J",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-01T18:00:00.000Z",
+      "matchTime": "2026-07-01T20:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1602,7 +1602,7 @@
       "awayTeam": "Hạng 3 E/F/G/I/J",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-03T00:00:00.000Z",
+      "matchTime": "2026-07-03T03:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1620,7 +1620,7 @@
       "awayTeam": "Nhì Bảng H",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-03T23:00:00.000Z",
+      "matchTime": "2026-07-03T22:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1638,7 +1638,7 @@
       "awayTeam": "Hạng 3 D/E/I/J/L",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-04T00:30:00.000Z",
+      "matchTime": "2026-07-04T01:30:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1656,7 +1656,7 @@
       "awayTeam": "Nhì Bảng G",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-03T20:00:00.000Z",
+      "matchTime": "2026-07-03T18:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1692,7 +1692,7 @@
       "awayTeam": "Thắng Trận 75",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-04T16:00:00.000Z",
+      "matchTime": "2026-07-04T17:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1746,7 +1746,7 @@
       "awayTeam": "Thắng Trận 84",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-06T21:00:00.000Z",
+      "matchTime": "2026-07-06T19:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1764,7 +1764,7 @@
       "awayTeam": "Thắng Trận 82",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-06T22:00:00.000Z",
+      "matchTime": "2026-07-07T00:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1782,7 +1782,7 @@
       "awayTeam": "Thắng Trận 88",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-07T19:00:00.000Z",
+      "matchTime": "2026-07-07T16:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1800,7 +1800,7 @@
       "awayTeam": "Thắng Trận 87",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-07T17:00:00.000Z",
+      "matchTime": "2026-07-07T20:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1818,7 +1818,7 @@
       "awayTeam": "Thắng Trận 90",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-09T21:00:00.000Z",
+      "matchTime": "2026-07-09T20:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1854,7 +1854,7 @@
       "awayTeam": "Thắng Trận 92",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-11T22:00:00.000Z",
+      "matchTime": "2026-07-11T21:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1872,7 +1872,7 @@
       "awayTeam": "Thắng Trận 96",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-12T00:00:00.000Z",
+      "matchTime": "2026-07-12T01:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1890,7 +1890,7 @@
       "awayTeam": "Thắng Trận 98",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-14T21:00:00.000Z",
+      "matchTime": "2026-07-14T19:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1908,7 +1908,7 @@
       "awayTeam": "Thắng Trận 100",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-15T22:00:00.000Z",
+      "matchTime": "2026-07-15T19:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0
@@ -1926,7 +1926,7 @@
       "awayTeam": "Thua Trận 102",
       "homeFlag": "🏳️",
       "awayFlag": "🏳️",
-      "matchTime": "2026-07-18T22:00:00.000Z",
+      "matchTime": "2026-07-18T21:00:00.000Z",
       "handicap": {
         "team": "home",
         "value": 0

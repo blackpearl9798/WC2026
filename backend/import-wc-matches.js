@@ -107,24 +107,24 @@ const TEAM_NAME_VI = {
   'Panama': 'Panama'
 };
 
-// Offsets mapping for World Cup 2026 stadium IDs
+// Offsets mapping for World Cup 2026 stadium IDs in API
 const STADIUM_OFFSETS = {
-  '1': 6,  // Azteca, Mexico City: UTC-6
-  '2': 6,  // Monterrey: UTC-6
-  '3': 6,  // Guadalajara: UTC-6
-  '4': 7,  // BC Place, Vancouver: PDT (UTC-7)
-  '5': 4,  // BMO Field, Toronto: EDT (UTC-4)
-  '6': 4,  // MetLife, East Jersey: EDT (UTC-4)
-  '7': 7,  // SoFi, Los Angeles: PDT (UTC-7)
-  '8': 5,  // AT&T, Dallas: CDT (UTC-5)
-  '9': 5,  // Arrowhead, Kansas City: CDT (UTC-5)
-  '10': 4, // Mercedes-Benz, Atlanta: EDT (UTC-4)
-  '11': 4, // Hard Rock, Miami: EDT (UTC-4)
-  '12': 4, // Gillette, Boston: EDT (UTC-4)
-  '13': 4, // Lincoln Financial, Philadelphia: EDT (UTC-4)
-  '14': 5, // NRG, Houston: CDT (UTC-5)
-  '15': 7, // Levi's, Santa Clara: PDT (UTC-7)
-  '16': 7  // Lumen Field, Seattle: PDT (UTC-7)
+  '1': 6,  // Estadio Azteca, Mexico City: UTC-6
+  '2': 6,  // Estadio Akron, Guadalajara: UTC-6
+  '3': 6,  // Estadio BBVA, Monterrey: UTC-6
+  '4': 5,  // AT&T Stadium, Dallas: UTC-5
+  '5': 5,  // NRG Stadium, Houston: UTC-5
+  '6': 5,  // Arrowhead Stadium, Kansas City: UTC-5
+  '7': 4,  // Mercedes-Benz Stadium, Atlanta: UTC-4
+  '8': 4,  // Hard Rock Stadium, Miami: UTC-4
+  '9': 4,  // Gillette Stadium, Boston: UTC-4
+  '10': 4, // Lincoln Financial Field, Philadelphia: UTC-4
+  '11': 4, // MetLife Stadium, New York/New Jersey: UTC-4
+  '12': 4, // BMO Field, Toronto: UTC-4
+  '13': 7, // BC Place, Vancouver: UTC-7
+  '14': 7, // Lumen Field, Seattle: UTC-7
+  '15': 7, // Levi's Stadium, San Francisco Bay Area: UTC-7
+  '16': 7  // SoFi Stadium, Los Angeles: UTC-7
 };
 
 // Parse date string like "06/11/2026 13:00" and convert to ISO String
@@ -209,6 +209,9 @@ async function run() {
         newMatchData.homeScore = existing.homeScore;
         newMatchData.awayScore = existing.awayScore;
         newMatchData.handicap = existing.handicap;
+        newMatchData.stadium = existing.stadium;
+        newMatchData.city = existing.city;
+        newMatchData.country = existing.country;
         
         db.matches[existingMatchIndex] = newMatchData;
       } else {
